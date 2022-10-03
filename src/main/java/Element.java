@@ -13,7 +13,7 @@ public abstract class Element {
 
     protected Position position;
 
-    public void draw (TextGraphics graphics, String colorCode, String character){
+    public static void draw(TextGraphics graphics, String colorCode, String character){
         graphics.setForegroundColor(TextColor.Factory.fromString(colorCode));
         graphics.enableModifiers(SGR.BOLD);
         graphics.putString(new TerminalPosition(position.getX(), position.getY()), character);}
