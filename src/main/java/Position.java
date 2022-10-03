@@ -15,5 +15,4 @@ this.y=y;
     public int getY (){
         return y;
     }
-
 }

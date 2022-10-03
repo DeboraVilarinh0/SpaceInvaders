@@ -41,16 +41,10 @@ public class Game {
             if (key.getKeyType() == KeyType.Character && key.getCharacter() == 'q') {
                 screen.close();
             }
-            processKey(key);
+            arena.processKey(key);
             if (key.getKeyType() == KeyType.EOF) {
                 break;
             }
         }
-    }
-
-
-
-
-    private void processKey(KeyStroke key) {
     }
 }

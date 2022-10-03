@@ -12,6 +12,4 @@ public class SpaceShip extends Element{
         return new Position(position.getX() + 1, position.getY());
     }
 
-
-
 }
