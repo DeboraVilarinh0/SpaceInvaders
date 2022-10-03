@@ -1,4 +1,4 @@
-public class BadGuys {
+public class BadGuys extends Element{
 
 
 }
