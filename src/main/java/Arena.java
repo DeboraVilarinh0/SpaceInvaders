@@ -3,23 +3,44 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Arena {
 
     public int width;
     public int height;
     private SpaceShip spaceShip;
+    private List<BadGuys> badGuys;
 
 
     Arena (int width, int height){
         this.width=width;
         this.height=height;
         spaceShip = new SpaceShip(width/2, height-1);
+        this.badGuys = CreateBadGuys(10,4);
 
     }
     public void draw(TextGraphics graphics) {
         graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
 
-        SpaceShip.draw(graphics, "#FFAE42", "A");
+        spaceShip.draw(graphics, "#FFAE42", "A");
+
+        for (int i=0; i<badGuys.size(); i++) badGuys.get(i).draw(graphics, "#F02727", "X");
+
     }
+
+    public List<BadGuys> CreateBadGuys (int Width, int Height){
+
+        List<BadGuys> badGuys2 = new ArrayList<>();
+
+        for (int j=0; j<Height; j++){
+            for (int i=0; i<Width; i++){
+                badGuys2.add(new BadGuys(i,j));
+            }
+        }
+return badGuys2;
+    }
+
 }
