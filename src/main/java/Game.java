@@ -20,6 +20,7 @@ public class Game {
 
         arena = new Arena(Height,Width);
 
+
         Terminal terminal = TerminalFactory.createTerminal();
         screen = new TerminalScreen(terminal);
         screen.setCursorPosition(null); // we don't need a cursor
@@ -47,6 +48,8 @@ public class Game {
             }
         }
     }
+
+
 
 
     private void processKey(KeyStroke key) {
