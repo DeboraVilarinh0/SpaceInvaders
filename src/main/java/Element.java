@@ -5,12 +5,14 @@ import com.googlecode.lanterna.graphics.TextGraphics;
 
 public abstract class Element {
 
-    protected static Position position;
+    protected Position position;
 
     Element (int x, int y){
         position = new Position(x,y);
     }
-    public static void draw(TextGraphics graphics, String colorCode, String character){
+    public void draw(TextGraphics graphics, String colorCode, String character){
+
+
         graphics.setForegroundColor(TextColor.Factory.fromString(colorCode));
         graphics.enableModifiers(SGR.BOLD);
         graphics.putString(new TerminalPosition(position.getX(), position.getY()), character);}
