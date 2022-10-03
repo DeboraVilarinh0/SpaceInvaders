@@ -10,16 +10,16 @@ public class Arena {
     private SpaceShip spaceShip;
 
 
-    Arena (int width, int height){
+    Arena (int height, int width){
         this.width=width;
         this.height=height;
-        spaceShip = new SpaceShip();
+        spaceShip = new SpaceShip(width/2, height);
 
     }
     public void draw(TextGraphics graphics) {
         graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
 
-        SpaceShip.draw(graphics, "#3CBB14", "o");
+        SpaceShip.draw(graphics, "#3CBB14", "A");
     }
 }
