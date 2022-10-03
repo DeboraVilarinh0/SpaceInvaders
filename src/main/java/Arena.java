@@ -20,7 +20,7 @@ public class Arena {
         this.width = width;
         this.height = height;
         spaceShip = new SpaceShip(width / 2, height - 1);
-        this.badGuys = CreateBadGuys(10, 4);
+        this.badGuys = CreateBadGuys(40, 5);
 
     }
 
@@ -52,9 +52,9 @@ public class Arena {
 
         List<BadGuys> badGuys2 = new ArrayList<>();
 
-        for (int j = 0; j < Height; j++) {
-            for (int i = 0; i < Width; i++) {
-                badGuys2.add(new BadGuys(i, j));
+        for (int linha = 0; linha < Height; linha++) {
+            for (int coluna = 0; coluna < Width; coluna+=3) {
+                badGuys2.add(new BadGuys(coluna+ (width-Width)/2, linha));
             }
         }
         return badGuys2;
