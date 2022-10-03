@@ -5,12 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b1660187-1cd8-48cc-9290-ab6a5147918d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Arena.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Arena.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/BadGuys.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/BadGuys.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Element.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Element.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Position.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Position.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SpaceShip.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SpaceShip.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Wall.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Wall.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
