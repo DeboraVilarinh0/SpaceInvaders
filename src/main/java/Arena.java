@@ -33,18 +33,17 @@ public class Arena {
     }
 
     public void processKey(KeyStroke key) {
-        if (key.getKeyType() == KeyType.ArrowLeft) canSpaceShipMove(spaceShip.moveLeft());
+        if (key.getKeyType() == KeyType.ArrowLeft) moveSpaceShip(spaceShip.moveLeft());
 
-        if (key.getKeyType() == KeyType.ArrowRight) canSpaceShipMove(spaceShip.moveRight());
+        if (key.getKeyType() == KeyType.ArrowRight) moveSpaceShip(spaceShip.moveRight());
     }
 
-    private void canSpaceShipMove(Position position) {
-        boolean SpaceShipMove = true;
-        if (position.getY() > height - 2 || position.getY() < 1 || position.getX() > width - 2 || position.getX() < 1) {
-            SpaceShipMove = false;
-        }
-        spaceShip.setPosition(position);
+    private boolean canSpaceShipMove(Position position) {
+        return position.getY() <= height - 2 && position.getY() >= 1 && position.getX() <= width - 2 && position.getX() >= 1;
+    }
 
+    private void moveSpaceShip (Position position){
+        if (canSpaceShipMove(position)) spaceShip.setPosition(position);
     }
 
 
