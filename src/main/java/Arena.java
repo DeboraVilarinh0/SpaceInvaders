@@ -7,6 +7,7 @@ import com.googlecode.lanterna.input.KeyType;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Arena {
@@ -145,24 +146,25 @@ public class Arena {
 
             for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
 
+                System.out.println("Balas iniciais:");
+                System.out.println(bullets.size());
+
                 if (bullets.get(indexBullets).getPosition().equals(badGuys.get(indexBadGuys).getPosition())) {
                     badGuys.remove(indexBadGuys);
                     bullets.remove(indexBullets);
-                } else if (!canMove(bullets.get(indexBullets).getPosition())) bullets.remove(indexBullets);
-            }
+                    System.out.println("Tamanho lista balas: " + bullets.size() + " tamanho lista aliens: " + badGuys.size());
+                    break;
+                } else if (bullets.get(indexBullets).getPosition().getY() >= 0) {
+                    bullets.get(indexBullets).getPosition().display();
+                    bullets.remove(indexBullets);
+                    System.out.println(bullets.size());
 
+                }
+
+            }
 
         }
 
-    }
-
-    public SpaceShip getSpaceShip() {
-
-        return spaceShip;
-    }
-
-    public List<BadGuys> getBadGuys() {
-        return badGuys;
     }
 
 }
