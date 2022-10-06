@@ -4,17 +4,14 @@ import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
-import com.googlecode.lanterna.terminal.TerminalFactory;
 
-import java.awt.*;
 import java.io.IOException;
 
 public class Game {
 
     TerminalScreen screen;
     private final Arena arena;
-    //public long delta;
-    //public long lastLoopTime = System.currentTimeMillis(); //inicia com o tempo atual
+    boolean running = true;
 
     Game(int Width, int Height) throws IOException {
 
@@ -34,6 +31,8 @@ public class Game {
         screen.clear();
         arena.draw(screen.newTextGraphics());
         screen.refresh();
+
+
     }
 
     public void run() throws IOException {
@@ -46,34 +45,34 @@ public class Game {
             long startTime = System.currentTimeMillis();
 
             draw();
-            KeyStroke key = screen.pollInput(); // read a keystroke
+            KeyStroke key = screen.pollInput();
             if (key != null) {
+
                 if (key.getKeyType() == KeyType.Character && key.getCharacter() == 'q') {
                     screen.close();
+                    running = false;
                 }
+
                 arena.processKey(key);
                 if (key.getKeyType() == KeyType.EOF) {
                     break;
                 }
-                        if (startTime - lastMonsterMovement > 500){
-                       // arena.moveMonster();
-                        //arena.verifyMonsterCollision();
+            }
 
-                        lastMonsterMovement = startTime;
+            if (startTime - lastMonsterMovement > 500) {
+                arena.moveBadGuys();
+                arena.verifyBadGuysCollision();
+                draw();
+                lastMonsterMovement = startTime;
+            }
 
-                        }
-                        long elapsedTime = System.currentTimeMillis() - startTime;
-                        long sleepTime = frameTime - elapsedTime;
-
+            long elapsedTime = System.currentTimeMillis() - startTime;
+            long sleepTime = frameTime - elapsedTime;
+            if (sleepTime > 0) try {
+                Thread.sleep(sleepTime);
+            } catch (InterruptedException e) {
             }
         }
     }
-   /* Bullet bullet;
-    private  void  gameUpdate() throws IOException {
-        if (bullet != null){
-            Graphics graphics = null;
-            bullet.shootBullet(delta,graphics);
-    } */
 }
-
 
