@@ -26,7 +26,7 @@ public class Arena {
         this.badGuys = CreateBadGuys(20, 5);
     }
 
-    public void draw(TextGraphics graphics) throws IOException {
+    public void draw(TextGraphics graphics){
 
         graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
@@ -58,7 +58,7 @@ public class Arena {
         if (canMove(position)) spaceShip.setPosition(position);
     }
 
-    private void moveBullets(Position position) {
+    private void moveBullets() {
         for (int indexBulletList = 0; indexBulletList < bullets.size(); indexBulletList++) {
             if (canMove(bullets.get(indexBulletList).bulletMovementUP())) {
 
