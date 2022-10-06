@@ -8,6 +8,7 @@ import com.googlecode.lanterna.input.KeyType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Arena {
 
@@ -16,6 +17,7 @@ public class Arena {
     private SpaceShip spaceShip;
     private List<Bullet> bullets = new ArrayList<>();
     private final List<BadGuys> badGuys;
+    private List<EnemyBullet> enemyBullets = new ArrayList<>();
     private boolean moveRight = true;
     private boolean moveLeft = false;
 
@@ -35,6 +37,7 @@ public class Arena {
         spaceShip.draw(graphics, "#FFAE42", "A");
         for (int i = 0; i < badGuys.size(); i++) badGuys.get(i).draw(graphics, "#F02727", "X");
         if (bullets.size() != 0) for (int i = 0; i < bullets.size(); i++) bullets.get(i).draw(graphics, "#FFFF00", "|");
+        if (enemyBullets.size() != 0) for (int i = 0; i < enemyBullets.size(); i++) enemyBullets.get(i).draw(graphics, "#FFFF00", "|");
     }
 
     public void processKey(KeyStroke key) {
@@ -46,13 +49,14 @@ public class Arena {
         if (key.getKeyType() == KeyType.ArrowRight) moveSpaceShip(spaceShip.moveRight());
 
         if (key.getKeyType() == KeyType.ArrowUp) {
-            CreateBullets();
+            CreateBullets(spaceShip.getPosition());
+
 
         }
     }
 
     private boolean canMove(Position position) {
-        return position.getY() <= height - 1 && position.getY() >= 1 && position.getX() <= width - 1 && position.getX() >= 0;
+        return position.getY() <= height - 1 && position.getY() >= 0 && position.getX() <= width - 1 && position.getX() >= 0;
     }
 
     private void moveSpaceShip(Position position) {
@@ -61,16 +65,26 @@ public class Arena {
 
     public void moveBullets() {
         for (int indexBulletList = 0; indexBulletList < bullets.size(); indexBulletList++) {
-            //if (canMove(bullets.get(indexBulletList).bulletMovementUP())) {
 
             bullets.get(indexBulletList).setPosition(bullets.get(indexBulletList).bulletMovementUP());
-            //}
+
+        }
+
+        for (int indexEnemyBulletList = 0; indexEnemyBulletList < enemyBullets.size(); indexEnemyBulletList++) {
+
+            enemyBullets.get(indexEnemyBulletList).setPosition(enemyBullets.get(indexEnemyBulletList).bulletMovementDOWN());
+
         }
     }
 
-    public List<Bullet> CreateBullets() {
-        bullets.add(new Bullet(spaceShip.getPosition().getX(), spaceShip.getPosition().getY() - 1));
+    public List<Bullet> CreateBullets(Position position) {
+        bullets.add(new Bullet(position.getX(), position.getY() - 1));
         return bullets;
+    }
+
+    public List<EnemyBullet> CreateEnemyBullets(Position position) {
+        enemyBullets.add(new EnemyBullet(position.getX(), position.getY()));
+        return enemyBullets;
     }
 
 
@@ -140,29 +154,29 @@ public class Arena {
     }
 
     public void verifyBulletCollision() {
+        for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
 
-        for (int indexBadGuys = 0; indexBadGuys < badGuys.size(); indexBadGuys++) {
-
-            for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
+            for (int indexBadGuys = 0; indexBadGuys < badGuys.size(); indexBadGuys++) {
 
                 if (bullets.get(indexBullets).getPosition().equals(badGuys.get(indexBadGuys).getPosition())) {
                     badGuys.remove(indexBadGuys);
                     bullets.remove(indexBullets);
+                    break;
                 } else if (!canMove(bullets.get(indexBullets).getPosition())) bullets.remove(indexBullets);
+                System.out.println(bullets.size());
             }
-
-
         }
+    }
+
+    public void shootBullet() {
+        for (int i = 0; i <1 ; i++) {
+            Random rand = new Random();
+            int rand_int1 = rand.nextInt(badGuys.size());
+
+            CreateEnemyBullets(badGuys.get(rand_int1).getPosition());
+    }
+    }
+
 
     }
 
-    public SpaceShip getSpaceShip() {
-
-        return spaceShip;
-    }
-
-    public List<BadGuys> getBadGuys() {
-        return badGuys;
-    }
-
-}
