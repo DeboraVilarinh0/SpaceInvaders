@@ -4,6 +4,7 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ public class Arena {
     public int width;
     public int height;
     private SpaceShip spaceShip;
-    private List<Bullet> bullets;
+    private List<Bullet> bullets = new ArrayList<>();
     private final List<BadGuys> badGuys;
     private boolean moveRight = true;
     private boolean moveLeft = false;
@@ -33,7 +34,7 @@ public class Arena {
 
         spaceShip.draw(graphics, "#FFAE42", "A");
         for (int i = 0; i < badGuys.size(); i++) badGuys.get(i).draw(graphics, "#F02727", "X");
-        for (int i = 0; i < bullets.size(); i++) bullets.get(i).draw(graphics, "#FFFF00", "|");
+        if (bullets.size() != 0) for (int i = 0; i < bullets.size(); i++) bullets.get(i).draw(graphics, "#FFFF00", "|");
     }
 
     public void processKey(KeyStroke key) {
@@ -47,8 +48,8 @@ public class Arena {
         if (key.getKeyType() == KeyType.ArrowUp) {
             CreateBullets();
 
-            }
         }
+    }
 
     private boolean canMove(Position position) {
         return position.getY() <= height - 1 && position.getY() >= 1 && position.getX() <= width - 1 && position.getX() >= 0;
@@ -58,24 +59,20 @@ public class Arena {
         if (canMove(position)) spaceShip.setPosition(position);
     }
 
-    private void moveBullets(Position position) {
+    public void moveBullets() {
         for (int indexBulletList = 0; indexBulletList < bullets.size(); indexBulletList++) {
-            if (canMove(bullets.get(indexBulletList).bulletMovementUP())) {
+            //if (canMove(bullets.get(indexBulletList).bulletMovementUP())) {
 
-                bullets.get(indexBulletList).setPosition(bullets.get(indexBulletList).bulletMovementUP());
-            }
+            bullets.get(indexBulletList).setPosition(bullets.get(indexBulletList).bulletMovementUP());
+            //}
         }
     }
 
     public List<Bullet> CreateBullets() {
-        bullets.add(new Bullet(spaceShip.getPosition().getX(), spaceShip.getPosition().getY()-1));
+        bullets.add(new Bullet(spaceShip.getPosition().getX(), spaceShip.getPosition().getY() - 1));
         return bullets;
     }
 
-    private boolean canSpaceShipMove(Position position) {
-        return position.getY() >= 1 && position.getX() <= width - 2 && position.getX() >= 1;
-
-    }
 
     public void moveBadGuys() {
         int maxX = 0;
@@ -115,7 +112,7 @@ public class Arena {
                 Position badguyPosition = badguy.moveDown();
                 badguy.setPosition(badguyPosition);
             }
-            moveRight=true;
+            moveRight = true;
         }
 
     }
@@ -141,16 +138,26 @@ public class Arena {
         }
         return badGuys2;
     }
-    public boolean verifyBulletColision() {
 
-        for (int i = 0; i < bullets.size(); i++)
-            if (bullets.get(i).getPosition().equals(badGuys.get(i).getPosition())) {
-                badGuys.remove(i);
-                return true;
+    public void verifyBulletCollision() {
+
+        for (int indexBadGuys = 0; indexBadGuys < badGuys.size(); indexBadGuys++) {
+
+            for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
+
+                if (bullets.get(indexBullets).getPosition().equals(badGuys.get(indexBadGuys).getPosition())) {
+                    badGuys.remove(indexBadGuys);
+                    bullets.remove(indexBullets);
+                } else if (!canMove(bullets.get(indexBullets).getPosition())) bullets.remove(indexBullets);
             }
-        return false;
+
+
+        }
+
     }
+
     public SpaceShip getSpaceShip() {
+
         return spaceShip;
     }
 

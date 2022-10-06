@@ -59,9 +59,11 @@ public class Game {
                 }
             }
 
-            if (startTime - lastMonsterMovement > 500) {
+            if (startTime - lastMonsterMovement > 100) {
                 arena.moveBadGuys();
                 arena.verifyBadGuysCollision();
+                arena.moveBullets();
+                arena.verifyBulletCollision();
                 draw();
                 lastMonsterMovement = startTime;
             }

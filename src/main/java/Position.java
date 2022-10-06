@@ -1,18 +1,18 @@
 public class Position {
 
-private int x;
-private int y;
+    private int x;
+    private int y;
 
-Position(int x, int y){
-this.x=x;
-this.y=y;
-}
+    Position(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 
-    public int getX (){
+    public int getX() {
         return x;
     }
 
-    public int getY (){
+    public int getY() {
         return y;
     }
 
@@ -22,6 +22,21 @@ this.y=y;
 
     public void setY(int y) {
         this.y = y;
+    }
+    public void display() {
+     System.out.println("x:" + this.getX() + " and y: " + this.getY());
+
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null) return false;
+
+        if (getClass() != o.getClass()) return false;
+
+        Position p = (Position) o;
+        return x == p.getX() && y == p.getY();
     }
 }
 
