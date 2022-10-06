@@ -58,7 +58,7 @@ public class Game {
                     break;
                 }}
 
-            if (startTime - lastMonsterMovement > 500) {
+            if (startTime - lastMonsterMovement > 10) {
                 arena.moveBadGuys();
                 arena.verifyBadGuysCollision();
                 draw();

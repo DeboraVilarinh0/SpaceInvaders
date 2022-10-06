@@ -21,8 +21,8 @@ public class Arena {
     public int height;
     private SpaceShip spaceShip;
     private final List<BadGuys> badGuys;
-    private boolean movedRight = false;
-    private boolean movedLeft = true;
+    private boolean moveRight = true;
+    private boolean moveLeft = false;
 
 
     ;
@@ -72,30 +72,39 @@ public class Arena {
             if (badguy.getPosition().getX() < minX) minX = badguy.getPosition().getX();
         }
 
-
-        if (!movedRight&&movedLeft) {
+        if (moveRight) {
             if (maxX < width - 1) {
                 for (BadGuys badguy : badGuys) {
                     Position badguyPosition = badguy.moveRight();
                     badguy.setPosition(badguyPosition);
-                    System.out.println(" jhg");
                 }
             }
-if (maxX==width-1)        movedRight=true; movedLeft=false;
-
+            if (maxX == width - 1) {
+                moveRight = false;
+                moveLeft = true;
+            }
         }
 
-        if (!movedLeft&&movedRight) {
+        if (moveLeft) {
             if (minX > 0) {
                 for (BadGuys badguy : badGuys) {
                     Position badguyPosition = badguy.moveLeft();
                     badguy.setPosition(badguyPosition);
-                    System.out.println(" qpfdjqofj");
                 }
             }
-            if (minX==width+1)        movedLeft=true; movedRight=false;
-
+            if (minX == 1) {
+                moveLeft = false;
+            }
         }
+
+        if (!moveLeft && !moveRight) {
+            for (BadGuys badguy : badGuys) {
+                Position badguyPosition = badguy.moveDown();
+                badguy.setPosition(badguyPosition);
+            }
+            moveRight=true;
+        }
+
     }
 
 

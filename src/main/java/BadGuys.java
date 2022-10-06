@@ -20,4 +20,8 @@ boolean movedLeft;
         return new Position(position.getX() - 1, position.getY());
 
     }
+
+    public Position moveDown () {
+        return new Position(position.getX(), position.getY()+1);
+    }
 }
