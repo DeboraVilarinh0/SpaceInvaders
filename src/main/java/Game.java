@@ -6,12 +6,14 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.terminal.TerminalFactory;
 
+
 import java.io.IOException;
 
 public class Game {
 
     TerminalScreen screen;
     private final Arena arena;
+    boolean running = true;
 
     Game(int Width, int Height) throws IOException {
 
@@ -32,19 +34,45 @@ public class Game {
         screen.clear();
         arena.draw(screen.newTextGraphics());
         screen.refresh();
+
+
     }
 
     public void run() throws IOException {
+        int FPS = 20;
+        int frameTime = 1000 / FPS;
+        long lastMonsterMovement = 0;
+
         while (true) {
+            long startTime = System.currentTimeMillis();
             draw();
-            KeyStroke key = screen.readInput(); // read a keystroke
+            KeyStroke key = screen.pollInput();
+            if (key != null){
+
             if (key.getKeyType() == KeyType.Character && key.getCharacter() == 'q') {
                 screen.close();
-            }
+                running =false;}
+
             arena.processKey(key);
             if (key.getKeyType() == KeyType.EOF) {
-                break;
+                    break;
+                }}
+
+            if (startTime - lastMonsterMovement > 500) {
+                arena.moveBadGuys();
+                arena.verifyBadGuysCollision();
+                draw();
+                lastMonsterMovement = startTime;
             }
+
+            long elapsedTime = System.currentTimeMillis() - startTime;
+            long sleepTime = frameTime - elapsedTime;
+            if (sleepTime > 0) try {
+                Thread.sleep(sleepTime);
+            } catch (InterruptedException e) {
         }
+
     }
+
+}
 }

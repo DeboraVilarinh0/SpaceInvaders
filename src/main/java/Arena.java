@@ -5,6 +5,13 @@ import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 
+import javax.swing.*;
+import java.awt.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,17 +21,22 @@ public class Arena {
     public int height;
     private SpaceShip spaceShip;
     private final List<BadGuys> badGuys;
+    private boolean movedRight = false;
+    private boolean movedLeft = true;
 
+
+    ;
 
     Arena(int width, int height) {
         this.width = width;
         this.height = height;
         spaceShip = new SpaceShip(width / 2, height - 1);
-        this.badGuys = CreateBadGuys(40, 5);
+        this.badGuys = CreateBadGuys(20, 5);
 
     }
 
-    public void draw(TextGraphics graphics) {
+    public void draw(TextGraphics graphics) throws IOException {
+
         graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
 
@@ -33,29 +45,94 @@ public class Arena {
     }
 
     public void processKey(KeyStroke key) {
-        if (key.getKeyType() == KeyType.ArrowLeft) moveSpaceShip(spaceShip.moveLeft());
+        if (key.getKeyType() == KeyType.ArrowLeft) {
+            moveSpaceShip(spaceShip.moveLeft());
+            System.out.println("ESQUERDA");
+        }
 
         if (key.getKeyType() == KeyType.ArrowRight) moveSpaceShip(spaceShip.moveRight());
+        System.out.println();
+
     }
 
     private boolean canSpaceShipMove(Position position) {
-        return position.getY() <= height - 2 && position.getY() >= 1 && position.getX() <= width - 2 && position.getX() >= 1;
+        return position.getY() >= 1 && position.getX() <= width - 2 && position.getX() >= 1;
+
     }
 
-    private void moveSpaceShip (Position position){
+    private void moveSpaceShip(Position position) {
         if (canSpaceShipMove(position)) spaceShip.setPosition(position);
     }
 
+    public void moveBadGuys() {
+        int maxX = 0;
+        int minX = 30;
+        for (BadGuys badguy : badGuys) {
+            if (badguy.getPosition().getX() > maxX) maxX = badguy.getPosition().getX();
+            if (badguy.getPosition().getX() < minX) minX = badguy.getPosition().getX();
+        }
+
+
+        if (!movedRight&&movedLeft) {
+            if (maxX < width - 1) {
+                for (BadGuys badguy : badGuys) {
+                    Position badguyPosition = badguy.moveRight();
+                    badguy.setPosition(badguyPosition);
+                    System.out.println(" jhg");
+                }
+            }
+if (maxX==width-1)        movedRight=true; movedLeft=false;
+
+        }
+
+        if (!movedLeft&&movedRight) {
+            if (minX > 0) {
+                for (BadGuys badguy : badGuys) {
+                    Position badguyPosition = badguy.moveLeft();
+                    badguy.setPosition(badguyPosition);
+                    System.out.println(" qpfdjqofj");
+                }
+            }
+            if (minX==width+1)        movedLeft=true; movedRight=false;
+
+        }
+    }
+
+
+    public void verifyBadGuysCollision() {
+        for (BadGuys badGuy : badGuys) {
+            if (spaceShip.getPosition().equals(badGuy.getPosition())) {
+                System.out.println("You died!!!");
+                System.exit(0);
+            }
+        }
+    }
 
     public List<BadGuys> CreateBadGuys(int Width, int Height) {
 
         List<BadGuys> badGuys2 = new ArrayList<>();
 
         for (int linha = 0; linha < Height; linha++) {
-            for (int coluna = 0; coluna < Width; coluna+=3) {
-                badGuys2.add(new BadGuys(coluna+ (width-Width)/2, linha));
+            for (int coluna = 0; coluna < Width; coluna += 3) {
+                badGuys2.add(new BadGuys(coluna + (width - Width) / 2, linha));
             }
         }
         return badGuys2;
     }
+
+    public SpaceShip getSpaceShip() {
+        return spaceShip;
+    }
+
+    public List<BadGuys> getBadGuys() {
+        return badGuys;
+    }
+
 }
+
+
+
+
+
+
+
