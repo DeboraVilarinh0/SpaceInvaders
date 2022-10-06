@@ -1,10 +1,6 @@
 import java.util.Random;
 
 public class BadGuys extends Element {
-
-boolean movedRight;
-boolean movedLeft;
-
     public BadGuys(int x, int y) {
         super(x, y);
 
