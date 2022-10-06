@@ -7,6 +7,7 @@ import com.googlecode.lanterna.input.KeyType;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -37,7 +38,8 @@ public class Arena {
         spaceShip.draw(graphics, "#FFAE42", "A");
         for (int i = 0; i < badGuys.size(); i++) badGuys.get(i).draw(graphics, "#F02727", "X");
         if (bullets.size() != 0) for (int i = 0; i < bullets.size(); i++) bullets.get(i).draw(graphics, "#FFFF00", "|");
-        if (enemyBullets.size() != 0) for (int i = 0; i < enemyBullets.size(); i++) enemyBullets.get(i).draw(graphics, "#FFFF00", "|");
+        if (enemyBullets.size() != 0)
+            for (int i = 0; i < enemyBullets.size(); i++) enemyBullets.get(i).draw(graphics, "#FFFF00", "|");
     }
 
     public void processKey(KeyStroke key) {
@@ -158,6 +160,9 @@ public class Arena {
 
             for (int indexBadGuys = 0; indexBadGuys < badGuys.size(); indexBadGuys++) {
 
+                System.out.println("Balas iniciais:");
+                System.out.println(bullets.size());
+
                 if (bullets.get(indexBullets).getPosition().equals(badGuys.get(indexBadGuys).getPosition())) {
                     badGuys.remove(indexBadGuys);
                     bullets.remove(indexBullets);
@@ -165,18 +170,29 @@ public class Arena {
                 } else if (!canMove(bullets.get(indexBullets).getPosition())) bullets.remove(indexBullets);
                 System.out.println(bullets.size());
             }
+            System.out.println("Tamanho lista balas: " + bullets.size() + " tamanho lista aliens: " + badGuys.size());
+            break;
+
+
         }
+
     }
 
+
+
+
     public void shootBullet() {
-        for (int i = 0; i <1 ; i++) {
+        for (int i = 0; i < 1; i++) {
             Random rand = new Random();
             int rand_int1 = rand.nextInt(badGuys.size());
 
             CreateEnemyBullets(badGuys.get(rand_int1).getPosition());
-    }
+        }
     }
 
+}
 
-    }
+
+
+
 
