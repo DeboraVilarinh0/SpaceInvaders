@@ -6,6 +6,8 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
 
@@ -15,6 +17,8 @@ public class Game {
     int shotTimer = 1000;
     int moveTimer = 100;
     int shotNumb = 1;
+    boolean playedLevelTwo = false;
+
 
     Game(int Width, int Height) throws IOException {
 
@@ -34,7 +38,6 @@ public class Game {
         screen.clear();
         arena.draw(screen.newTextGraphics());
         screen.refresh();
-
     }
 
     public void run() throws IOException {
@@ -48,7 +51,6 @@ public class Game {
         while (true) {
             long startTime = System.currentTimeMillis();
             long startTime2 = System.currentTimeMillis();
-
 
             draw();
             KeyStroke key = screen.pollInput();
@@ -69,22 +71,38 @@ public class Game {
                 arena.moveBadGuys();
                 arena.verifyBadGuysCollision();
                 arena.moveBullets();
-                arena.verifyBulletCollision();
+                arena.verifyBulletCollisionEnemy();
+                arena.verifyCollisionBetweenBullets();
                 arena.cleanBullet();
                 draw();
 
                 lastMonsterMovement = startTime;
             }
+
             if (startTime2 - lastMonsterMovement2 > shotTimer) {
                 arena.shootBullet(shotNumb);
                 draw();
                 lastMonsterMovement2 = startTime2;
             }
-            if(arena.verifyBulletCollision()) {shotTimer = 100;
-                shotNumb = 2;
-                moveTimer = 80;
-                arena.CreateBadGuys(30,6);
+
+            switch (arena.isBadGuysEmpty()){
+                case 2:shotTimer = 300;
+                    shotNumb = 3;
+                    moveTimer = 60;
+                    arena.setBadGuys(arena.CreateBadGuys(25, 5));
+                    System.out.println("ENTREI NO 2");
+                    playedLevelTwo = true;break;
+
+                case 3:System.out.println("entrei no 3");
+                    shotTimer = 10;
+                    shotNumb = 5;
+                    moveTimer = 30;
+                    arena.setBadGuys(arena.CreateBadGuys(30, 6));break;
+                case 4: System.out.println("GG");
+                System.exit(0);
             }
+
+
 
 
 
@@ -97,4 +115,6 @@ public class Game {
         }
     }
 }
+
+
 

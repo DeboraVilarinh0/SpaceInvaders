@@ -17,10 +17,11 @@ public class Arena {
     public int height;
     private SpaceShip spaceShip;
     private List<Bullet> bullets = new ArrayList<>();
-    private final List<BadGuys> badGuys;
+    private List<BadGuys> badGuys;
     private List<EnemyBullet> enemyBullets = new ArrayList<>();
     private boolean moveRight = true;
     private boolean moveLeft = false;
+    public int level = 1;
 
 
     Arena(int width, int height) {
@@ -36,10 +37,10 @@ public class Arena {
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
 
         spaceShip.draw(graphics, "#FFAE42", "A");
-        for (int i = 0; i < badGuys.size(); i++) badGuys.get(i).draw(graphics, "#F02727", "X");
-        if (bullets.size() != 0) for (int i = 0; i < bullets.size(); i++) bullets.get(i).draw(graphics, "#FFFF00", "|");
+        for (int i = 0; i < badGuys.size(); i++) badGuys.get(i).draw(graphics, "#F62817", "X");
+        if (bullets.size() != 0) for (int i = 0; i < bullets.size(); i++) bullets.get(i).draw(graphics, "#FFFFFF", "|");
         if (enemyBullets.size() != 0)
-            for (int i = 0; i < enemyBullets.size(); i++) enemyBullets.get(i).draw(graphics, "#FFFF00", "|");
+            for (int i = 0; i < enemyBullets.size(); i++) enemyBullets.get(i).draw(graphics, "#FFFFFF", "|");
     }
 
     public void processKey(KeyStroke key) {
@@ -48,14 +49,17 @@ public class Arena {
         if (key.getKeyType() == KeyType.ArrowRight) moveSpaceShip(spaceShip.moveRight());
 
         if (key.getKeyType() == KeyType.ArrowUp) {
-            CreateBullets(spaceShip.getPosition());
+            if (bullets.size() == 0) CreateBullets(spaceShip.getPosition());
 
-
+            else if (bullets.get(bullets.size() - 1).getPosition().getY() < height - 3) {
+                CreateBullets(spaceShip.getPosition());
+            }
         }
     }
 
+
     private boolean canSpaceshipMove(Position position) {
-        return position.getX() <= width - 1 && position.getX() >= 0;
+        return position.getX() <= width - 2 && position.getX() >= 1;
     }
 
     private void moveSpaceShip(Position position) {
@@ -139,65 +143,105 @@ public class Arena {
             }
         }
 
-            for (EnemyBullet enemyBullet : enemyBullets) {
-                if (spaceShip.getPosition().equals(enemyBullet.getPosition())) {
-                    System.out.println("You died!!!");
-                    System.exit(0);
-                }
+        for (EnemyBullet enemyBullet : enemyBullets) {
+            if (spaceShip.getPosition().equals(enemyBullet.getPosition())) {
+                System.out.println("You died!!!");
+                System.exit(0);
             }
+        }
 
     }
 
-        public List<BadGuys> CreateBadGuys ( int Width, int Height){
+    public List<BadGuys> CreateBadGuys(int Width, int Height) {
 
-            List<BadGuys> badGuys2 = new ArrayList<>();
+        List<BadGuys> badGuys2 = new ArrayList<>();
 
-            for (int linha = 0; linha < Height; linha++) {
-                for (int coluna = 0; coluna < Width; coluna += 3) {
-                    badGuys2.add(new BadGuys(coluna + (width - Width) / 2, linha));
-                }
+        for (int linha = 0; linha < Height; linha++) {
+            for (int coluna = 0; coluna < Width; coluna += 3) {
+                badGuys2.add(new BadGuys(coluna + (width - Width) / 2, linha));
             }
-            return badGuys2;
         }
+        return badGuys2;
+    }
 
-        public boolean verifyBulletCollision () {
-            for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
 
-                for (int indexBadGuys = 0; indexBadGuys < badGuys.size(); indexBadGuys++) {
+    public List<Monsters> CreateMonsters (int Width, int Height){
 
-                    System.out.println("Balas iniciais:");
-                    System.out.println(bullets.size());
+        List<Monsters> monsters = new ArrayList<>();
+        monsters.add(new FatGuy())
 
-                    if (bullets.get(indexBullets).getPosition().equals(badGuys.get(indexBadGuys).getPosition())) {
-                        badGuys.remove(indexBadGuys);
-                        bullets.remove(indexBullets);
 
-                        break;
-                    }
-                }
-            }
-            if (badGuys.isEmpty())return true;
-            return false;
+
+    }
+
+    public void setBadGuys(List<BadGuys> badGuys) {
+        this.badGuys = badGuys;
+
+    }
+
+
+    public int isBadGuysEmpty() {
+        if (badGuys.isEmpty()) {
+            level += 1;
+            System.out.print("o nivel é   ");
+            System.out.println(level);
+            return level;
         }
+        ;
+        return 0;
+    }
 
-        public void cleanBullet () {
-            for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
-                if (bullets.get(indexBullets).getPosition().getY() <= 0) {
+
+    public void verifyBulletCollisionEnemy() {
+        for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
+
+            for (int indexBadGuys = 0; indexBadGuys < badGuys.size(); indexBadGuys++) {
+
+                if (bullets.get(indexBullets).getPosition().equals(badGuys.get(indexBadGuys).getPosition())) {
+                    badGuys.remove(indexBadGuys);
                     bullets.remove(indexBullets);
+                    break;
                 }
             }
         }
+    }
 
+    public void cleanBullet() {
+        for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
+            if (bullets.get(indexBullets).getPosition().getY() <= 0) {
+                bullets.remove(indexBullets);
+            }
+        }
+    }
 
-        public void shootBullet (int shotNumb) {
+    public void shootBullet(int shotNumb) {
+        if (badGuys.size() != 0) {
             for (int i = 0; i < shotNumb; i++) {
+
                 Random rand = new Random();
                 int rand_int1 = rand.nextInt(badGuys.size());
-
                 CreateEnemyBullets(badGuys.get(rand_int1).getPosition());
             }
         }
     }
+
+    public void verifyCollisionBetweenBullets() {
+        for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
+
+            for (int indexBulletsAliens = 0; indexBulletsAliens < enemyBullets.size(); indexBulletsAliens++) {
+
+                if (bullets.get(indexBullets).getPosition().equals(enemyBullets.get(indexBulletsAliens).getPosition())) {
+                    enemyBullets.remove(indexBulletsAliens);
+                    bullets.remove(indexBullets);
+
+                    break;
+                }
+            }
+        }
+
+    }
+}
+
 
 
 
