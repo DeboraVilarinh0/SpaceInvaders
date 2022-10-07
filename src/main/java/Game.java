@@ -12,6 +12,9 @@ public class Game {
     TerminalScreen screen;
     private final Arena arena;
     boolean running = true;
+    int shotTimer = 1000;
+    int moveTimer = 100;
+    int shotNumb = 1;
 
     Game(int Width, int Height) throws IOException {
 
@@ -31,7 +34,6 @@ public class Game {
         screen.clear();
         arena.draw(screen.newTextGraphics());
         screen.refresh();
-
 
     }
 
@@ -63,7 +65,7 @@ public class Game {
                 }
             }
 
-            if (startTime - lastMonsterMovement > 100) {
+            if (startTime - lastMonsterMovement > moveTimer) {
                 arena.moveBadGuys();
                 arena.verifyBadGuysCollision();
                 arena.moveBullets();
@@ -73,11 +75,17 @@ public class Game {
 
                 lastMonsterMovement = startTime;
             }
-            if (startTime - lastMonsterMovement2 > 50) {
-                arena.shootBullet();
+            if (startTime2 - lastMonsterMovement2 > shotTimer) {
+                arena.shootBullet(shotNumb);
                 draw();
                 lastMonsterMovement2 = startTime2;
             }
+            if(arena.verifyBulletCollision()) {shotTimer = 100;
+                shotNumb = 2;
+                moveTimer = 80;
+                arena.CreateBadGuys(30,6);
+            }
+
 
 
             long elapsedTime = System.currentTimeMillis() - startTime;

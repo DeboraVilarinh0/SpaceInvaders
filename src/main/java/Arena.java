@@ -160,7 +160,7 @@ public class Arena {
             return badGuys2;
         }
 
-        public void verifyBulletCollision () {
+        public boolean verifyBulletCollision () {
             for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
 
                 for (int indexBadGuys = 0; indexBadGuys < badGuys.size(); indexBadGuys++) {
@@ -176,6 +176,8 @@ public class Arena {
                     }
                 }
             }
+            if (badGuys.isEmpty())return true;
+            return false;
         }
 
         public void cleanBullet () {
@@ -187,8 +189,8 @@ public class Arena {
         }
 
 
-        public void shootBullet () {
-            for (int i = 0; i < 1; i++) {
+        public void shootBullet (int shotNumb) {
+            for (int i = 0; i < shotNumb; i++) {
                 Random rand = new Random();
                 int rand_int1 = rand.nextInt(badGuys.size());
 
