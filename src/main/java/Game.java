@@ -68,6 +68,7 @@ public class Game {
                 arena.verifyBadGuysCollision();
                 arena.moveBullets();
                 arena.verifyBulletCollision();
+                arena.verifyCollisionBullets();
                 arena.cleanBullet();
                 draw();
 
