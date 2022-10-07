@@ -40,9 +40,13 @@ public class Game {
         int FPS = 20;
         int frameTime = 1000 / FPS;
         long lastMonsterMovement = 0;
+        long lastMonsterMovement2 = 0;
+
 
         while (true) {
             long startTime = System.currentTimeMillis();
+            long startTime2 = System.currentTimeMillis();
+
 
             draw();
             KeyStroke key = screen.pollInput();
@@ -68,6 +72,12 @@ public class Game {
                 draw();
 
                 lastMonsterMovement = startTime;
+            }
+
+            if (startTime - lastMonsterMovement2 > 200) {
+                arena.shootBullet();
+                draw();
+                lastMonsterMovement2 = startTime2;
             }
 
             long elapsedTime = System.currentTimeMillis() - startTime;

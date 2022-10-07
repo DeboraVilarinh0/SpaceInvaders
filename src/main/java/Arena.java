@@ -7,7 +7,9 @@ import com.googlecode.lanterna.input.KeyType;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class Arena {
 
@@ -16,6 +18,7 @@ public class Arena {
     private SpaceShip spaceShip;
     private List<Bullet> bullets = new ArrayList<>();
     private final List<BadGuys> badGuys;
+    private List<EnemyBullet> enemyBullets = new ArrayList<>();
     private boolean moveRight = true;
     private boolean moveLeft = false;
 
@@ -27,7 +30,7 @@ public class Arena {
         this.badGuys = CreateBadGuys(20, 5);
     }
 
-    public void draw(TextGraphics graphics){
+    public void draw(TextGraphics graphics) {
 
         graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
@@ -35,6 +38,8 @@ public class Arena {
         spaceShip.draw(graphics, "#FFAE42", "A");
         for (int i = 0; i < badGuys.size(); i++) badGuys.get(i).draw(graphics, "#F02727", "X");
         if (bullets.size() != 0) for (int i = 0; i < bullets.size(); i++) bullets.get(i).draw(graphics, "#FFFF00", "|");
+        if (enemyBullets.size() != 0)
+            for (int i = 0; i < enemyBullets.size(); i++) enemyBullets.get(i).draw(graphics, "#FFFF00", "|");
     }
 
     public void processKey(KeyStroke key) {
@@ -43,7 +48,8 @@ public class Arena {
         if (key.getKeyType() == KeyType.ArrowRight) moveSpaceShip(spaceShip.moveRight());
 
         if (key.getKeyType() == KeyType.ArrowUp) {
-            CreateBullets();
+            CreateBullets(spaceShip.getPosition());
+
 
         }
     }
@@ -55,18 +61,29 @@ public class Arena {
     private void moveSpaceShip(Position position) {
         if (canSpaceshipMove(position)) spaceShip.setPosition(position);
     }
+
     public void moveBullets() {
         for (int indexBulletList = 0; indexBulletList < bullets.size(); indexBulletList++) {
-            //if (canMove(bullets.get(indexBulletList).bulletMovementUP())) {
 
             bullets.get(indexBulletList).setPosition(bullets.get(indexBulletList).bulletMovementUP());
-            //}
+
+        }
+
+        for (int indexEnemyBulletList = 0; indexEnemyBulletList < enemyBullets.size(); indexEnemyBulletList++) {
+
+            enemyBullets.get(indexEnemyBulletList).setPosition(enemyBullets.get(indexEnemyBulletList).bulletMovementDOWN());
+
         }
     }
 
-    public List<Bullet> CreateBullets() {
-        bullets.add(new Bullet(spaceShip.getPosition().getX(), spaceShip.getPosition().getY() - 1));
+    public List<Bullet> CreateBullets(Position position) {
+        bullets.add(new Bullet(position.getX(), position.getY() - 1));
         return bullets;
+    }
+
+    public List<EnemyBullet> CreateEnemyBullets(Position position) {
+        enemyBullets.add(new EnemyBullet(position.getX(), position.getY()));
+        return enemyBullets;
     }
 
 
@@ -136,10 +153,12 @@ public class Arena {
     }
 
     public void verifyBulletCollision() {
+        for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
 
-        for (int indexBadGuys = 0; indexBadGuys < badGuys.size(); indexBadGuys++) {
+            for (int indexBadGuys = 0; indexBadGuys < badGuys.size(); indexBadGuys++) {
 
-            for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
+                System.out.println("Balas iniciais:");
+                System.out.println(bullets.size());
 
                 if (bullets.get(indexBullets).getPosition().equals(badGuys.get(indexBadGuys).getPosition())) {
                     badGuys.remove(indexBadGuys);
@@ -148,14 +167,31 @@ public class Arena {
                     break;
                 }
             }
+            break;
         }
     }
 
-    public void cleanBullet(){
+    public void cleanBullet() {
         for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
-            if (bullets.get(indexBullets).getPosition().getY() <= 0){
+            if (bullets.get(indexBullets).getPosition().getY() <= 0) {
                 bullets.remove(indexBullets);
             }
         }
     }
+
+
+    public void shootBullet() {
+        for (int i = 0; i < 1; i++) {
+            Random rand = new Random();
+            int rand_int1 = rand.nextInt(badGuys.size());
+
+            CreateEnemyBullets(badGuys.get(rand_int1).getPosition());
+        }
+    }
 }
+
+
+
+
+
+
