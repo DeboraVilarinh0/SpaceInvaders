@@ -138,57 +138,64 @@ public class Arena {
                 System.exit(0);
             }
         }
-    }
 
-    public List<BadGuys> CreateBadGuys(int Width, int Height) {
-
-        List<BadGuys> badGuys2 = new ArrayList<>();
-
-        for (int linha = 0; linha < Height; linha++) {
-            for (int coluna = 0; coluna < Width; coluna += 3) {
-                badGuys2.add(new BadGuys(coluna + (width - Width) / 2, linha));
-            }
-        }
-        return badGuys2;
-    }
-
-    public void verifyBulletCollision() {
-        for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
-
-            for (int indexBadGuys = 0; indexBadGuys < badGuys.size(); indexBadGuys++) {
-
-                System.out.println("Balas iniciais:");
-                System.out.println(bullets.size());
-
-                if (bullets.get(indexBullets).getPosition().equals(badGuys.get(indexBadGuys).getPosition())) {
-                    badGuys.remove(indexBadGuys);
-                    bullets.remove(indexBullets);
-
-                    break;
+            for (EnemyBullet enemyBullet : enemyBullets) {
+                if (spaceShip.getPosition().equals(enemyBullet.getPosition())) {
+                    System.out.println("You died!!!");
+                    System.exit(0);
                 }
             }
-            break;
-        }
+
     }
 
-    public void cleanBullet() {
-        for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
-            if (bullets.get(indexBullets).getPosition().getY() <= 0) {
-                bullets.remove(indexBullets);
+        public List<BadGuys> CreateBadGuys ( int Width, int Height){
+
+            List<BadGuys> badGuys2 = new ArrayList<>();
+
+            for (int linha = 0; linha < Height; linha++) {
+                for (int coluna = 0; coluna < Width; coluna += 3) {
+                    badGuys2.add(new BadGuys(coluna + (width - Width) / 2, linha));
+                }
+            }
+            return badGuys2;
+        }
+
+        public void verifyBulletCollision () {
+            for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
+
+                for (int indexBadGuys = 0; indexBadGuys < badGuys.size(); indexBadGuys++) {
+
+                    System.out.println("Balas iniciais:");
+                    System.out.println(bullets.size());
+
+                    if (bullets.get(indexBullets).getPosition().equals(badGuys.get(indexBadGuys).getPosition())) {
+                        badGuys.remove(indexBadGuys);
+                        bullets.remove(indexBullets);
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        public void cleanBullet () {
+            for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
+                if (bullets.get(indexBullets).getPosition().getY() <= 0) {
+                    bullets.remove(indexBullets);
+                }
+            }
+        }
+
+
+        public void shootBullet () {
+            for (int i = 0; i < 1; i++) {
+                Random rand = new Random();
+                int rand_int1 = rand.nextInt(badGuys.size());
+
+                CreateEnemyBullets(badGuys.get(rand_int1).getPosition());
             }
         }
     }
-
-
-    public void shootBullet() {
-        for (int i = 0; i < 1; i++) {
-            Random rand = new Random();
-            int rand_int1 = rand.nextInt(badGuys.size());
-
-            CreateEnemyBullets(badGuys.get(rand_int1).getPosition());
-        }
-    }
-}
 
 
 

@@ -73,12 +73,12 @@ public class Game {
 
                 lastMonsterMovement = startTime;
             }
-
-            if (startTime - lastMonsterMovement2 > 200) {
+            if (startTime - lastMonsterMovement2 > 50) {
                 arena.shootBullet();
                 draw();
                 lastMonsterMovement2 = startTime2;
             }
+
 
             long elapsedTime = System.currentTimeMillis() - startTime;
             long sleepTime = frameTime - elapsedTime;
