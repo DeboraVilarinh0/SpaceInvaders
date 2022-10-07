@@ -9,4 +9,5 @@ public class Bullet extends Element{
         return new Position(position.getX(), position.getY() - 1);
     }
 
+
 }
