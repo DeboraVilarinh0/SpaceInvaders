@@ -138,6 +138,14 @@ public class Arena {
                 System.exit(0);
             }
         }
+
+        for (EnemyBullet enemyBullet : enemyBullets) {
+            if (spaceShip.getPosition().equals(enemyBullet.getPosition())) {
+                System.out.println("You died!!!");
+                System.exit(0);
+            }
+        }
+
     }
 
     public List<BadGuys> CreateBadGuys(int Width, int Height) {
@@ -152,7 +160,7 @@ public class Arena {
         return badGuys2;
     }
 
-    public void verifyBulletCollision() {
+    public void verifyBulletCollisionEnemy() {
         for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
 
             for (int indexBadGuys = 0; indexBadGuys < badGuys.size(); indexBadGuys++) {
@@ -182,6 +190,22 @@ public class Arena {
                 CreateEnemyBullets(badGuys.get(rand_int1).getPosition());
             }
         }
+    }
+
+    public void verifyCollisionBetweenBullets() {
+        for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
+
+            for (int indexBulletsAliens = 0; indexBulletsAliens < enemyBullets.size(); indexBulletsAliens++) {
+
+                if (bullets.get(indexBullets).getPosition().equals(enemyBullets.get(indexBulletsAliens).getPosition())) {
+                    enemyBullets.remove(indexBulletsAliens);
+                    bullets.remove(indexBullets);
+
+                    break;
+                }
+            }
+        }
+
     }
 }
 

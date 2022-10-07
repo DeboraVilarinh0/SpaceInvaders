@@ -31,8 +31,6 @@ public class Game {
         screen.clear();
         arena.draw(screen.newTextGraphics());
         screen.refresh();
-
-
     }
 
     public void run() throws IOException {
@@ -46,7 +44,6 @@ public class Game {
         while (true) {
             long startTime = System.currentTimeMillis();
             long startTime2 = System.currentTimeMillis();
-
 
             draw();
             KeyStroke key = screen.pollInput();
@@ -67,18 +64,20 @@ public class Game {
                 arena.moveBadGuys();
                 arena.verifyBadGuysCollision();
                 arena.moveBullets();
-                arena.verifyBulletCollision();
+                arena.verifyBulletCollisionEnemy();
+                arena.verifyCollisionBetweenBullets();
                 arena.cleanBullet();
                 draw();
 
                 lastMonsterMovement = startTime;
             }
 
-            if (startTime - lastMonsterMovement2 > 500) {
+            if (startTime - lastMonsterMovement2 > 100) {
                 arena.shootBullet();
                 draw();
                 lastMonsterMovement2 = startTime2;
             }
+
 
             long elapsedTime = System.currentTimeMillis() - startTime;
             long sleepTime = frameTime - elapsedTime;
@@ -89,4 +88,5 @@ public class Game {
         }
     }
 }
+
 
