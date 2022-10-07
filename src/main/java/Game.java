@@ -4,8 +4,15 @@ import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
+import com.googlecode.lanterna.terminal.swing.AWTTerminalFontConfiguration;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 public class Game {
 
@@ -13,7 +20,7 @@ public class Game {
     private final Arena arena;
     boolean running = true;
 
-    Game(int Width, int Height) throws IOException {
+    Game(int Width, int Height) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
 
         TerminalSize terminalSize = new TerminalSize(Width, Height);
         DefaultTerminalFactory TerminalFactory = new DefaultTerminalFactory().setInitialTerminalSize(terminalSize);
@@ -33,7 +40,7 @@ public class Game {
         screen.refresh();
     }
 
-    public void run() throws IOException {
+    public void run() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
 
         int FPS = 20;
         int frameTime = 1000 / FPS;

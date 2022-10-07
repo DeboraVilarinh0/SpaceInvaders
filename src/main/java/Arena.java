@@ -5,6 +5,8 @@ import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,9 +23,10 @@ public class Arena {
     private List<EnemyBullet> enemyBullets = new ArrayList<>();
     private boolean moveRight = true;
     private boolean moveLeft = false;
+    SimpleAudioPlayer audioPlayer = new SimpleAudioPlayer();
 
 
-    Arena(int width, int height) {
+    Arena(int width, int height) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         this.width = width;
         this.height = height;
         spaceShip = new SpaceShip(width / 2, height - 1);
@@ -35,22 +38,21 @@ public class Arena {
         graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
 
-        spaceShip.draw(graphics, "#FFAE42", "A");
+        spaceShip.draw(graphics, "#FFAE42", "Ã");
         for (int i = 0; i < badGuys.size(); i++) badGuys.get(i).draw(graphics, "#F62817", "X");
         if (bullets.size() != 0) for (int i = 0; i < bullets.size(); i++) bullets.get(i).draw(graphics, "#FFFF00", "|");
         if (enemyBullets.size() != 0)
             for (int i = 0; i < enemyBullets.size(); i++) enemyBullets.get(i).draw(graphics, "#F62817", "|");
     }
 
-    public void processKey(KeyStroke key) {
+    public void processKey(KeyStroke key) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         if (key.getKeyType() == KeyType.ArrowLeft) moveSpaceShip(spaceShip.moveLeft());
 
         if (key.getKeyType() == KeyType.ArrowRight) moveSpaceShip(spaceShip.moveRight());
 
         if (key.getKeyType() == KeyType.ArrowUp) {
+            audioPlayer.restart();
             CreateBullets(spaceShip.getPosition());
-
-
         }
     }
 
