@@ -36,10 +36,10 @@ public class Arena {
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
 
         spaceShip.draw(graphics, "#FFAE42", "A");
-        for (int i = 0; i < badGuys.size(); i++) badGuys.get(i).draw(graphics, "#F02727", "X");
+        for (int i = 0; i < badGuys.size(); i++) badGuys.get(i).draw(graphics, "#F62817", "X");
         if (bullets.size() != 0) for (int i = 0; i < bullets.size(); i++) bullets.get(i).draw(graphics, "#FFFF00", "|");
         if (enemyBullets.size() != 0)
-            for (int i = 0; i < enemyBullets.size(); i++) enemyBullets.get(i).draw(graphics, "#FFFF00", "|");
+            for (int i = 0; i < enemyBullets.size(); i++) enemyBullets.get(i).draw(graphics, "#F62817", "|");
     }
 
     public void processKey(KeyStroke key) {
@@ -157,17 +157,12 @@ public class Arena {
 
             for (int indexBadGuys = 0; indexBadGuys < badGuys.size(); indexBadGuys++) {
 
-                System.out.println("Balas iniciais:");
-                System.out.println(bullets.size());
-
                 if (bullets.get(indexBullets).getPosition().equals(badGuys.get(indexBadGuys).getPosition())) {
                     badGuys.remove(indexBadGuys);
                     bullets.remove(indexBullets);
-
                     break;
                 }
             }
-            break;
         }
     }
 
@@ -179,13 +174,13 @@ public class Arena {
         }
     }
 
-
     public void shootBullet() {
-        for (int i = 0; i < 1; i++) {
-            Random rand = new Random();
-            int rand_int1 = rand.nextInt(badGuys.size());
-
-            CreateEnemyBullets(badGuys.get(rand_int1).getPosition());
+        if (badGuys.size() != 0) {
+            for (int i = 0; i < 1; i++) {
+                Random rand = new Random();
+                int rand_int1 = rand.nextInt(badGuys.size());
+                CreateEnemyBullets(badGuys.get(rand_int1).getPosition());
+            }
         }
     }
 }

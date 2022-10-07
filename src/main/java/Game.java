@@ -74,7 +74,7 @@ public class Game {
                 lastMonsterMovement = startTime;
             }
 
-            if (startTime - lastMonsterMovement2 > 200) {
+            if (startTime - lastMonsterMovement2 > 500) {
                 arena.shootBullet();
                 draw();
                 lastMonsterMovement2 = startTime2;
