@@ -8,17 +8,19 @@ import com.googlecode.lanterna.terminal.swing.AWTTerminalFontConfiguration;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import java.awt.*;
-import java.io.File;
+
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 public class Game {
 
     TerminalScreen screen;
     private final Arena arena;
     boolean running = true;
+    int shotTimer = 1000;
+    int moveTimer = 100;
+    int shotNumb = 1;
+    boolean playedLevelTwo = false;
+
 
     Game(int Width, int Height) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
 
@@ -67,7 +69,7 @@ public class Game {
                 }
             }
 
-            if (startTime - lastMonsterMovement > 100) {
+            if (startTime - lastMonsterMovement > moveTimer) {
                 arena.moveBadGuys();
                 arena.verifyBadGuysCollision();
                 arena.moveBullets();
@@ -79,12 +81,28 @@ public class Game {
                 lastMonsterMovement = startTime;
             }
 
-            if (startTime - lastMonsterMovement2 > 100) {
-                arena.shootBullet();
+            if (startTime2 - lastMonsterMovement2 > shotTimer) {
+                arena.shootBullet(shotNumb);
                 draw();
                 lastMonsterMovement2 = startTime2;
             }
 
+            switch (arena.isBadGuysEmpty()){
+                case 2:shotTimer = 300;
+                    shotNumb = 3;
+                    moveTimer = 60;
+                    arena.setBadGuys(arena.CreateBadGuys(25, 5));
+                    System.out.println("ENTREI NO 2");
+                    playedLevelTwo = true;break;
+
+                case 3:System.out.println("entrei no 3");
+                    shotTimer = 10;
+                    shotNumb = 5;
+                    moveTimer = 30;
+                    arena.setBadGuys(arena.CreateBadGuys(30, 6));break;
+                case 4: System.out.println("GG");
+                System.exit(0);
+            }
 
             long elapsedTime = System.currentTimeMillis() - startTime;
             long sleepTime = frameTime - elapsedTime;
@@ -95,5 +113,6 @@ public class Game {
         }
     }
 }
+
 
 

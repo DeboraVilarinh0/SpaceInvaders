@@ -19,12 +19,12 @@ public class Arena {
     public int height;
     private SpaceShip spaceShip;
     private List<Bullet> bullets = new ArrayList<>();
-    private final List<BadGuys> badGuys;
+    private List<BadGuys> badGuys;
     private List<EnemyBullet> enemyBullets = new ArrayList<>();
     private boolean moveRight = true;
     private boolean moveLeft = false;
-    SimpleAudioPlayer audioPlayer = new SimpleAudioPlayer();
-
+            SimpleAudioPlayer audioPlayer = new SimpleAudioPlayer();
+    public int level = 1;
 
     Arena(int width, int height) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         this.width = width;
@@ -40,9 +40,9 @@ public class Arena {
 
         spaceShip.draw(graphics, "#FFAE42", "Ã");
         for (int i = 0; i < badGuys.size(); i++) badGuys.get(i).draw(graphics, "#F62817", "X");
-        if (bullets.size() != 0) for (int i = 0; i < bullets.size(); i++) bullets.get(i).draw(graphics, "#FFFF00", "|");
+        if (bullets.size() != 0) for (int i = 0; i < bullets.size(); i++) bullets.get(i).draw(graphics, "#FFFFFF", "|");
         if (enemyBullets.size() != 0)
-            for (int i = 0; i < enemyBullets.size(); i++) enemyBullets.get(i).draw(graphics, "#F62817", "|");
+            for (int i = 0; i < enemyBullets.size(); i++) enemyBullets.get(i).draw(graphics, "#FFFFFF", "|");
     }
 
     public void processKey(KeyStroke key) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
@@ -53,11 +53,17 @@ public class Arena {
         if (key.getKeyType() == KeyType.ArrowUp) {
             audioPlayer.restart();
             CreateBullets(spaceShip.getPosition());
+            if (bullets.size() == 0) CreateBullets(spaceShip.getPosition());
+            else if (bullets.get(bullets.size() - 1).getPosition().getY() < height - 3) {
+                CreateBullets(spaceShip.getPosition());
+            }
+
         }
     }
 
+
     private boolean canSpaceshipMove(Position position) {
-        return position.getX() <= width - 1 && position.getX() >= 0;
+        return position.getX() <= width - 2 && position.getX() >= 1;
     }
 
     private void moveSpaceShip(Position position) {
@@ -78,7 +84,7 @@ public class Arena {
         }
     }
 
-    public List<Bullet> CreateBullets(Position position) {
+    public List<Bullet> CreateBullets(Position position) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         bullets.add(new Bullet(position.getX(), position.getY() - 1));
         return bullets;
     }
@@ -162,6 +168,32 @@ public class Arena {
         return badGuys2;
     }
 
+
+  /*  public List<Monsters> CreateMonsters(int Width, int Height) {
+
+        List<Monsters> monsters = new ArrayList<>();
+        monsters.add(new FatGuy())
+
+    }*/
+
+    public void setBadGuys(List<BadGuys> badGuys) {
+        this.badGuys = badGuys;
+
+    }
+
+
+    public int isBadGuysEmpty() {
+        if (badGuys.isEmpty()) {
+            level += 1;
+            System.out.print("o nivel é   ");
+            System.out.println(level);
+            return level;
+        }
+        ;
+        return 0;
+    }
+
+
     public void verifyBulletCollisionEnemy() {
         for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
 
@@ -184,9 +216,10 @@ public class Arena {
         }
     }
 
-    public void shootBullet() {
+    public void shootBullet(int shotNumb) {
         if (badGuys.size() != 0) {
-            for (int i = 0; i < 1; i++) {
+            for (int i = 0; i < shotNumb; i++) {
+
                 Random rand = new Random();
                 int rand_int1 = rand.nextInt(badGuys.size());
                 CreateEnemyBullets(badGuys.get(rand_int1).getPosition());
@@ -210,6 +243,7 @@ public class Arena {
 
     }
 }
+
 
 
 
