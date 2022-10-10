@@ -25,8 +25,7 @@ public class Arena {
     public int level = 1;
     private List<Monsters> monsters = new ArrayList<>();
     private List<PowerUps> powerUps = new ArrayList<>();
-    boolean drawFatGuy = true;
-    int fireRate = 3;
+    public int fireRate = 3;
     int powerUpType;
 
 
@@ -34,7 +33,7 @@ public class Arena {
         this.width = width;
         this.height = height;
         spaceShip = new SpaceShip(width / 2, height - 1);
-        this.monsters = CreateMonsters(20, 5);
+        CreateMonsters(20, 5);
 
     }
 
@@ -43,8 +42,12 @@ public class Arena {
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
 
         if (!powerUps.isEmpty()) {
-            for (int i = 0; i < powerUps.size(); i++) {
-                powerUps.get(i).draw(graphics, "#dbd800", "o");
+            for (int i = 0; i < powerUps.size(); i++)
+            {switch (powerUps.get(i).getPowerUpType()){
+                case 1: powerUps.get(i).draw(graphics, "" , "o");
+                case 2: powerUps.get(i).draw(graphics, "#dbd800", "o");
+                case 3:
+            }
             }
         }
 
@@ -177,7 +180,7 @@ public class Arena {
 
     }
 
-    public List<Monsters> CreateMonsters(int Width, int Height) {
+    public void CreateMonsters(int Width, int Height) {
 
         boolean drawFatGuy = true;
         for (int linha = 0; linha < Height; linha++) {
@@ -192,16 +195,7 @@ public class Arena {
                 }
             }
         }
-        return monsters;
-
     }
-
-
-    public void setMonsters(List<Monsters> monsters) {
-        this.monsters = monsters;
-
-    }
-
 
     public int isMonsterEmpty() {
         if (monsters.isEmpty()) {
@@ -275,30 +269,45 @@ public class Arena {
         }
     }
 
-    public List<PowerUps> CreatePowerUps() {
+    public void CreatePowerUps() {
         Random rand = new Random();
-        int rand_pos = rand.nextInt(width - 2);
-        powerUps.add(new PowerUps(rand_pos, height - 1,2));
-        System.out.print("PowerUp Size = ");
-        System.out.println(powerUps.size());
-        return powerUps;
+        Random rand1 = new Random();
+        int randPos = rand.nextInt(width - 2);
+        int randPowerUp = rand1.nextInt(4);
+        powerUps.add(new PowerUps(randPos, height - 1,randPowerUp));
+
     }
 
 
     public void verifyPowerUpCollision() {
         for (int i = 0; i < powerUps.size(); i++) {
-            if (powerUps.get(i).getPosition()==(spaceShip.getPosition())) {
+            if (powerUps.get(i).getPosition().equals(spaceShip.getPosition())) {
+
                 powerUpType=powerUps.get(i).getPowerUpType();
+                powerUps.remove(i);
+
+                System.out.print("powerUps =  ");
+                System.out.println(powerUps);
+                System.out.print("powerUpType =  ");
+                System.out.println(powerUpType);
+
                 switch (powerUpType){
+                    case 1:
+                        fireRate=0;break;
+
                     case 2:
-                        powerUps.remove(i);
-                        spaceShip.setIsInvencible(true);
+                        spaceShip.setIsInvencible(true);break;
+
+                    case 3:
+
+
+
 
 
                 }
 
-                        powerUps.remove(i);
-                        fireRate = 0;
+                       // powerUps.remove(i);
+                        //fireRate = 0;
 
                 }
                    // powerUps.remove(i);

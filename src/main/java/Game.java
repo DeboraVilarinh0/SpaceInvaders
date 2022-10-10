@@ -46,7 +46,7 @@ public class Game {
 
     public void run() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
 
-        int FPS = 20;
+        int FPS = 30;
         int frameTime = 1000 / FPS;
         long lastMonsterMovement = 0;
         long lastMonsterMovement2 = 0;
@@ -57,6 +57,10 @@ public class Game {
             long startTime = System.currentTimeMillis();
             long startTime2 = System.currentTimeMillis();
             long startTime3 = System.currentTimeMillis();
+            long startTime4 = System.currentTimeMillis();
+            long startTime5 = System.currentTimeMillis();
+            long startTime6 = System.currentTimeMillis();
+            long startTime7 = System.currentTimeMillis();
             audioPlayer.play2();
             draw();
             KeyStroke key = screen.pollInput();
@@ -96,14 +100,13 @@ public class Game {
                 arena.CreatePowerUps();
                 lastPowerUp = startTime3;
                 draw();
-
             }
 
-            switch (arena.isMonsterEmpty()){
+           switch (arena.isMonsterEmpty()){
                 case 2:shotTimer = 300;
                     shotNumb = 3;
                     moveTimer = 60;
-                    arena.setMonsters(arena.CreateMonsters(25, 5));
+                    arena.CreateMonsters(25, 5);
                     System.out.println("ENTREI NO 2");
                     playedLevelTwo = true;break;
 
@@ -111,9 +114,11 @@ public class Game {
                     shotTimer = 10;
                     shotNumb = 5;
                     moveTimer = 30;
-                    arena.setMonsters(arena.CreateMonsters(30, 6));break;
+                    arena.CreateMonsters(30, 6);break;
                 case 4: System.out.println("GG");
                 System.exit(0);
+
+
             }
 
             long elapsedTime = System.currentTimeMillis() - startTime;
