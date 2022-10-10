@@ -21,7 +21,7 @@ public class Game {
     int shotTimer = 600;
     int moveTimer = 150;
     int shotNumb = 1;
-    long powerUpTimer=6000;
+    long powerUpTimer = 6000;
     boolean playedLevelTwo = false;
     SimpleAudioPlayer audioPlayer = new SimpleAudioPlayer();
 
@@ -49,7 +49,7 @@ public class Game {
 
     public void run() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
 
-        int FPS = 20;
+        int FPS = 30;
         int frameTime = 1000 / FPS;
         long lastMonsterMovement = 0;
         long lastMonsterMovement2 = 0;
@@ -60,6 +60,10 @@ public class Game {
             long startTime = System.currentTimeMillis();
             long startTime2 = System.currentTimeMillis();
             long startTime3 = System.currentTimeMillis();
+            long startTime4 = System.currentTimeMillis();
+            long startTime5 = System.currentTimeMillis();
+            long startTime6 = System.currentTimeMillis();
+            long startTime7 = System.currentTimeMillis();
             audioPlayer.play2();
             draw();
             KeyStroke key = screen.pollInput();
@@ -78,7 +82,9 @@ public class Game {
 
             if (startTime - lastMonsterMovement > moveTimer) {
                 arena.moveMonsters();
-                if(!arena.getIsInvencible()){arena.verifySpaceShipCollision();}
+                if (!arena.getIsInvencible()) {
+                    arena.verifySpaceShipCollision();
+                }
                 arena.moveBullets();
                 arena.verifyMonsterCollision();
                 arena.verifyCollisionBetweenBullets();
@@ -95,11 +101,10 @@ public class Game {
                 lastMonsterMovement2 = startTime2;
             }
 
-            if (startTime3 - lastPowerUp > powerUpTimer){
+            if (startTime3 - lastPowerUp > powerUpTimer) {
                 arena.CreatePowerUps();
                 lastPowerUp = startTime3;
                 draw();
-
             }
 
             switch (arena.isMonsterEmpty()) {
@@ -121,6 +126,8 @@ public class Game {
                 case 4 -> {
                     System.out.println("GG");
                     System.exit(0);
+
+                    arena.CreateMonsters(30, 6);
                 }
             }
 

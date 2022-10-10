@@ -19,7 +19,6 @@ public class Arena {
     public int height;
     private final SpaceShip spaceShip;
     private final List<Bullet> bullets = new ArrayList<>();
-    private List<BadGuys> badGuys;
     private final List<EnemyBullet> enemyBullets = new ArrayList<>();
     private final List<PowerUps> powerUps = new ArrayList<>();
     private boolean moveRight = true;
@@ -27,7 +26,6 @@ public class Arena {
     SimpleAudioPlayer audioPlayer = new SimpleAudioPlayer();
     public int level = 1;
     private List<Monsters> monsters = new ArrayList<>();
-    boolean drawFatGuy = true;
     int fireRate = 3;
     int powerUpType;
 
@@ -45,13 +43,21 @@ public class Arena {
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
 
         spaceShip.draw(graphics, "#FFAE42", "&");
-        if (bullets.size() != 0) for (int i = 0; i < bullets.size(); i++) bullets.get(i).draw(graphics, "#FFFFFF", "_");
+        if (bullets.size() != 0) for (int indexBulletsList = 0; indexBulletsList < bullets.size(); indexBulletsList++) {
+            bullets.get(indexBulletsList).draw(graphics, "#FFFFFF", "_");
+        }
         if (enemyBullets.size() != 0)
             for (EnemyBullet enemyBullet : enemyBullets) enemyBullet.draw(graphics, "#FFFFFF", "'");
 
         if (!powerUps.isEmpty()) {
             for (int i = 0; i < powerUps.size(); i++) {
-                powerUps.get(i).draw(graphics, "#dbd800", "o");
+                switch (powerUps.get(i).getPowerUpType()) {
+                    case 1:
+                        powerUps.get(i).draw(graphics, "", "o");
+                    case 2:
+                        powerUps.get(i).draw(graphics, "#dbd800", "o");
+                        //  case 3:
+                }
             }
         }
         for (Monsters monster : monsters) {
@@ -63,7 +69,7 @@ public class Arena {
                 }
             }
             if (monster.getClass() == BadGuys.class) {
-                monster.draw(graphics, "#e3c205", "X");
+                monster.draw(graphics, "#e3c205", "/");
             }
         }
     }
@@ -175,6 +181,7 @@ public class Arena {
     }
 
     public void CreateMonsters(int Width, int Height) {
+
         boolean drawFatGuy = true;
         for (int linha = 0; linha < Height; linha++) {
             for (int coluna = 0; coluna < Width; coluna += 3) {
@@ -193,7 +200,6 @@ public class Arena {
         this.monsters = monsters;
     }
 
-
     public int isMonsterEmpty() {
         if (monsters.isEmpty()) {
             level += 1;
@@ -209,34 +215,19 @@ public class Arena {
         for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
 
             for (int indexMonsters = 0; indexMonsters < monsters.size(); indexMonsters++) {
-
                 if (bullets.get(indexBullets).getPosition().equals(monsters.get(indexMonsters).getPosition())) {
-                    if (monsters.isEmpty()) {
-                        int hitPoints = 2;
-                        if (hitPoints == 0) monsters.remove(indexMonsters);
-                        hitPoints -= 1;
+
+                    if (monsters.get(indexMonsters).getHitPoints() >= 1) {
+
+                        monsters.get(indexMonsters).setHitPoints(monsters.get(indexMonsters).getHitPoints() - 1);
+                        bullets.remove(indexBullets);
 
                     } else {
-
-                        monsters.remove(indexMonsters);
                         bullets.remove(indexBullets);
+                        monsters.remove(indexMonsters);
                     }
                     break;
                 }
-
-                if (monsters.get(indexMonsters).getHitPoints() >= 1) {
-
-                    monsters.get(indexMonsters).setHitPoints(monsters.get(indexMonsters).getHitPoints() - 1);
-                    bullets.remove(indexBullets);
-
-
-                } else {
-                    bullets.remove(indexBullets);
-                    monsters.remove(indexMonsters);
-                }
-                break;
-
-
             }
         }
     }
@@ -276,18 +267,18 @@ public class Arena {
         }
     }
 
-    public List<PowerUps> CreatePowerUps() {
+    public void CreatePowerUps() {
         Random rand = new Random();
         int rand_pos = rand.nextInt(width - 2);
         powerUps.add(new PowerUps(rand_pos, height - 1, 2));
         System.out.print("PowerUp Size = ");
         System.out.println(powerUps.size());
-        return powerUps;
     }
 
 
     public void verifyPowerUpCollision() {
         for (int i = 0; i < powerUps.size(); i++) {
+
             if (powerUps.get(i).getPosition() == (spaceShip.getPosition())) {
                 powerUpType = powerUps.get(i).getPowerUpType();
                 switch (powerUpType) {
@@ -298,6 +289,35 @@ public class Arena {
 
                 powerUps.remove(i);
                 fireRate = 0;
+                if (powerUps.get(i).getPosition().equals(spaceShip.getPosition())) {
+
+                    powerUpType = powerUps.get(i).getPowerUpType();
+                    powerUps.remove(i);
+
+                    System.out.print("powerUps =  ");
+                    System.out.println(powerUps);
+                    System.out.print("powerUpType =  ");
+                    System.out.println(powerUpType);
+
+                    switch (powerUpType) {
+                        case 1:
+                            fireRate = 0;
+                            break;
+
+                        case 2:
+                            spaceShip.setIsInvencible(true);
+                            break;
+
+                        case 3:
+                    }
+
+                    // powerUps.remove(i);
+                    //fireRate = 0;
+
+                }
+                // powerUps.remove(i);
+                //spaceShip.setIsInvencible(true);
+
             }
         }
     }
