@@ -1,7 +1,17 @@
+
 public class SpaceShip extends Element {
+    private boolean isInvencible = false;
 
     SpaceShip(int x, int Height) {
         super(x, Height);
+    }
+
+    public void setIsInvencible(boolean isInvencible) {
+        this.isInvencible = isInvencible;
+    }
+
+    public boolean isInvencible() {
+        return isInvencible;
     }
 
     public Position moveLeft() {

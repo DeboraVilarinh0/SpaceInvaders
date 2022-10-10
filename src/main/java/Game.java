@@ -21,6 +21,7 @@ public class Game {
     int shotTimer = 600;
     int moveTimer = 150;
     int shotNumb = 1;
+    long powerUpTimer=6000;
     boolean playedLevelTwo = false;
     SimpleAudioPlayer audioPlayer = new SimpleAudioPlayer();
 
@@ -52,11 +53,13 @@ public class Game {
         int frameTime = 1000 / FPS;
         long lastMonsterMovement = 0;
         long lastMonsterMovement2 = 0;
+        long lastPowerUp = 0;
 
 
         while (true) {
             long startTime = System.currentTimeMillis();
             long startTime2 = System.currentTimeMillis();
+            long startTime3 = System.currentTimeMillis();
             audioPlayer.play2();
             draw();
             KeyStroke key = screen.pollInput();
@@ -75,10 +78,11 @@ public class Game {
 
             if (startTime - lastMonsterMovement > moveTimer) {
                 arena.moveMonsters();
-                arena.verifyBadGuysCollision();
+                if(!arena.getIsInvencible()){arena.verifySpaceShipCollision();}
                 arena.moveBullets();
-                arena.verifyBulletCollisionEnemy();
+                arena.verifyMonsterCollision();
                 arena.verifyCollisionBetweenBullets();
+                arena.verifyPowerUpCollision();
                 arena.cleanBullet();
                 draw();
 
@@ -91,35 +95,47 @@ public class Game {
                 lastMonsterMovement2 = startTime2;
             }
 
-            switch (arena.isBadGuysEmpty()){
-                case 2:shotTimer = 300;
+            if (startTime3 - lastPowerUp > powerUpTimer){
+                arena.CreatePowerUps();
+                lastPowerUp = startTime3;
+                draw();
+
+            }
+
+            switch (arena.isMonsterEmpty()) {
+                case 2 -> {
+                    shotTimer = 300;
                     shotNumb = 3;
                     moveTimer = 60;
-                    arena.setMonsters(arena.CreateMonsters(25, 5));
+                    arena.CreateMonsters(25, 5);
                     System.out.println("ENTREI NO 2");
-                    playedLevelTwo = true;break;
-
-                case 3:System.out.println("entrei no 3");
+                    playedLevelTwo = true;
+                }
+                case 3 -> {
+                    System.out.println("entrei no 3");
                     shotTimer = 10;
                     shotNumb = 5;
                     moveTimer = 30;
-                    arena.setMonsters(arena.CreateMonsters(30, 6));break;
-                case 4: System.out.println("GG");
-                System.exit(0);
+                    arena.CreateMonsters(30, 6);
+                }
+                case 4 -> {
+                    System.out.println("GG");
+                    System.exit(0);
+                }
             }
 
             long elapsedTime = System.currentTimeMillis() - startTime;
             long sleepTime = frameTime - elapsedTime;
             if (sleepTime > 0) try {
                 Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
+            } catch (InterruptedException ignored) {
             }
         }
     }
 
     public Font changeFont() {
         File fontFile = new File("src/main/resources/fonts/Square-Regular.ttf");
-        Font font = null;
+        Font font;
         try {
             font = Font.createFont(Font.TRUETYPE_FONT, fontFile);
             font = font.deriveFont(font.getSize() * 30F);
