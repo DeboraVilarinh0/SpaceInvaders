@@ -18,10 +18,10 @@ public class Game {
     TerminalScreen screen;
     private final Arena arena;
     boolean running = true;
-    int shotTimer = 600;
-    int moveTimer = 150;
-    int shotNumb = 1;
-    long powerUpTimer = 6000;
+    long shotTimer = 1000;
+    long moveTimer = 100;
+    long shotNumb = 1;
+    long powerUpTimer = 10000;
     boolean playedLevelTwo = false;
     SimpleAudioPlayer audioPlayer = new SimpleAudioPlayer();
 
@@ -53,7 +53,10 @@ public class Game {
         int frameTime = 1000 / FPS;
         long lastMonsterMovement = 0;
         long lastMonsterMovement2 = 0;
-        long lastPowerUp = 0;
+        long powerUpActivated = 0;
+        long powerUp1Activated = 0;
+        long powerUp2Activated = 0;
+        long powerUp3Activated = 0;
 
 
         while (true) {
@@ -97,15 +100,32 @@ public class Game {
 
             if (startTime2 - lastMonsterMovement2 > shotTimer) {
                 arena.shootBullet(shotNumb);
-                draw();
                 lastMonsterMovement2 = startTime2;
             }
 
-            if (startTime3 - lastPowerUp > powerUpTimer) {
+            if (startTime3 - powerUpActivated > powerUpTimer) {
                 arena.CreatePowerUps();
-                lastPowerUp = startTime3;
-                draw();
+                powerUpActivated = startTime3;
+
             }
+            if (startTime4 - powerUp1Activated > powerUpTimer) {
+                arena.setShootFaster(3);
+                powerUp1Activated = startTime4;
+                System.out.println("FAST SHOOTING OFF");
+            }
+
+            if (startTime5 - powerUp2Activated > powerUpTimer) {
+                arena.setIsInvencible(false);
+                powerUp2Activated = startTime5;
+                System.out.println("INVENCIBILITY OFF");
+            }
+
+            if (startTime6 - powerUp3Activated > powerUpTimer) {
+                arena.setFireMultipleBullets(false);
+                powerUp3Activated = startTime6;
+                System.out.println("MULTIPLE SHOTS OFF");
+            }
+
 
             switch (arena.isMonsterEmpty()) {
                 case 2 -> {
