@@ -9,7 +9,6 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -23,7 +22,7 @@ public class Arena {
     private List<EnemyBullet> enemyBullets = new ArrayList<>();
     private boolean moveRight = true;
     private boolean moveLeft = false;
-            SimpleAudioPlayer audioPlayer = new SimpleAudioPlayer();
+    SimpleAudioPlayer audioPlayer = new SimpleAudioPlayer();
     public int level = 1;
 
     Arena(int width, int height) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
@@ -240,7 +239,6 @@ public class Arena {
                 }
             }
         }
-
     }
 }
 
