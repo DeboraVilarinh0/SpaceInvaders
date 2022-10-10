@@ -1,7 +1,9 @@
 public class Monsters extends Element {
 
-    public Monsters(int x, int y) {
+    protected int hitPoints;
+    public Monsters(int x, int y, int hitPoints) {
         super(x, y);
+        this.hitPoints= hitPoints;
 
     }
     public Position moveRight() {
@@ -18,6 +20,14 @@ public class Monsters extends Element {
         return new Position(position.getX(), position.getY()+1);
     }
 
+    public int getHitPoints (){
+        return hitPoints;
+    }
+
+    public void setHitPoints (int hitPoints){
+        this.hitPoints = hitPoints;
+
+    }
 
 }
 

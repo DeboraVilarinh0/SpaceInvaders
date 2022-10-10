@@ -7,6 +7,7 @@ public abstract class Element {
 
     protected Position position;
 
+
     Element (int x, int y){
         position = new Position(x,y);
     }
@@ -17,6 +18,8 @@ public abstract class Element {
         graphics.putString(new TerminalPosition(position.getX(), position.getY()), character);
     }
 
+
+
     public void setPosition(Position position) {
         this.position = position;
     }
@@ -24,5 +27,7 @@ public abstract class Element {
     public Position getPosition () {return position;}
 
     }
+
+
 
 

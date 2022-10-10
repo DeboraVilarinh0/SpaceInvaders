@@ -16,9 +16,10 @@ public class Game {
     TerminalScreen screen;
     private final Arena arena;
     boolean running = true;
-    int shotTimer = 1000;
-    int moveTimer = 100;
-    int shotNumb = 1;
+    long shotTimer = 1000;
+    long moveTimer = 100;
+    long shotNumb = 1;
+    long powerUpTimer=6000;
     boolean playedLevelTwo = false;
     SimpleAudioPlayer audioPlayer = new SimpleAudioPlayer();
 
@@ -49,11 +50,13 @@ public class Game {
         int frameTime = 1000 / FPS;
         long lastMonsterMovement = 0;
         long lastMonsterMovement2 = 0;
+        long lastPowerUp = 0;
 
 
         while (true) {
             long startTime = System.currentTimeMillis();
             long startTime2 = System.currentTimeMillis();
+            long startTime3 = System.currentTimeMillis();
             audioPlayer.play2();
             draw();
             KeyStroke key = screen.pollInput();
@@ -72,10 +75,11 @@ public class Game {
 
             if (startTime - lastMonsterMovement > moveTimer) {
                 arena.moveMonsters();
-                arena.verifyBadGuysCollision();
+                if(!arena.getIsInvencible()){arena.verifySpaceShipCollision();}
                 arena.moveBullets();
-                arena.verifyBulletCollisionEnemy();
+                arena.verifyMonsterCollision();
                 arena.verifyCollisionBetweenBullets();
+                arena.verifyPowerUpCollision();
                 arena.cleanBullet();
                 draw();
 
@@ -88,7 +92,14 @@ public class Game {
                 lastMonsterMovement2 = startTime2;
             }
 
-            switch (arena.isBadGuysEmpty()){
+            if (startTime3 - lastPowerUp > powerUpTimer){
+                arena.CreatePowerUps();
+                lastPowerUp = startTime3;
+                draw();
+
+            }
+
+            switch (arena.isMonsterEmpty()){
                 case 2:shotTimer = 300;
                     shotNumb = 3;
                     moveTimer = 60;
