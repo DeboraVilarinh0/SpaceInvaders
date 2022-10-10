@@ -7,22 +7,29 @@ import com.googlecode.lanterna.input.KeyType;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+
+
 public class Arena {
 
     public int width;
     public int height;
-    private SpaceShip spaceShip;
-    private List<Bullet> bullets = new ArrayList<>();
+    public int deathScore;    // número de montros mortos atualmente
+    private final SpaceShip spaceShip;
+    private final List<Bullet> bullets = new ArrayList<>();
     private List<BadGuys> badGuys;
-    private List<EnemyBullet> enemyBullets = new ArrayList<>();
+    private final List<EnemyBullet> enemyBullets = new ArrayList<>();
+    private final List<PowerUps> powerUps = new ArrayList<>();
     private boolean moveRight = true;
     private boolean moveLeft = false;
     SimpleAudioPlayer audioPlayer = new SimpleAudioPlayer();
+    final int killsToBonus = 10;   // número de kill até receber bónus
     public int level = 1;
 
     Arena(int width, int height) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
@@ -37,11 +44,11 @@ public class Arena {
         graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
 
-        spaceShip.draw(graphics, "#FFAE42", "Ã");
-        for (int i = 0; i < badGuys.size(); i++) badGuys.get(i).draw(graphics, "#F62817", "X");
-        if (bullets.size() != 0) for (int i = 0; i < bullets.size(); i++) bullets.get(i).draw(graphics, "#FFFFFF", "|");
+        spaceShip.draw(graphics, "#FFAE42", "&");
+        for (int i = 0; i < badGuys.size(); i++) badGuys.get(i).draw(graphics, "#F62817", "/");
+        if (bullets.size() != 0) for (int i = 0; i < bullets.size(); i++) bullets.get(i).draw(graphics, "#FFFFFF", "_");
         if (enemyBullets.size() != 0)
-            for (int i = 0; i < enemyBullets.size(); i++) enemyBullets.get(i).draw(graphics, "#FFFFFF", "|");
+            for (int i = 0; i < enemyBullets.size(); i++) enemyBullets.get(i).draw(graphics, "#FFFFFF", "'");
     }
 
     public void processKey(KeyStroke key) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
@@ -83,7 +90,7 @@ public class Arena {
         }
     }
 
-    public List<Bullet> CreateBullets(Position position) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+    public List<Bullet> CreateBullets(Position position){
         bullets.add(new Bullet(position.getX(), position.getY() - 1));
         return bullets;
     }
@@ -134,9 +141,7 @@ public class Arena {
             }
             moveRight = true;
         }
-
     }
-
 
     public void verifyBadGuysCollision() {
         for (BadGuys badGuy : badGuys) {
@@ -152,7 +157,6 @@ public class Arena {
                 System.exit(0);
             }
         }
-
     }
 
     public List<BadGuys> CreateBadGuys(int Width, int Height) {
@@ -167,17 +171,8 @@ public class Arena {
         return badGuys2;
     }
 
-
-  /*  public List<Monsters> CreateMonsters(int Width, int Height) {
-
-        List<Monsters> monsters = new ArrayList<>();
-        monsters.add(new FatGuy())
-
-    }*/
-
     public void setBadGuys(List<BadGuys> badGuys) {
         this.badGuys = badGuys;
-
     }
 
 
@@ -188,7 +183,6 @@ public class Arena {
             System.out.println(level);
             return level;
         }
-        ;
         return 0;
     }
 
@@ -199,6 +193,7 @@ public class Arena {
             for (int indexBadGuys = 0; indexBadGuys < badGuys.size(); indexBadGuys++) {
 
                 if (bullets.get(indexBullets).getPosition().equals(badGuys.get(indexBadGuys).getPosition())) {
+                    deathScore++;
                     badGuys.remove(indexBadGuys);
                     bullets.remove(indexBullets);
                     break;

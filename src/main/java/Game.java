@@ -5,10 +5,12 @@ import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFontConfiguration;
+import com.googlecode.lanterna.terminal.swing.SwingTerminalFontConfiguration;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 
 public class Game {
@@ -16,17 +18,18 @@ public class Game {
     TerminalScreen screen;
     private final Arena arena;
     boolean running = true;
-    int shotTimer = 1000;
-    int moveTimer = 100;
+    int shotTimer = 600;
+    int moveTimer = 150;
     int shotNumb = 1;
     boolean playedLevelTwo = false;
     SimpleAudioPlayer audioPlayer = new SimpleAudioPlayer();
 
-
     Game(int Width, int Height) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
-
+        AWTTerminalFontConfiguration cfg = new SwingTerminalFontConfiguration(true,
+                AWTTerminalFontConfiguration.BoldMode.EVERYTHING, changeFont());
         TerminalSize terminalSize = new TerminalSize(Width, Height);
         DefaultTerminalFactory TerminalFactory = new DefaultTerminalFactory().setInitialTerminalSize(terminalSize);
+        TerminalFactory.setTerminalEmulatorFontConfiguration(cfg);
         Terminal terminal = TerminalFactory.createTerminal();
 
         arena = new Arena(Width, Height);
@@ -112,6 +115,21 @@ public class Game {
             } catch (InterruptedException e) {
             }
         }
+    }
+
+    public Font changeFont() {
+        File fontFile = new File("src/main/resources/fonts/Square-Regular.ttf");
+        Font font = null;
+        try {
+            font = Font.createFont(Font.TRUETYPE_FONT, fontFile);
+            font = font.deriveFont(font.getSize() * 30F);
+
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        ge.registerFont(font);
+        return font;
     }
 }
 
