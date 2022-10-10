@@ -17,6 +17,8 @@ public class Monsters extends Element {
     public Position moveDown () {
         return new Position(position.getX(), position.getY()+1);
     }
+
+
 }
 
 

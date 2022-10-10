@@ -7,13 +7,10 @@ import com.googlecode.lanterna.input.KeyType;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 
 
 public class Arena {
@@ -31,12 +28,13 @@ public class Arena {
     SimpleAudioPlayer audioPlayer = new SimpleAudioPlayer();
     final int killsToBonus = 10;   // número de kill até receber bónus
     public int level = 1;
+    private List<Monsters> monsters;
 
     Arena(int width, int height) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         this.width = width;
         this.height = height;
         spaceShip = new SpaceShip(width / 2, height - 1);
-        this.badGuys = CreateBadGuys(20, 5);
+        this.monsters = CreateMonsters(20, 5);
     }
 
     public void draw(TextGraphics graphics) {
@@ -49,6 +47,15 @@ public class Arena {
         if (bullets.size() != 0) for (int i = 0; i < bullets.size(); i++) bullets.get(i).draw(graphics, "#FFFFFF", "_");
         if (enemyBullets.size() != 0)
             for (int i = 0; i < enemyBullets.size(); i++) enemyBullets.get(i).draw(graphics, "#FFFFFF", "'");
+        spaceShip.draw(graphics, "#FFAE42", "Ã");
+        //for (int i = 0; i < badGuys.size(); i++) badGuys.get(i).draw(graphics, "#F62817", "X");
+        if (bullets.size() != 0) for (int i = 0; i < bullets.size(); i++) bullets.get(i).draw(graphics, "#FFFFFF", "|");
+        if (enemyBullets.size() != 0)
+            for (int i = 0; i < enemyBullets.size(); i++) enemyBullets.get(i).draw(graphics, "#FFFFFF", "|");
+        for (int i = 0; i < monsters.size(); i++) {
+
+
+        }
     }
 
     public void processKey(KeyStroke key) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
@@ -57,7 +64,6 @@ public class Arena {
         if (key.getKeyType() == KeyType.ArrowRight) moveSpaceShip(spaceShip.moveRight());
 
         if (key.getKeyType() == KeyType.ArrowUp) {
-            audioPlayer.restart();
             CreateBullets(spaceShip.getPosition());
             if (bullets.size() == 0) CreateBullets(spaceShip.getPosition());
             else if (bullets.get(bullets.size() - 1).getPosition().getY() < height - 3) {
@@ -90,8 +96,9 @@ public class Arena {
         }
     }
 
-    public List<Bullet> CreateBullets(Position position){
+    public List<Bullet> CreateBullets(Position position) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         bullets.add(new Bullet(position.getX(), position.getY() - 1));
+        audioPlayer.restart();
         return bullets;
     }
 
@@ -101,19 +108,19 @@ public class Arena {
     }
 
 
-    public void moveBadGuys() {
+    public void moveMonsters() {
         int maxX = 0;
         int minX = 30;
-        for (BadGuys badguy : badGuys) {
-            if (badguy.getPosition().getX() > maxX) maxX = badguy.getPosition().getX();
-            if (badguy.getPosition().getX() < minX) minX = badguy.getPosition().getX();
+        for (Monsters monsters : monsters) {
+            if (monsters.getPosition().getX() > maxX) maxX = monsters.getPosition().getX();
+            if (monsters.getPosition().getX() < minX) minX = monsters.getPosition().getX();
         }
 
         if (moveRight) {
             if (maxX < width - 1) {
-                for (BadGuys badguy : badGuys) {
-                    Position badguyPosition = badguy.moveRight();
-                    badguy.setPosition(badguyPosition);
+                for (Monsters monsters : monsters) {
+                    Position monsterPosition = monsters.moveRight();
+                    monsters.setPosition(monsterPosition);
                 }
             }
             if (maxX == width - 1) {
@@ -124,9 +131,9 @@ public class Arena {
 
         if (moveLeft) {
             if (minX > 0) {
-                for (BadGuys badguy : badGuys) {
-                    Position badguyPosition = badguy.moveLeft();
-                    badguy.setPosition(badguyPosition);
+                for (Monsters monsters : monsters) {
+                    Position monsterPosition = monsters.moveLeft();
+                    monsters.setPosition(monsterPosition);
                 }
             }
             if (minX == 1) {
@@ -135,17 +142,17 @@ public class Arena {
         }
 
         if (!moveLeft && !moveRight) {
-            for (BadGuys badguy : badGuys) {
-                Position badguyPosition = badguy.moveDown();
-                badguy.setPosition(badguyPosition);
+            for (Monsters monsters : monsters) {
+                Position monsterPosition = monsters.moveDown();
+                monsters.setPosition(monsterPosition);
             }
             moveRight = true;
         }
     }
 
     public void verifyBadGuysCollision() {
-        for (BadGuys badGuy : badGuys) {
-            if (spaceShip.getPosition().equals(badGuy.getPosition())) {
+        for (Monsters monsters : monsters) {
+            if (spaceShip.getPosition().equals(monsters.getPosition())) {
                 System.out.println("You died!!!");
                 System.exit(0);
             }
@@ -175,9 +182,41 @@ public class Arena {
         this.badGuys = badGuys;
     }
 
+    public List<Monsters> CreateMonsters(int Width, int Height) {
+
+        int a = 0;
+        List<Monsters> monsters2 = new ArrayList<>();
+
+
+        for (int linha = 0; linha < Height; linha++) {
+            for (int coluna = 0; coluna < Width; coluna += 3) {
+                if (a == 0) {
+                    monsters2.add(new FatGuy(coluna + (width - Width) / 2, linha));
+                    a += 1;
+                    System.out.println("FatGuy criado");
+
+                }
+                if (a == 1) {
+                    monsters2.add(new BadGuys(coluna + (width - Width) / 2, linha));
+                    a -= 1;
+                    System.out.println("BadGuys criado");
+
+                }
+            }
+        }
+        System.out.println("Monster list criada");
+        return monsters2;
+
+    }
+
+
+    public void setMonsters(List<Monsters> badGuys) {
+        this.monsters = monsters;
+    }
+
 
     public int isBadGuysEmpty() {
-        if (badGuys.isEmpty()) {
+        if (monsters.isEmpty()) {
             level += 1;
             System.out.print("o nivel é   ");
             System.out.println(level);
@@ -190,17 +229,25 @@ public class Arena {
     public void verifyBulletCollisionEnemy() {
         for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
 
-            for (int indexBadGuys = 0; indexBadGuys < badGuys.size(); indexBadGuys++) {
+            for (int indexMonsters = 0; indexMonsters < monsters.size(); indexMonsters++) {
 
-                if (bullets.get(indexBullets).getPosition().equals(badGuys.get(indexBadGuys).getPosition())) {
-                    deathScore++;
-                    badGuys.remove(indexBadGuys);
-                    bullets.remove(indexBullets);
-                    break;
+                    if (bullets.get(indexBullets).getPosition().equals(monsters.get(indexMonsters).getPosition())) {
+
+                        if (monsters.isEmpty()) {
+                            int hitPoints = 2;
+                            if (hitPoints == 0) monsters.remove(indexMonsters);
+                            hitPoints -= 1;
+
+                        } else {
+
+                            monsters.remove(indexMonsters);
+                            bullets.remove(indexBullets);
+                        }
+                        break;
+                    }
                 }
             }
         }
-    }
 
     public void cleanBullet() {
         for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
@@ -211,12 +258,12 @@ public class Arena {
     }
 
     public void shootBullet(int shotNumb) {
-        if (badGuys.size() != 0) {
+        if (monsters.size() != 0) {
             for (int i = 0; i < shotNumb; i++) {
 
                 Random rand = new Random();
-                int rand_int1 = rand.nextInt(badGuys.size());
-                CreateEnemyBullets(badGuys.get(rand_int1).getPosition());
+                int rand_int1 = rand.nextInt(monsters.size());
+                CreateEnemyBullets(monsters.get(rand_int1).getPosition());
             }
         }
     }
@@ -226,7 +273,8 @@ public class Arena {
 
             for (int indexBulletsAliens = 0; indexBulletsAliens < enemyBullets.size(); indexBulletsAliens++) {
 
-                if (bullets.get(indexBullets).getPosition().equals(enemyBullets.get(indexBulletsAliens).getPosition())) {
+                if (bullets.get(indexBullets).getPosition().equals(enemyBullets.get(indexBulletsAliens).getPosition()) ||
+                        bullets.get(indexBullets).bulletMovementUP().equals(enemyBullets.get(indexBulletsAliens).getPosition())) {
                     enemyBullets.remove(indexBulletsAliens);
                     bullets.remove(indexBullets);
 
@@ -236,7 +284,6 @@ public class Arena {
         }
     }
 }
-
 
 
 
