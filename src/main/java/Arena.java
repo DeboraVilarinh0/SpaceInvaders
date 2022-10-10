@@ -25,8 +25,10 @@ public class Arena {
     public int level = 1;
     private List<Monsters> monsters = new ArrayList<>();
     private List<PowerUps> powerUps = new ArrayList<>();
-    public int fireRate = 3;
+    public boolean shootFaster = false;
     int powerUpType;
+    private boolean fireMultipleBullets;
+    private boolean start;
 
 
     Arena(int width, int height) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
@@ -42,9 +44,21 @@ public class Arena {
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
 
         if (!powerUps.isEmpty()) {
-            for (int i = 0; i < powerUps.size(); i++){
-                switch (powerUps.get(i).getPowerUpType()){case 1:powerUps.get(i).draw(graphics, "#bff8ff" , "o");
-                }
+            ;
+            for (int i = 0; i < powerUps.size(); i++) {
+                if (powerUps.get(i).getPowerUpType()==0 )powerUps.get(i).draw(graphics, "#bff8ff", "o");
+                if (powerUps.get(i).getPowerUpType()==1)powerUps.get(i).draw(graphics, "#f5dc00", "o");
+                if (powerUps.get(i).getPowerUpType()==2)powerUps.get(i).draw(graphics,"#FDCAFF" , "o");
+
+
+
+
+                // switch (powerUps.get(i).getPowerUpType()) {
+                 //   case 0:
+                   //     powerUps.get(i).draw(graphics, "#bff8ff", "o");
+                    //case 1:
+                     //   powerUps.get(i).draw(graphics, "#f5dc00", "o");
+                //}
             }
         }
 
@@ -74,9 +88,12 @@ public class Arena {
         if (key.getKeyType() == KeyType.ArrowRight) moveSpaceShip(spaceShip.moveRight());
 
         if (key.getKeyType() == KeyType.ArrowUp) {
-            if (bullets.size() == 0) CreateBullets(spaceShip.getPosition());
-            else if (bullets.get(bullets.size() - 1).getPosition().getY() < height - fireRate) {
-                CreateBullets(spaceShip.getPosition());
+            ;
+            if (bullets.size() == 0) CreateBullets(spaceShip.getPosition(), fireMultipleBullets);
+            else {
+                if (bullets.get(bullets.size() - 1).getPosition().getY() < height - (spaceShip.getShootFaster())) {
+                    CreateBullets(spaceShip.getPosition(),fireMultipleBullets);
+                }
             }
         }
     }
@@ -104,10 +121,18 @@ public class Arena {
         }
     }
 
-    public List<Bullet> CreateBullets(Position position) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+    public List<Bullet> CreateBullets(Position position, boolean fireMultipleBullets) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+if (!fireMultipleBullets){
+    bullets.add(new Bullet(position.getX(), position.getY() - 1));
+    audioPlayer.restart();}
+        else if (fireMultipleBullets){
+    bullets.add(new Bullet(position.getX(), position.getY() - 1));
+    bullets.add(new Bullet(position.getX()-1, position.getY() - 1));
+    bullets.add(new Bullet(position.getX()+1, position.getY() - 1));
 
-        bullets.add(new Bullet(position.getX(), position.getY() - 1));
-        audioPlayer.restart();
+
+
+}
         return bullets;
     }
 
@@ -206,7 +231,7 @@ public class Arena {
     }
 
 
-    public void verifyMonsterCollision () {
+    public void verifyMonsterCollision() {
         for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
 
             for (int indexMonsters = 0; indexMonsters < monsters.size(); indexMonsters++) {
@@ -270,8 +295,9 @@ public class Arena {
         Random rand = new Random();
         Random rand1 = new Random();
         int randPos = rand.nextInt(width - 2);
-        int randPowerUp = rand1.nextInt(4);
-        powerUps.add(new PowerUps(randPos, height - 1,1));
+        int randPowerUp = rand1.nextInt(2);
+        System.out.println(randPowerUp);
+        powerUps.add(new PowerUps(randPos, height - 1, 2));
 
     }
 
@@ -280,42 +306,49 @@ public class Arena {
         for (int i = 0; i < powerUps.size(); i++) {
             if (powerUps.get(i).getPosition().equals(spaceShip.getPosition())) {
 
-                powerUpType=powerUps.get(i).getPowerUpType();
+                powerUpType = powerUps.get(i).getPowerUpType();
                 powerUps.remove(i);
 
 
-                System.out.print("powerUpType =  ");
-                System.out.println(powerUpType);
+                switch (powerUpType) {
+                    case 0:
+                        spaceShip.setShootFaster(0);
+                        System.out.println("shoot faster");
+                        break;
 
-                switch (powerUpType){
                     case 1:
-                        fireRate=0;break;
+                        spaceShip.setIsInvencible(true);
+                        System.out.println("invencible");
+                        break;
 
                     case 2:
-                        spaceShip.setIsInvencible(true);break;
+                        setFireMultipleBullets(true);
+                        break;
 
-                    case 3:
-
-
-
-
-
-                }
-
-
-
-                }
-                   // powerUps.remove(i);
-                    //spaceShip.setIsInvencible(true);
 
                 }
             }
+        }
+    }
 
 
-
-    public boolean getIsInvencible () {
-        if (spaceShip.isInvencible()) return true;
+    public boolean getIsInvencible() {
+        if (spaceShip.getIsInvencible()) return true;
         else return false;
+
+    }
+
+    public void setIsInvencible(boolean isInvencible) {
+        spaceShip.setIsInvencible(isInvencible);
+
+    }
+
+    public void setShootFaster (int shootFaster){
+        spaceShip.setShootFaster(shootFaster);
+    }
+
+    public void setFireMultipleBullets(boolean fireMultipleBullets) {
+        this.fireMultipleBullets= fireMultipleBullets;
 
     }
 
