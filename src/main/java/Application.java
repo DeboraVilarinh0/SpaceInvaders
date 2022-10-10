@@ -13,9 +13,7 @@ public class Application {
 
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (UnsupportedAudioFileException e) {
-            throw new RuntimeException(e);
-        } catch (LineUnavailableException e) {
+        } catch (UnsupportedAudioFileException | LineUnavailableException e) {
             throw new RuntimeException(e);
         }
     }

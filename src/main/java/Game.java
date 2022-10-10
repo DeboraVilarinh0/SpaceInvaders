@@ -20,6 +20,7 @@ public class Game {
     int moveTimer = 100;
     int shotNumb = 1;
     boolean playedLevelTwo = false;
+    SimpleAudioPlayer audioPlayer = new SimpleAudioPlayer();
 
 
     Game(int Width, int Height) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
@@ -53,7 +54,7 @@ public class Game {
         while (true) {
             long startTime = System.currentTimeMillis();
             long startTime2 = System.currentTimeMillis();
-
+            audioPlayer.play2();
             draw();
             KeyStroke key = screen.pollInput();
             if (key != null) {
