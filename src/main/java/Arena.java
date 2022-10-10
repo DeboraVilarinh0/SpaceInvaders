@@ -42,12 +42,9 @@ public class Arena {
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
 
         if (!powerUps.isEmpty()) {
-            for (int i = 0; i < powerUps.size(); i++)
-            {switch (powerUps.get(i).getPowerUpType()){
-                case 1: powerUps.get(i).draw(graphics, "" , "o");
-                case 2: powerUps.get(i).draw(graphics, "#dbd800", "o");
-                case 3:
-            }
+            for (int i = 0; i < powerUps.size(); i++){
+                switch (powerUps.get(i).getPowerUpType()){case 1:powerUps.get(i).draw(graphics, "#bff8ff" , "o");
+                }
             }
         }
 
@@ -274,7 +271,7 @@ public class Arena {
         Random rand1 = new Random();
         int randPos = rand.nextInt(width - 2);
         int randPowerUp = rand1.nextInt(4);
-        powerUps.add(new PowerUps(randPos, height - 1,randPowerUp));
+        powerUps.add(new PowerUps(randPos, height - 1,1));
 
     }
 
@@ -286,8 +283,7 @@ public class Arena {
                 powerUpType=powerUps.get(i).getPowerUpType();
                 powerUps.remove(i);
 
-                System.out.print("powerUps =  ");
-                System.out.println(powerUps);
+
                 System.out.print("powerUpType =  ");
                 System.out.println(powerUpType);
 
@@ -306,8 +302,7 @@ public class Arena {
 
                 }
 
-                       // powerUps.remove(i);
-                        //fireRate = 0;
+
 
                 }
                    // powerUps.remove(i);
@@ -323,7 +318,10 @@ public class Arena {
         else return false;
 
     }
+
 }
+
+
 
 
 

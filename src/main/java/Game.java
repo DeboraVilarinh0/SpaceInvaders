@@ -51,6 +51,9 @@ public class Game {
         long lastMonsterMovement = 0;
         long lastMonsterMovement2 = 0;
         long lastPowerUp = 0;
+        long powerUp1Activated =0;
+        long powerUp2Activated =0;
+        long powerUp3Activated =0;
 
 
         while (true) {
@@ -100,6 +103,11 @@ public class Game {
                 arena.CreatePowerUps();
                 lastPowerUp = startTime3;
                 draw();
+            }
+
+            if (startTime4 - powerUp1Activated > powerUpTimer){
+                arena.fireRate=3;
+
             }
 
            switch (arena.isMonsterEmpty()){
