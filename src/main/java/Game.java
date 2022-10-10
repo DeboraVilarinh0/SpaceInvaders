@@ -70,7 +70,7 @@ public class Game {
             }
 
             if (startTime - lastMonsterMovement > moveTimer) {
-                arena.moveBadGuys();
+                arena.moveMonsters();
                 arena.verifyBadGuysCollision();
                 arena.moveBullets();
                 arena.verifyBulletCollisionEnemy();
@@ -91,7 +91,7 @@ public class Game {
                 case 2:shotTimer = 300;
                     shotNumb = 3;
                     moveTimer = 60;
-                    arena.setBadGuys(arena.CreateBadGuys(25, 5));
+                    arena.setMonsters(arena.CreateMonsters(25, 5));
                     System.out.println("ENTREI NO 2");
                     playedLevelTwo = true;break;
 
@@ -99,7 +99,7 @@ public class Game {
                     shotTimer = 10;
                     shotNumb = 5;
                     moveTimer = 30;
-                    arena.setBadGuys(arena.CreateBadGuys(30, 6));break;
+                    arena.setMonsters(arena.CreateMonsters(30, 6));break;
                 case 4: System.out.println("GG");
                 System.exit(0);
             }
