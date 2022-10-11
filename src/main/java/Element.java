@@ -8,10 +8,11 @@ public abstract class Element {
     protected Position position;
 
 
-    Element (int x, int y){
-        position = new Position(x,y);
+    Element(int x, int y) {
+        position = new Position(x, y);
     }
-    public void draw(TextGraphics graphics, String colorCode, String character){
+
+    public void draw(TextGraphics graphics, String colorCode, String character) {
 
         graphics.setForegroundColor(TextColor.Factory.fromString(colorCode));
         graphics.enableModifiers(SGR.BOLD);
@@ -19,12 +20,13 @@ public abstract class Element {
     }
 
 
-
     public void setPosition(Position position) {
         this.position = position;
     }
 
-    public Position getPosition () {return position;}
+    public Position getPosition() {
+        return position;
+    }
 
 
     public Position moveRight() {
@@ -32,11 +34,11 @@ public abstract class Element {
 
     }
 
-    public Position moveLeft () {
+    public Position moveLeft() {
         return new Position(position.getX() - 1, position.getY());
 
     }
-    }
+}
 
 
 

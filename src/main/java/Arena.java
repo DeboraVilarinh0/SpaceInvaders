@@ -300,7 +300,7 @@ public class Arena {
                         break;
 
                     case 1:
-                        spaceShip.setIsInvencible(true);
+                        spaceShip.setIsInvincible(true);
                         System.out.println("invencible");
                         break;
 
@@ -315,12 +315,12 @@ public class Arena {
 
 
     public boolean getIsInvencible() {
-        if (spaceShip.getIsInvencible()) return true;
+        if (spaceShip.getIsInvincible()) return true;
         else return false;
 
     }
     public void setIsInvencible(boolean isInvencible) {
-        spaceShip.setIsInvencible(isInvencible);
+        spaceShip.setIsInvincible(isInvencible);
 
     }
 

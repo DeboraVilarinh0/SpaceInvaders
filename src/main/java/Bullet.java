@@ -7,7 +7,9 @@ public class Bullet extends Element{
 
     public Position bulletMovementUP() {
         return new Position(position.getX(), position.getY() - 1);
+
+
+
+
     }
-
-
 }
