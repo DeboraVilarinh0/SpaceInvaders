@@ -26,8 +26,6 @@ public class Arena {
     SimpleAudioPlayer audioPlayer = new SimpleAudioPlayer();
     public int level = 1;
     private List<Monsters> monsters = new ArrayList<>();
-    int fireRate = 3;
-    public boolean shootFaster = false;
     int powerUpType;
     private boolean fireMultipleBullets;
     private boolean start;

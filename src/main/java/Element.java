@@ -26,6 +26,16 @@ public abstract class Element {
 
     public Position getPosition () {return position;}
 
+
+    public Position moveRight() {
+        return new Position(position.getX() + 1, position.getY());
+
+    }
+
+    public Position moveLeft () {
+        return new Position(position.getX() - 1, position.getY());
+
+    }
     }
 
 
