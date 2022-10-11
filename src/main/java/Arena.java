@@ -273,7 +273,7 @@ public class Arena {
         }
     }
 
-    public void CreatePowerUps() {    //power up na casa da esquerda de todo não é possível apanhar
+    public void CreatePowerUps() {    //power up na casa da esquerda não é possível apanhar
         Random rand = new Random();
         Random rand1 = new Random();
         int randPos = rand.nextInt(width - 2);
