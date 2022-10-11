@@ -38,7 +38,6 @@ public class Arena {
         this.height = height;
         spaceShip = new SpaceShip(width / 2, height - 1);
         CreateMonsters(20, 5);
-
     }
 
     public void draw(TextGraphics graphics) {
@@ -275,11 +274,12 @@ public class Arena {
         }
     }
 
-    public void CreatePowerUps() {    //power up na casa da esquerda de todo não é possível apanhar
+    public void CreatePowerUps() {    //power up na casa da esquerda não é possível apanhar
         Random rand = new Random();
         Random rand1 = new Random();
         int randPos = rand.nextInt(width - 2);
         int randPowerUp = rand1.nextInt(2);
+
         System.out.println(randPowerUp);
         powerUps.add(new PowerUps(randPos, height - 1, randPowerUp));
 
