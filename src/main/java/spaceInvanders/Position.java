@@ -1,3 +1,5 @@
+package spaceInvanders;
+
 public class Position {
 
     private int x;

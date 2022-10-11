@@ -1,3 +1,4 @@
+package spaceInvanders;
 
 public class SpaceShip extends Element{
 private boolean isInvincible = false;
