@@ -84,7 +84,7 @@ class ArenaTest {
     }
 
     @Test
-    void testCreateEnemyBullets() {
+    public void CreateEnemyBulletsTest() {
         List<EnemyBullet> result = arena.CreateEnemyBullets(new Position(0, 0));
         Assertions.assertEquals(List.of(new EnemyBullet(0, 0)).get(0).getPosition(), result.get(0).getPosition());
     }
@@ -136,7 +136,6 @@ class ArenaTest {
     @Test
     void testVerifyPowerUpCollision() {
         when(spaceShip.getPosition()).thenReturn(new Position(0, 0));
-
         arena.verifyPowerUpCollision();
     }
 
