@@ -1,3 +1,5 @@
+package spaceInvanders;
+
 public class FatGuy extends Monsters{
 
 

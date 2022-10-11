@@ -1,4 +1,6 @@
- public class EnemyBullet extends Element{
+package spaceInvanders;
+
+public class EnemyBullet extends Element{
 
         EnemyBullet(int x, int y) {
             super(x, y);

@@ -1,3 +1,5 @@
+package spaceInvanders;
+
 public class Monsters extends Element {
 
     protected int hitPoints;

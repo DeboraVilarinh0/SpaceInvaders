@@ -1,4 +1,4 @@
-import java.io.IOException;
+package spaceInvanders;
 
 public class Bullet extends Element{
     Bullet(int x, int y) {

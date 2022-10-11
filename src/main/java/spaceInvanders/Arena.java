@@ -1,3 +1,5 @@
+package spaceInvanders;
+
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
@@ -19,7 +21,7 @@ public class Arena {
     public int height;
     private final SpaceShip spaceShip;
     private final List<Bullet> bullets = new ArrayList<>();
-    private final List<EnemyBullet> enemyBullets = new ArrayList<>();
+    final List<EnemyBullet> enemyBullets = new ArrayList<>();
     private final List<PowerUps> powerUps = new ArrayList<>();
     private boolean moveRight = true;
     private boolean moveLeft = false;
@@ -27,7 +29,7 @@ public class Arena {
     public int level = 1;
     private List<Monsters> monsters = new ArrayList<>();
     int powerUpType;
-    private boolean fireMultipleBullets;
+    boolean fireMultipleBullets;
     private boolean start;
 
 
@@ -97,14 +99,14 @@ public class Arena {
     }
 
     public void moveBullets() {
-        for (int indexBulletList = 0; indexBulletList < bullets.size(); indexBulletList++) {
+        for (Bullet bullet : bullets) {
 
-            bullets.get(indexBulletList).setPosition(bullets.get(indexBulletList).bulletMovementUP());
+            bullet.setPosition(bullet.bulletMovementUP());
         }
 
-        for (int indexEnemyBulletList = 0; indexEnemyBulletList < enemyBullets.size(); indexEnemyBulletList++) {
+        for (EnemyBullet enemyBullet : enemyBullets) {
 
-            enemyBullets.get(indexEnemyBulletList).setPosition(enemyBullets.get(indexEnemyBulletList).bulletMovementDOWN());
+            enemyBullet.setPosition(enemyBullet.bulletMovementDOWN());
 
         }
     }
