@@ -21,7 +21,7 @@ public class Game {
     long shotTimer = 1000;
     long moveTimer = 100;
     long shotNumb = 1;
-    long powerUpTimer = 10000;
+    long powerUpTimer=5000;
     boolean playedLevelTwo = false;
     SimpleAudioPlayer audioPlayer = new SimpleAudioPlayer();
 

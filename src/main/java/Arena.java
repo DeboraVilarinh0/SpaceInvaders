@@ -38,6 +38,7 @@ public class Arena {
         this.height = height;
         spaceShip = new SpaceShip(width / 2, height - 1);
         CreateMonsters(20, 5);
+
     }
 
     public void draw(TextGraphics graphics) {
@@ -278,8 +279,8 @@ public class Arena {
         Random rand = new Random();
         Random rand1 = new Random();
         int randPos = rand.nextInt(width - 2);
-        int randPowerUp = rand1.nextInt(2);
-
+        randPos +=1;
+        int randPowerUp = rand1.nextInt(3);
         System.out.println(randPowerUp);
         powerUps.add(new PowerUps(randPos, height - 1, randPowerUp));
 
@@ -306,8 +307,7 @@ public class Arena {
                         break;
 
                     case 2:
-                        powerUps.remove(i);
-                        spaceShip.setIsInvencible(true);
+                        setFireMultipleBullets(true);
                         break;
 
                 }
