@@ -316,12 +316,12 @@ public class Arena {
     }
 
 
-    public boolean getIsInvencible() {
+    public boolean getIsInvincible() {
         if (spaceShip.getIsInvincible()) return true;
         else return false;
 
     }
-    public void setIsInvencible(boolean isInvencible) {
+    public void setIsInvincible(boolean isInvencible) {
         spaceShip.setIsInvincible(isInvencible);
 
     }

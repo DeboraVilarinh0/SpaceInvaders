@@ -2,7 +2,6 @@ package spaceInvanders;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -143,15 +142,15 @@ class ArenaTest {
 
     @Test
     void testGetIsInvencible() {
-        when(spaceShip.getIsInvencible()).thenReturn(true);
-
-        boolean result = arena.getIsInvencible();
+        when(spaceShip.getIsInvincible()).thenReturn(true);
+        boolean result = arena.getIsInvincible();
         Assertions.assertEquals(true, result);
     }
 
+
     @Test
     void testSetIsInvencible() {
-        arena.setIsInvencible(true);
+        arena.setIsInvincible(true);
     }
 
     @Test

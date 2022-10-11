@@ -87,7 +87,7 @@ public class Game {
 
             if (startTime - lastMonsterMovement > moveTimer) {
                 arena.moveMonsters();
-                if (!arena.getIsInvencible()) {
+                if (!arena.getIsInvincible()) {
                     arena.verifySpaceShipCollision();
                 }
                 arena.moveBullets();
@@ -117,7 +117,7 @@ public class Game {
             }
 
             if (startTime5 - powerUp2Activated > powerUpTimer) {
-                arena.setIsInvencible(false);
+                arena.setIsInvincible(false);
                 powerUp2Activated = startTime5;
                 System.out.println("INVENCIBILITY OFF");
             }
