@@ -12,19 +12,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+
 public class Arena {
 
     public int width;
     public int height;
-    private SpaceShip spaceShip;
-    private List<Bullet> bullets = new ArrayList<>();
-    private List<EnemyBullet> enemyBullets = new ArrayList<>();
+    private final SpaceShip spaceShip;
+    private final List<Bullet> bullets = new ArrayList<>();
+    private final List<EnemyBullet> enemyBullets = new ArrayList<>();
+    private final List<PowerUps> powerUps = new ArrayList<>();
     private boolean moveRight = true;
     private boolean moveLeft = false;
     SimpleAudioPlayer audioPlayer = new SimpleAudioPlayer();
     public int level = 1;
     private List<Monsters> monsters = new ArrayList<>();
-    private List<PowerUps> powerUps = new ArrayList<>();
+    int fireRate = 3;
     public boolean shootFaster = false;
     int powerUpType;
     private boolean fireMultipleBullets;
@@ -43,44 +45,33 @@ public class Arena {
         graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
 
+        spaceShip.draw(graphics, "#FFAE42", "&");
+        if (bullets.size() != 0) for (int indexBulletsList = 0; indexBulletsList < bullets.size(); indexBulletsList++) {
+            bullets.get(indexBulletsList).draw(graphics, "#FFFFFF", "_");
+        }
+        if (enemyBullets.size() != 0)
+            for (EnemyBullet enemyBullet : enemyBullets) enemyBullet.draw(graphics, "#FFFFFF", "'");
+
         if (!powerUps.isEmpty()) {
-            ;
             for (int i = 0; i < powerUps.size(); i++) {
-                if (powerUps.get(i).getPowerUpType()==0 )powerUps.get(i).draw(graphics, "#bff8ff", "o");
-                if (powerUps.get(i).getPowerUpType()==1)powerUps.get(i).draw(graphics, "#f5dc00", "o");
-                if (powerUps.get(i).getPowerUpType()==2)powerUps.get(i).draw(graphics,"#FDCAFF" , "o");
-
-
-
-
-                // switch (powerUps.get(i).getPowerUpType()) {
-                 //   case 0:
-                   //     powerUps.get(i).draw(graphics, "#bff8ff", "o");
-                    //case 1:
-                     //   powerUps.get(i).draw(graphics, "#f5dc00", "o");
-                //}
+                if (powerUps.get(i).getPowerUpType() == 0) powerUps.get(i).draw(graphics, "#bff8ff", "o");
+                if (powerUps.get(i).getPowerUpType() == 1) powerUps.get(i).draw(graphics, "#f5dc00", "o");
+                if (powerUps.get(i).getPowerUpType() == 2) powerUps.get(i).draw(graphics, "#FDCAFF", "o");
             }
         }
-
-        spaceShip.draw(graphics, "#FFAE42", "Ã");
-        if (bullets.size() != 0) for (int i = 0; i < bullets.size(); i++) bullets.get(i).draw(graphics, "#FFFFFF", "|");
-        if (enemyBullets.size() != 0)
-            for (EnemyBullet enemyBullet : enemyBullets) enemyBullet.draw(graphics, "#FFFFFF", "|");
-
         for (Monsters monster : monsters) {
             if (monster.getClass() == FatGuy.class) {
                 if (monster.getHitPoints() == 1) {
-                    monster.draw(graphics, "#ff0000", "X");
+                    monster.draw(graphics, "#ff0000", "/");
                 } else {
-                    monster.draw(graphics, "#b57777", "X");
+                    monster.draw(graphics, "#b57777", "/");
                 }
             }
             if (monster.getClass() == BadGuys.class) {
-                monster.draw(graphics, "#e3c205", "X");
+                monster.draw(graphics, "#e3c205", "/");
             }
         }
     }
-
 
     public void processKey(KeyStroke key) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         if (key.getKeyType() == KeyType.ArrowLeft) moveSpaceShip(spaceShip.moveLeft());
@@ -92,7 +83,7 @@ public class Arena {
             if (bullets.size() == 0) CreateBullets(spaceShip.getPosition(), fireMultipleBullets);
             else {
                 if (bullets.get(bullets.size() - 1).getPosition().getY() < height - (spaceShip.getShootFaster())) {
-                    CreateBullets(spaceShip.getPosition(),fireMultipleBullets);
+                    CreateBullets(spaceShip.getPosition(), fireMultipleBullets);
                 }
             }
         }
@@ -111,7 +102,6 @@ public class Arena {
         for (int indexBulletList = 0; indexBulletList < bullets.size(); indexBulletList++) {
 
             bullets.get(indexBulletList).setPosition(bullets.get(indexBulletList).bulletMovementUP());
-
         }
 
         for (int indexEnemyBulletList = 0; indexEnemyBulletList < enemyBullets.size(); indexEnemyBulletList++) {
@@ -122,17 +112,15 @@ public class Arena {
     }
 
     public List<Bullet> CreateBullets(Position position, boolean fireMultipleBullets) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-if (!fireMultipleBullets){
-    bullets.add(new Bullet(position.getX(), position.getY() - 1));
-    audioPlayer.restart();}
-        else if (fireMultipleBullets){
-    bullets.add(new Bullet(position.getX(), position.getY() - 1));
-    bullets.add(new Bullet(position.getX()-1, position.getY() - 1));
-    bullets.add(new Bullet(position.getX()+1, position.getY() - 1));
+        if (!fireMultipleBullets) {
+            bullets.add(new Bullet(position.getX(), position.getY() - 1));
+            audioPlayer.restart();
+        } else if (fireMultipleBullets) {
+            bullets.add(new Bullet(position.getX(), position.getY() - 1));
+            bullets.add(new Bullet(position.getX() - 1, position.getY() - 1));
+            bullets.add(new Bullet(position.getX() + 1, position.getY() - 1));
 
-
-
-}
+        }
         return bullets;
     }
 
@@ -181,11 +169,10 @@ if (!fireMultipleBullets){
             }
             moveRight = true;
         }
-
     }
 
-
     public void verifySpaceShipCollision() {
+
         for (Monsters monsters : monsters) {
             if (spaceShip.getPosition().equals(monsters.getPosition())) {
                 System.out.println("You died!!!");
@@ -199,7 +186,6 @@ if (!fireMultipleBullets){
                 System.exit(0);
             }
         }
-
     }
 
     public void CreateMonsters(int Width, int Height) {
@@ -210,13 +196,16 @@ if (!fireMultipleBullets){
                 if (drawFatGuy) {
                     monsters.add(new FatGuy(coluna + (width - Width) / 2, linha));
                     drawFatGuy = false;
-
                 } else {
                     monsters.add(new BadGuys(coluna + (width - Width) / 2, linha));
                     drawFatGuy = true;
                 }
             }
         }
+    }
+
+    public void setMonsters(List<Monsters> monsters) {
+        this.monsters = monsters;
     }
 
     public int isMonsterEmpty() {
@@ -226,7 +215,6 @@ if (!fireMultipleBullets){
             System.out.println(level);
             return level;
         }
-        ;
         return 0;
     }
 
@@ -235,7 +223,6 @@ if (!fireMultipleBullets){
         for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
 
             for (int indexMonsters = 0; indexMonsters < monsters.size(); indexMonsters++) {
-
                 if (bullets.get(indexBullets).getPosition().equals(monsters.get(indexMonsters).getPosition())) {
 
                     if (monsters.get(indexMonsters).getHitPoints() >= 1) {
@@ -243,14 +230,11 @@ if (!fireMultipleBullets){
                         monsters.get(indexMonsters).setHitPoints(monsters.get(indexMonsters).getHitPoints() - 1);
                         bullets.remove(indexBullets);
 
-
                     } else {
                         bullets.remove(indexBullets);
                         monsters.remove(indexMonsters);
                     }
                     break;
-
-
                 }
             }
         }
@@ -291,10 +275,11 @@ if (!fireMultipleBullets){
         }
     }
 
-    public void CreatePowerUps() {
+    public void CreatePowerUps() {    //power up na casa da esquerda de todo não é possível apanhar
         Random rand = new Random();
         Random rand1 = new Random();
         int randPos = rand.nextInt(width - 2);
+        randPos +=1;
         int randPowerUp = rand1.nextInt(3);
         System.out.println(randPowerUp);
         powerUps.add(new PowerUps(randPos, height - 1, randPowerUp));
@@ -325,7 +310,6 @@ if (!fireMultipleBullets){
                         setFireMultipleBullets(true);
                         break;
 
-
                 }
             }
         }
@@ -337,29 +321,18 @@ if (!fireMultipleBullets){
         else return false;
 
     }
-
     public void setIsInvencible(boolean isInvencible) {
         spaceShip.setIsInvencible(isInvencible);
 
     }
 
-    public void setShootFaster (int shootFaster){
+    public void setShootFaster(int shootFaster) {
         spaceShip.setShootFaster(shootFaster);
     }
 
     public void setFireMultipleBullets(boolean fireMultipleBullets) {
-        this.fireMultipleBullets= fireMultipleBullets;
+        this.fireMultipleBullets = fireMultipleBullets;
 
     }
 
 }
-
-
-
-
-
-
-
-
-
-
