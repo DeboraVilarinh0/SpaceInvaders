@@ -14,7 +14,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.*;
 
 class ArenaTest {
     @Mock
@@ -64,6 +65,7 @@ class ArenaTest {
         arena.moveBullets();
         Assertions.assertEquals(new Position(10,11), arena.getEnemyBullets().get(0).getPosition());
     }
+
     @Test
         //Should move the bullets up
     void moveBulletsShouldMoveTheBulletsUp() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
@@ -73,9 +75,13 @@ class ArenaTest {
         Assertions.assertEquals(new Position(10,8), arena.getBullets().get(0).getPosition());
     }
 
+    @Test
+    void testMoveBullets() {
+        arena.moveBullets();
+    }
 
     @Test
-    void CreateBulletsTest() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+    void testCreateBullets() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         List<Bullet> result = arena.CreateBullets(new Position(0, 0), true);
         Assertions.assertEquals(List.of(new Bullet(0, 0)).get(0).getPosition().getY(), result.get(0).getPosition().getY());
     }
@@ -138,20 +144,29 @@ class ArenaTest {
 
     @Test
     void testGetIsInvincible() {
-        when(spaceShip.getIsInvincible()).thenReturn(true);
         boolean result = arena.getIsInvincible();
-        boolean expected = true;
-        Assertions.assertEquals(expected, result);
+        boolean expected =  false;
+            Assertions.assertEquals(expected, result);
     }
 
 
     @Test
     void testSetIsInvincible() {
         arena.setIsInvincible(true);
+        boolean expected = true;
+        assertEquals(expected, arena.getIsInvincible());
+
     }
 
     @Test
     void testSetShootFaster() {
-        arena.setShootFaster(0);
+
+
+    }
+
+    @Test
+    void testGetShootFaster(){
+        arena.getShootFaster();
+
     }
 }

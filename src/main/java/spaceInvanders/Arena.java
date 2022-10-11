@@ -30,7 +30,12 @@ public class Arena {
     private List<Monsters> monsters = new ArrayList<>();
     int powerUpType;
     boolean fireMultipleBullets;
-    private boolean start;
+    boolean quickFireStartTimer;
+    boolean invincibleStartTimer;
+    boolean multipleBulletsStartTimer;
+    private boolean isInvencible = false;
+    private int shootFaster = 6;
+
 
 
     Arena(int width, int height) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
@@ -82,7 +87,7 @@ public class Arena {
             ;
             if (bullets.size() == 0) CreateBullets(spaceShip.getPosition(), fireMultipleBullets);
             else {
-                if (bullets.get(bullets.size() - 1).getPosition().getY() < height - (spaceShip.getShootFaster())) {
+                if (bullets.get(bullets.size() - 1).getPosition().getY() < height - (getShootFaster())) {
                     CreateBullets(spaceShip.getPosition(), fireMultipleBullets);
                 }
             }
@@ -115,7 +120,7 @@ public class Arena {
         if (!fireMultipleBullets) {
             bullets.add(new Bullet(position.getX(), position.getY() - 1));
             audioPlayer.restart();
-        } else {
+        } else if (fireMultipleBullets) {
             bullets.add(new Bullet(position.getX(), position.getY() - 1));
             bullets.add(new Bullet(position.getX() - 1, position.getY() - 1));
             bullets.add(new Bullet(position.getX() + 1, position.getY() - 1));
@@ -297,17 +302,18 @@ public class Arena {
 
                 switch (powerUpType) {
                     case 0:
-                        spaceShip.setShootFaster(0);
-                        System.out.println("shoot faster");
+                        setShootFaster(0);
+                        setQuickFireStartTimer(true);
                         break;
 
                     case 1:
-                        spaceShip.setIsInvincible(true);
-                        System.out.println("invencible");
+                        setIsInvencible(true);
+                        setInvincibleStartTimer(true);
                         break;
 
                     case 2:
                         setFireMultipleBullets(true);
+                        setMultipleBulletsStartTimer(true);
                         break;
 
                 }
@@ -315,26 +321,46 @@ public class Arena {
         }
     }
 
-
-    public boolean getIsInvincible() {
-        if (spaceShip.getIsInvincible()) return true;
-        else return false;
-
+    public void setIsInvencible(boolean isInvencible) {
+        this.isInvencible=isInvencible;
     }
-    public void setIsInvincible(boolean isInvencible) {
-        spaceShip.setIsInvincible(isInvencible);
-
+    public boolean getIsInvencible () {
+        return isInvencible;
     }
 
-    public void setShootFaster(int shootFaster) {
-        spaceShip.setShootFaster(shootFaster);
+    public void setShootFaster (int shootFaster){
+        this.shootFaster=shootFaster;
     }
-
+    public int getShootFaster () {
+        return shootFaster;
+    }
     public void setFireMultipleBullets(boolean fireMultipleBullets) {
         this.fireMultipleBullets = fireMultipleBullets;
-
     }
 
+    public void setQuickFireStartTimer(boolean quickFireStartTimer) {
+        this.quickFireStartTimer = quickFireStartTimer;
+    }
+
+    public boolean getQuickFireStartTimer() {
+        return quickFireStartTimer;
+    }
+
+    public void setInvincibleStartTimer(boolean invincibleStartTimer) {
+        this.invincibleStartTimer = invincibleStartTimer;
+    }
+
+    public boolean getInvincibleStartTimer() {
+        return invincibleStartTimer;
+    }
+
+    public void setMultipleBulletsStartTimer(boolean multipleBulletsStartTimer) {
+        this.multipleBulletsStartTimer = multipleBulletsStartTimer;
+    }
+
+    public boolean getMultipleBulletsStartTimer() {
+        return multipleBulletsStartTimer;
+    }
     public List<Bullet> getBullets() {
         return bullets;
     }

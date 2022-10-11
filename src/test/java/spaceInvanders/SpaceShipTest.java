@@ -2,18 +2,26 @@ package spaceInvanders;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
+
 public class SpaceShipTest {
     SpaceShip spaceShip = new SpaceShip(10, 10);
     boolean actual = false;
+    Arena arena =  new Arena(50,50);
+
+    public SpaceShipTest() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+    }
 
     @Test
     public void setIsInvincibleTest() {
-        spaceShip.setIsInvincible(actual=true);
+        arena.setIsInvencible(actual=true);
         Assertions.assertTrue(actual);
     }
     @Test
      public void getIsInvincible() {
-        boolean result = spaceShip.getIsInvincible();
+        boolean result = arena.getIsInvencible();
         boolean expected = false;
         Assertions.assertEquals(expected, result);
     }
@@ -21,8 +29,8 @@ public class SpaceShipTest {
     @Test
     public void setShootFasterTest(){
         int shootFaster = 5;
-        spaceShip.setShootFaster(shootFaster);
+        arena.setShootFaster(shootFaster);
         int expected = 5;
-        Assertions.assertEquals(expected, spaceShip.getShootFaster());
+        Assertions.assertEquals(expected, arena.getShootFaster());
     }
 }

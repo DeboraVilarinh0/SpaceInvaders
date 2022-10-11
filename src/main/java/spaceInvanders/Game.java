@@ -56,19 +56,18 @@ public class Game {
         long lastMonsterMovement = 0;
         long lastMonsterMovement2 = 0;
         long powerUpActivated = 0;
-        long powerUp1Activated = 0;
+
         long powerUp2Activated = 0;
         long powerUp3Activated = 0;
+        int quickFireCount = 0;
+        int invincibleCount = 0;
+        int multipleFireCount = 0;
 
 
         while (true) {
             long startTime = System.currentTimeMillis();
             long startTime2 = System.currentTimeMillis();
             long startTime3 = System.currentTimeMillis();
-            long startTime4 = System.currentTimeMillis();
-            long startTime5 = System.currentTimeMillis();
-            long startTime6 = System.currentTimeMillis();
-            long startTime7 = System.currentTimeMillis();
             audioPlayer.play2();
             draw();
             KeyStroke key = screen.pollInput();
@@ -87,7 +86,7 @@ public class Game {
 
             if (startTime - lastMonsterMovement > moveTimer) {
                 arena.moveMonsters();
-                if (!arena.getIsInvincible()) {
+                if (!arena.getIsInvencible()) {
                     arena.verifySpaceShipCollision();
                 }
                 arena.moveBullets();
@@ -108,56 +107,70 @@ public class Game {
             if (startTime3 - powerUpActivated > powerUpTimer) {
                 arena.CreatePowerUps();
                 powerUpActivated = startTime3;
-
-            }
-            if (startTime4 - powerUp1Activated > powerUpTimer) {
-                arena.setShootFaster(3);
-                powerUp1Activated = startTime4;
-                System.out.println("FAST SHOOTING OFF");
             }
 
-            if (startTime5 - powerUp2Activated > powerUpTimer) {
-                arena.setIsInvincible(false);
-                powerUp2Activated = startTime5;
-                System.out.println("INVENCIBILITY OFF");
-            }
-
-            if (startTime6 - powerUp3Activated > powerUpTimer) {
-                arena.setFireMultipleBullets(false);
-                powerUp3Activated = startTime6;
-                System.out.println("MULTIPLE SHOTS OFF");
-            }
-
-
-            switch (arena.isMonsterEmpty()) {
-                case 2 -> {
-                    shotTimer = 300;
-                    shotNumb = 3;
-                    moveTimer = 60;
-                    arena.CreateMonsters(25, 5);
-                    System.out.println("ENTREI NO 2");
-                    playedLevelTwo = true;
+            if (arena.getQuickFireStartTimer()) {
+                quickFireCount++;
+                System.out.println(100 - quickFireCount);
+                if (quickFireCount == 100) {
+                    quickFireCount = 0;
+                    arena.setShootFaster(6);
+                    arena.setQuickFireStartTimer(false);
+                    System.out.println("FAST SHOOTING OFF");
                 }
-                case 3 -> {
-                    System.out.println("entrei no 3");
-                    shotTimer = 10;
-                    shotNumb = 5;
-                    moveTimer = 30;
-                    arena.CreateMonsters(30, 6);
-                }
-                case 4 -> {
-                    System.out.println("GG");
-                    System.exit(0);
 
-                    arena.CreateMonsters(30, 6);
+                if (arena.getInvincibleStartTimer()) {
+                    invincibleCount++;
+                    System.out.println(100 - invincibleCount);
+                    if (invincibleCount == 100) {
+                        invincibleCount = 0;
+                        arena.setInvincibleStartTimer(false);
+                        arena.setIsInvencible(false);
+                    }
                 }
-            }
 
-            long elapsedTime = System.currentTimeMillis() - startTime;
-            long sleepTime = frameTime - elapsedTime;
-            if (sleepTime > 0) try {
-                Thread.sleep(sleepTime);
-            } catch (InterruptedException ignored) {
+                if (arena.getMultipleBulletsStartTimer()) {
+                    multipleFireCount++;
+                    System.out.println(100 - multipleFireCount);
+                    if (multipleFireCount == 100) {
+                        multipleFireCount = 0;
+                        arena.setFireMultipleBullets(false);
+                        arena.setMultipleBulletsStartTimer(false);
+
+                    }
+                }
+
+
+                switch (arena.isMonsterEmpty()) {
+                    case 2 -> {
+                        shotTimer = 300;
+                        shotNumb = 3;
+                        moveTimer = 60;
+                        arena.CreateMonsters(25, 5);
+                        System.out.println("ENTREI NO 2");
+                        playedLevelTwo = true;
+                    }
+                    case 3 -> {
+                        System.out.println("entrei no 3");
+                        shotTimer = 10;
+                        shotNumb = 5;
+                        moveTimer = 30;
+                        arena.CreateMonsters(30, 6);
+                    }
+                    case 4 -> {
+                        System.out.println("GG");
+                        System.exit(0);
+
+                        arena.CreateMonsters(30, 6);
+                    }
+                }
+
+                long elapsedTime = System.currentTimeMillis() - startTime;
+                long sleepTime = frameTime - elapsedTime;
+                if (sleepTime > 0) try {
+                    Thread.sleep(sleepTime);
+                } catch (InterruptedException ignored) {
+                }
             }
         }
     }
@@ -177,6 +190,8 @@ public class Game {
         return font;
     }
 }
+
+
 
 
 
