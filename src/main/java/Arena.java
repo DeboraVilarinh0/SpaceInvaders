@@ -295,7 +295,7 @@ if (!fireMultipleBullets){
         Random rand = new Random();
         Random rand1 = new Random();
         int randPos = rand.nextInt(width - 2);
-        int randPowerUp = rand1.nextInt(2);
+        int randPowerUp = rand1.nextInt(3);
         System.out.println(randPowerUp);
         powerUps.add(new PowerUps(randPos, height - 1, randPowerUp));
 
