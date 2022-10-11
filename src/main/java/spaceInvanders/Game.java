@@ -68,11 +68,6 @@ public class Game {
             long startTime = System.currentTimeMillis();
             long startTime2 = System.currentTimeMillis();
             long startTime3 = System.currentTimeMillis();
-            long startTime4 = System.currentTimeMillis();
-            long startTime5 = System.currentTimeMillis();
-            long startTime6 = System.currentTimeMillis();
-            long startTime7 = System.currentTimeMillis();
-            long powerUp1Activated = startTime4;
             audioPlayer.play2();
             draw();
             KeyStroke key = screen.pollInput();
@@ -123,58 +118,59 @@ public class Game {
                     arena.setQuickFireStartTimer(false);
                     System.out.println("FAST SHOOTING OFF");
                 }
-            }
 
-            if (arena.getInvincibleStartTimer()) {
-                invincibleCount++;
-                System.out.println(100 - invincibleCount);
-                if (invincibleCount == 100) {
-                    invincibleCount = 0;
-                    arena.setInvincibleStartTimer(false);
-                    arena.setIsInvencible(false);
+                if (arena.getInvincibleStartTimer()) {
+                    invincibleCount++;
+                    System.out.println(100 - invincibleCount);
+                    if (invincibleCount == 100) {
+                        invincibleCount = 0;
+                        arena.setInvincibleStartTimer(false);
+                        arena.setIsInvencible(false);
+                    }
                 }
-            }
 
-            if (arena.getMultipleBulletsStartTimer()) {
-                multipleFireCount++;
-                System.out.println(100 - multipleFireCount);
-                if (multipleFireCount == 100){
-                    arena.setFireMultipleBullets(false);
-                    arena.setMultipleBulletsStartTimer(false);
-                    multipleFireCount=0;
+                if (arena.getMultipleBulletsStartTimer()) {
+                    multipleFireCount++;
+                    System.out.println(100 - multipleFireCount);
+                    if (multipleFireCount == 100) {
+                        multipleFireCount = 0;
+                        arena.setFireMultipleBullets(false);
+                        arena.setMultipleBulletsStartTimer(false);
+
+                    }
                 }
-            }
 
 
-            switch (arena.isMonsterEmpty()) {
-                case 2 -> {
-                    shotTimer = 300;
-                    shotNumb = 3;
-                    moveTimer = 60;
-                    arena.CreateMonsters(25, 5);
-                    System.out.println("ENTREI NO 2");
-                    playedLevelTwo = true;
+                switch (arena.isMonsterEmpty()) {
+                    case 2 -> {
+                        shotTimer = 300;
+                        shotNumb = 3;
+                        moveTimer = 60;
+                        arena.CreateMonsters(25, 5);
+                        System.out.println("ENTREI NO 2");
+                        playedLevelTwo = true;
+                    }
+                    case 3 -> {
+                        System.out.println("entrei no 3");
+                        shotTimer = 10;
+                        shotNumb = 5;
+                        moveTimer = 30;
+                        arena.CreateMonsters(30, 6);
+                    }
+                    case 4 -> {
+                        System.out.println("GG");
+                        System.exit(0);
+
+                        arena.CreateMonsters(30, 6);
+                    }
                 }
-                case 3 -> {
-                    System.out.println("entrei no 3");
-                    shotTimer = 10;
-                    shotNumb = 5;
-                    moveTimer = 30;
-                    arena.CreateMonsters(30, 6);
-                }
-                case 4 -> {
-                    System.out.println("GG");
-                    System.exit(0);
 
-                    arena.CreateMonsters(30, 6);
+                long elapsedTime = System.currentTimeMillis() - startTime;
+                long sleepTime = frameTime - elapsedTime;
+                if (sleepTime > 0) try {
+                    Thread.sleep(sleepTime);
+                } catch (InterruptedException ignored) {
                 }
-            }
-
-            long elapsedTime = System.currentTimeMillis() - startTime;
-            long sleepTime = frameTime - elapsedTime;
-            if (sleepTime > 0) try {
-                Thread.sleep(sleepTime);
-            } catch (InterruptedException ignored) {
             }
         }
     }
@@ -194,6 +190,8 @@ public class Game {
         return font;
     }
 }
+
+
 
 
 

@@ -314,17 +314,13 @@ public class Arena {
                         setFireMultipleBullets(true);
                         setMultipleBulletsStartTimer(true);
                         break;
-
                 }
             }
         }
     }
 
-
-
     public void setIsInvencible(boolean isInvencible) {
-
-        this.isInvencible = isInvencible;
+        this.isInvencible=isInvencible;
     }
     public boolean getIsInvencible () {
         return isInvencible;
@@ -338,7 +334,6 @@ public class Arena {
     }
     public void setFireMultipleBullets(boolean fireMultipleBullets) {
         this.fireMultipleBullets = fireMultipleBullets;
-
     }
 
     public void setQuickFireStartTimer(boolean quickFireStartTimer) {

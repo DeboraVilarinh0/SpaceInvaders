@@ -2,16 +2,9 @@ package spaceInvanders;
 // Java program to play an Audio
 // file using Clip Object
 
+import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.Scanner;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.File;
 
 public class SimpleAudioPlayer {
 
@@ -32,15 +25,15 @@ public class SimpleAudioPlayer {
 
         // create AudioInputStream object
         audioInputStream = AudioSystem.getAudioInputStream(new File(filePathSpaceShipBullet).getAbsoluteFile());
-        audioInputStream2 = AudioSystem.getAudioInputStream(new File( filePathGameBackgroundMusic).getAbsoluteFile());
+        audioInputStream2 = AudioSystem.getAudioInputStream(new File(filePathGameBackgroundMusic).getAbsoluteFile());
 
         // create clip reference
         clip = AudioSystem.getClip();
         clip2 = AudioSystem.getClip();
 
         // open audioInputStream to the clip
-        //clip.open(audioInputStream);
-        //clip2.open(audioInputStream2);
+        clip.open(audioInputStream);
+        clip2.open(audioInputStream2);
 
         //clip2.loop(Clip.LOOP_CONTINUOUSLY);
     }
@@ -48,7 +41,7 @@ public class SimpleAudioPlayer {
     public void play() {
         //start the clip
         clip.start();
-        // status = "play";
+        status = "play";
     }
 
     // Method to stop the audio
@@ -57,7 +50,9 @@ public class SimpleAudioPlayer {
         currentFrame = 0L;
         clip.stop();
         clip.close();
+        status = "stop";
     }
+
 
     // Method to reset audio stream
     public void reset() throws UnsupportedAudioFileException, IOException,
@@ -65,21 +60,23 @@ public class SimpleAudioPlayer {
         audioInputStream = AudioSystem.getAudioInputStream(
                 new File(filePathSpaceShipBullet).getAbsoluteFile());
         clip.open(audioInputStream);
-        //clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
     // Method to restart the audio
-    public void restart() throws IOException, LineUnavailableException, UnsupportedAudioFileException {
+    public void restart() {
         clip.stop();
         //clip.close();
         //reset();
         //currentFrame = 0L;
         clip.setMicrosecondPosition(0);
         this.play();
+        status = "restart";
     }
+
     public void play2() {
         //start the clip
         clip2.start();
-        // status = "play";
+        status = "play";
+        clip2.loop(Clip.LOOP_CONTINUOUSLY);
     }
 }

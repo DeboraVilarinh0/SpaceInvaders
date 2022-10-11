@@ -2,7 +2,6 @@ package spaceInvanders;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -85,7 +84,7 @@ class ArenaTest {
     }
 
     @Test
-    void testCreateEnemyBullets() {
+    public void CreateEnemyBulletsTest() {
         List<EnemyBullet> result = arena.CreateEnemyBullets(new Position(0, 0));
         Assertions.assertEquals(List.of(new EnemyBullet(0, 0)).get(0).getPosition(), result.get(0).getPosition());
     }
@@ -137,20 +136,23 @@ class ArenaTest {
     @Test
     void testVerifyPowerUpCollision() {
         when(spaceShip.getPosition()).thenReturn(new Position(0, 0));
-
         arena.verifyPowerUpCollision();
     }
 
     @Test
     void testGetIsInvencible() {
         boolean result = arena.getIsInvencible();
-        Assertions.assertEquals(true, result);
+        boolean expected =  false;
+            Assertions.assertEquals(expected, result);
     }
+
 
     @Test
     void testSetIsInvencible() {
         arena.setIsInvencible(true);
-        assertEquals(true, arena.getIsInvencible());
+        boolean expected = true;
+        assertEquals(expected, arena.getIsInvencible());
+
     }
 
     @Test
