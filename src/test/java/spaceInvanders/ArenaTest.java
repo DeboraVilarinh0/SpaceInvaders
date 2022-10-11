@@ -141,7 +141,7 @@ class ArenaTest {
     }
 
     @Test
-    void testGetIsInvencible() {
+    void testGetIsInvincible() {
         when(spaceShip.getIsInvincible()).thenReturn(true);
         boolean result = arena.getIsInvincible();
         Assertions.assertEquals(true, result);
@@ -149,7 +149,7 @@ class ArenaTest {
 
 
     @Test
-    void testSetIsInvencible() {
+    void testSetIsInvincible() {
         arena.setIsInvincible(true);
     }
 
