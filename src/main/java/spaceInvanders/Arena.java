@@ -124,7 +124,7 @@ public class Arena {
             bullets.add(new Bullet(position.getX(), position.getY() - 1));
             bullets.add(new Bullet(position.getX() - 1, position.getY() - 1));
             bullets.add(new Bullet(position.getX() + 1, position.getY() - 1));
-            audioPlayer.restart();
+
         }
         return bullets;
     }
@@ -284,10 +284,11 @@ public class Arena {
         Random rand = new Random();
         Random rand1 = new Random();
         int randPos = rand.nextInt(width - 2);
-        randPos += 1;
+        randPos +=1;
         int randPowerUp = rand1.nextInt(3);
         System.out.println(randPowerUp);
         powerUps.add(new PowerUps(randPos, height - 1, randPowerUp));
+
     }
 
 
@@ -314,6 +315,7 @@ public class Arena {
                         setFireMultipleBullets(true);
                         setMultipleBulletsStartTimer(true);
                         break;
+
                 }
             }
         }
@@ -358,5 +360,12 @@ public class Arena {
 
     public boolean getMultipleBulletsStartTimer() {
         return multipleBulletsStartTimer;
+    }
+    public List<Bullet> getBullets() {
+        return bullets;
+    }
+
+    public List<EnemyBullet> getEnemyBullets() {
+        return enemyBullets;
     }
 }

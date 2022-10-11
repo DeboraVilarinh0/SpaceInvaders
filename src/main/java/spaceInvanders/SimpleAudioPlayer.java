@@ -32,8 +32,8 @@ public class SimpleAudioPlayer {
         clip2 = AudioSystem.getClip();
 
         // open audioInputStream to the clip
-        clip.open(audioInputStream);
-        clip2.open(audioInputStream2);
+       // clip.open(audioInputStream);
+       // clip2.open(audioInputStream2);
 
         //clip2.loop(Clip.LOOP_CONTINUOUSLY);
     }
