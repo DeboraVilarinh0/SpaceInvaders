@@ -14,8 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 class ArenaTest {
     @Mock
@@ -53,32 +52,41 @@ class ArenaTest {
     void createEnemyBulletsShouldCreateANewEnemyBulletInThePositionPassedAsParameter() {
         Position position = new Position(10, 10);
         arena.CreateEnemyBullets(position);
-        assertEquals(1, arena.enemyBullets.size());
+        int expected = 1;
+        assertEquals(expected, arena.enemyBullets.size());
         assertEquals(position, arena.enemyBullets.get(0).getPosition());
     }
 
     @Test
 //Should move the enemy bullets down
-    void moveBulletsShouldMoveTheEnemyBulletsDown() {
-        arena.moveBullets();
-        verify(enemyBullets, times(1)).get(anyInt());
-    }
+    void moveBulletsShouldMoveTheEnemyBulletsDown() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+        Arena arena2 = new Arena(50, 50);
+        Position p  = new Position (2,26);
+        arena2.CreateEnemyBullets(p);
+        arena2.moveBullets();
+        Position p2  = new Position (2,27);
+        Assertions.assertEquals(p2, arena2.getEnemyBullets().get(0).getPosition());
+       //  Assertions.assertEquals(p2.getY(), arena2.getBullets().get(0).getPosition().getY());
+        // Assertions.assertEquals(p2.getX(), arena2.getBullets().get(0).getPosition().getX());
 
+    }
     @Test
         //Should move the bullets up
-    void moveBulletsShouldMoveTheBulletsUp() {
-        arena.moveBullets();
-        verify(bullets, times(1)).get(anyInt());
-        verify(enemyBullets, times(1)).get(anyInt());
+    void moveBulletsShouldMoveTheBulletsUp() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+        Arena arena2 = new Arena(50, 50);
+        Position p  = new Position (2,29);
+        arena2.CreateBullets(p, false);
+        arena2.moveBullets();
+        Position p2  = new Position (2,27);
+        Assertions.assertEquals(p2, arena2.getBullets().get(0).getPosition());
+       // Assertions.assertEquals(p2.getY(), arena2.getBullets().get(0).getPosition().getY());
+       // Assertions.assertEquals(p2.getX(), arena2.getBullets().get(0).getPosition().getX());
+
     }
 
-    @Test
-    void testMoveBullets() {
-        arena.moveBullets();
-    }
 
     @Test
-    void testCreateBullets() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+    void CreateBulletsTest() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         List<Bullet> result = arena.CreateBullets(new Position(0, 0), true);
         Assertions.assertEquals(List.of(new Bullet(0, 0)).get(0).getPosition().getY(), result.get(0).getPosition().getY());
     }
@@ -143,7 +151,8 @@ class ArenaTest {
     void testGetIsInvincible() {
         when(spaceShip.getIsInvincible()).thenReturn(true);
         boolean result = arena.getIsInvincible();
-        Assertions.assertEquals(true, result);
+        boolean expected = true;
+        Assertions.assertEquals(expected, result);
     }
 
 

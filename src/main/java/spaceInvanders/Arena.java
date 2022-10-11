@@ -115,7 +115,7 @@ public class Arena {
         if (!fireMultipleBullets) {
             bullets.add(new Bullet(position.getX(), position.getY() - 1));
             audioPlayer.restart();
-        } else if (fireMultipleBullets) {
+        } else {
             bullets.add(new Bullet(position.getX(), position.getY() - 1));
             bullets.add(new Bullet(position.getX() - 1, position.getY() - 1));
             bullets.add(new Bullet(position.getX() + 1, position.getY() - 1));
@@ -335,4 +335,11 @@ public class Arena {
 
     }
 
+    public List<Bullet> getBullets() {
+        return bullets;
+    }
+
+    public List<EnemyBullet> getEnemyBullets() {
+        return enemyBullets;
+    }
 }
