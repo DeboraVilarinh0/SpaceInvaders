@@ -59,29 +59,18 @@ class ArenaTest {
 
     @Test
 //Should move the enemy bullets down
-    void moveBulletsShouldMoveTheEnemyBulletsDown() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-        Arena arena2 = new Arena(50, 50);
-        Position p  = new Position (2,26);
-        arena2.CreateEnemyBullets(p);
-        arena2.moveBullets();
-        Position p2  = new Position (2,27);
-        Assertions.assertEquals(p2, arena2.getEnemyBullets().get(0).getPosition());
-       //  Assertions.assertEquals(p2.getY(), arena2.getBullets().get(0).getPosition().getY());
-        // Assertions.assertEquals(p2.getX(), arena2.getBullets().get(0).getPosition().getX());
-
+    void moveBulletsShouldMoveTheEnemyBulletsDown() {
+        arena.CreateEnemyBullets(new Position(10,10));
+        arena.moveBullets();
+        Assertions.assertEquals(new Position(10,11), arena.getEnemyBullets().get(0).getPosition());
     }
     @Test
         //Should move the bullets up
     void moveBulletsShouldMoveTheBulletsUp() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-        Arena arena2 = new Arena(50, 50);
-        Position p  = new Position (2,29);
-        arena2.CreateBullets(p, false);
-        arena2.moveBullets();
-        Position p2  = new Position (2,27);
-        Assertions.assertEquals(p2, arena2.getBullets().get(0).getPosition());
-       // Assertions.assertEquals(p2.getY(), arena2.getBullets().get(0).getPosition().getY());
-       // Assertions.assertEquals(p2.getX(), arena2.getBullets().get(0).getPosition().getX());
 
+        arena.CreateBullets(new Position(10,10), true);
+        arena.moveBullets();
+        Assertions.assertEquals(new Position(10,8), arena.getBullets().get(0).getPosition());
     }
 
 
