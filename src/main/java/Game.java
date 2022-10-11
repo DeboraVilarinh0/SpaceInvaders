@@ -50,7 +50,7 @@ public class Game {
     public void run() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
 
         int FPS = 30;
-        int frameTime = 1000 / FPS;
+        int frameTime = 1100 / FPS;
         long lastMonsterMovement = 0;
         long lastMonsterMovement2 = 0;
         long powerUpActivated = 0;
