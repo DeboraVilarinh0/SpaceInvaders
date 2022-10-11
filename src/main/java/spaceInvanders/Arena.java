@@ -1,3 +1,5 @@
+package spaceInvanders;
+
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
@@ -19,7 +21,7 @@ public class Arena {
     public int height;
     private final SpaceShip spaceShip;
     private final List<Bullet> bullets = new ArrayList<>();
-    private final List<EnemyBullet> enemyBullets = new ArrayList<>();
+    final List<EnemyBullet> enemyBullets = new ArrayList<>();
     private final List<PowerUps> powerUps = new ArrayList<>();
     private boolean moveRight = true;
     private boolean moveLeft = false;
@@ -27,8 +29,13 @@ public class Arena {
     public int level = 1;
     private List<Monsters> monsters = new ArrayList<>();
     int powerUpType;
-    private boolean fireMultipleBullets;
-    private boolean start;
+    boolean fireMultipleBullets;
+    boolean quickFireStartTimer;
+    boolean invincibleStartTimer;
+    boolean multipleBulletsStartTimer;
+    private boolean isInvencible = false;
+    private int shootFaster = 6;
+
 
 
     Arena(int width, int height) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
@@ -80,7 +87,7 @@ public class Arena {
             ;
             if (bullets.size() == 0) CreateBullets(spaceShip.getPosition(), fireMultipleBullets);
             else {
-                if (bullets.get(bullets.size() - 1).getPosition().getY() < height - (spaceShip.getShootFaster())) {
+                if (bullets.get(bullets.size() - 1).getPosition().getY() < height - (getShootFaster())) {
                     CreateBullets(spaceShip.getPosition(), fireMultipleBullets);
                 }
             }
@@ -97,14 +104,14 @@ public class Arena {
     }
 
     public void moveBullets() {
-        for (int indexBulletList = 0; indexBulletList < bullets.size(); indexBulletList++) {
+        for (Bullet bullet : bullets) {
 
-            bullets.get(indexBulletList).setPosition(bullets.get(indexBulletList).bulletMovementUP());
+            bullet.setPosition(bullet.bulletMovementUP());
         }
 
-        for (int indexEnemyBulletList = 0; indexEnemyBulletList < enemyBullets.size(); indexEnemyBulletList++) {
+        for (EnemyBullet enemyBullet : enemyBullets) {
 
-            enemyBullets.get(indexEnemyBulletList).setPosition(enemyBullets.get(indexEnemyBulletList).bulletMovementDOWN());
+            enemyBullet.setPosition(enemyBullet.bulletMovementDOWN());
 
         }
     }
@@ -117,7 +124,7 @@ public class Arena {
             bullets.add(new Bullet(position.getX(), position.getY() - 1));
             bullets.add(new Bullet(position.getX() - 1, position.getY() - 1));
             bullets.add(new Bullet(position.getX() + 1, position.getY() - 1));
-
+            audioPlayer.restart();
         }
         return bullets;
     }
@@ -277,11 +284,10 @@ public class Arena {
         Random rand = new Random();
         Random rand1 = new Random();
         int randPos = rand.nextInt(width - 2);
-        randPos +=1;
+        randPos += 1;
         int randPowerUp = rand1.nextInt(3);
         System.out.println(randPowerUp);
         powerUps.add(new PowerUps(randPos, height - 1, randPowerUp));
-
     }
 
 
@@ -295,17 +301,18 @@ public class Arena {
 
                 switch (powerUpType) {
                     case 0:
-                        spaceShip.setShootFaster(0);
-                        System.out.println("shoot faster");
+                        setShootFaster(0);
+                        setQuickFireStartTimer(true);
                         break;
 
                     case 1:
-                        spaceShip.setIsInvencible(true);
-                        System.out.println("invencible");
+                        setIsInvencible(true);
+                        setInvincibleStartTimer(true);
                         break;
 
                     case 2:
                         setFireMultipleBullets(true);
+                        setMultipleBulletsStartTimer(true);
                         break;
 
                 }
@@ -314,23 +321,47 @@ public class Arena {
     }
 
 
-    public boolean getIsInvencible() {
-        if (spaceShip.getIsInvencible()) return true;
-        else return false;
 
-    }
     public void setIsInvencible(boolean isInvencible) {
-        spaceShip.setIsInvencible(isInvencible);
 
+        this.isInvencible = isInvencible;
+    }
+    public boolean getIsInvencible () {
+        return isInvencible;
     }
 
-    public void setShootFaster(int shootFaster) {
-        spaceShip.setShootFaster(shootFaster);
+    public void setShootFaster (int shootFaster){
+        this.shootFaster=shootFaster;
     }
-
+    public int getShootFaster () {
+        return shootFaster;
+    }
     public void setFireMultipleBullets(boolean fireMultipleBullets) {
         this.fireMultipleBullets = fireMultipleBullets;
 
     }
 
+    public void setQuickFireStartTimer(boolean quickFireStartTimer) {
+        this.quickFireStartTimer = quickFireStartTimer;
+    }
+
+    public boolean getQuickFireStartTimer() {
+        return quickFireStartTimer;
+    }
+
+    public void setInvincibleStartTimer(boolean invincibleStartTimer) {
+        this.invincibleStartTimer = invincibleStartTimer;
+    }
+
+    public boolean getInvincibleStartTimer() {
+        return invincibleStartTimer;
+    }
+
+    public void setMultipleBulletsStartTimer(boolean multipleBulletsStartTimer) {
+        this.multipleBulletsStartTimer = multipleBulletsStartTimer;
+    }
+
+    public boolean getMultipleBulletsStartTimer() {
+        return multipleBulletsStartTimer;
+    }
 }

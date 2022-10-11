@@ -1,3 +1,5 @@
+package spaceInvanders;
+
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
@@ -21,7 +23,7 @@ public class Game {
     long shotTimer = 1000;
     long moveTimer = 100;
     long shotNumb = 1;
-    long powerUpTimer=5000;
+    long powerUpTimer = 5000;
     boolean playedLevelTwo = false;
     SimpleAudioPlayer audioPlayer = new SimpleAudioPlayer();
 
@@ -54,9 +56,12 @@ public class Game {
         long lastMonsterMovement = 0;
         long lastMonsterMovement2 = 0;
         long powerUpActivated = 0;
-        long powerUp1Activated = 0;
+
         long powerUp2Activated = 0;
         long powerUp3Activated = 0;
+        int quickFireCount = 0;
+        int invincibleCount = 0;
+        int multipleFireCount = 0;
 
 
         while (true) {
@@ -67,6 +72,7 @@ public class Game {
             long startTime5 = System.currentTimeMillis();
             long startTime6 = System.currentTimeMillis();
             long startTime7 = System.currentTimeMillis();
+            long powerUp1Activated = startTime4;
             audioPlayer.play2();
             draw();
             KeyStroke key = screen.pollInput();
@@ -106,24 +112,37 @@ public class Game {
             if (startTime3 - powerUpActivated > powerUpTimer) {
                 arena.CreatePowerUps();
                 powerUpActivated = startTime3;
-
-            }
-            if (startTime4 - powerUp1Activated > powerUpTimer) {
-                arena.setShootFaster(3);
-                powerUp1Activated = startTime4;
-                System.out.println("FAST SHOOTING OFF");
             }
 
-            if (startTime5 - powerUp2Activated > powerUpTimer) {
-                arena.setIsInvencible(false);
-                powerUp2Activated = startTime5;
-                System.out.println("INVENCIBILITY OFF");
+            if (arena.getQuickFireStartTimer()) {
+                quickFireCount++;
+                System.out.println(100 - quickFireCount);
+                if (quickFireCount == 100) {
+                    quickFireCount = 0;
+                    arena.setShootFaster(6);
+                    arena.setQuickFireStartTimer(false);
+                    System.out.println("FAST SHOOTING OFF");
+                }
             }
 
-            if (startTime6 - powerUp3Activated > powerUpTimer) {
-                arena.setFireMultipleBullets(false);
-                powerUp3Activated = startTime6;
-                System.out.println("MULTIPLE SHOTS OFF");
+            if (arena.getInvincibleStartTimer()) {
+                invincibleCount++;
+                System.out.println(100 - invincibleCount);
+                if (invincibleCount == 100) {
+                    invincibleCount = 0;
+                    arena.setInvincibleStartTimer(false);
+                    arena.setIsInvencible(false);
+                }
+            }
+
+            if (arena.getMultipleBulletsStartTimer()) {
+                multipleFireCount++;
+                System.out.println(100 - multipleFireCount);
+                if (multipleFireCount == 100){
+                    arena.setFireMultipleBullets(false);
+                    arena.setMultipleBulletsStartTimer(false);
+                    multipleFireCount=0;
+                }
             }
 
 

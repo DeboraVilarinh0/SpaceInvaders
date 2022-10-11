@@ -1,4 +1,6 @@
-public class Position{
+package spaceInvanders;
+
+public class Position {
 
     private int x;
     private int y;
@@ -23,10 +25,12 @@ public class Position{
     public void setY(int y) {
         this.y = y;
     }
+
     public void display() {
-     System.out.println("x:" + this.getX() + " and y: " + this.getY());
+        System.out.println("x:" + this.getX() + " and y: " + this.getY());
 
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

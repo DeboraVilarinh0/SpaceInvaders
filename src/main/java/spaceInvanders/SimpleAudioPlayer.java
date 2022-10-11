@@ -1,4 +1,4 @@
-
+package spaceInvanders;
 // Java program to play an Audio
 // file using Clip Object
 
@@ -39,10 +39,10 @@ public class SimpleAudioPlayer {
         clip2 = AudioSystem.getClip();
 
         // open audioInputStream to the clip
-        clip.open(audioInputStream);
-        clip2.open(audioInputStream2);
+        //clip.open(audioInputStream);
+        //clip2.open(audioInputStream2);
 
-        clip2.loop(Clip.LOOP_CONTINUOUSLY);
+        //clip2.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
     public void play() {

@@ -1,4 +1,4 @@
-import java.util.Random;
+package spaceInvanders;
 
 public class BadGuys extends Monsters {
 
