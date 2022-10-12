@@ -8,7 +8,7 @@ pitest {
     junit5PluginVersion = '0.12'
 }
 
-group 'org.example'
+group 'spaceInvaders'
 version '1.0-SNAPSHOT'
 
 repositories {
