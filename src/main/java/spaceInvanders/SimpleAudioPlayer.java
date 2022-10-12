@@ -55,8 +55,7 @@ public class SimpleAudioPlayer {
     }
 
     // Method to stop the audio
-    public void stop() throws UnsupportedAudioFileException,
-            IOException, LineUnavailableException {
+    public void stop() throws UnsupportedAudioFileException, IOException {
         currentFrame = 0L;
         clip.stop();
         clip.close();
@@ -65,8 +64,7 @@ public class SimpleAudioPlayer {
 
 
     // Method to reset audio stream
-    public void reset() throws UnsupportedAudioFileException, IOException,
-            LineUnavailableException {
+    public void reset() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         audioInputStream = AudioSystem.getAudioInputStream(
                 new File(filePathSpaceShipBullet).getAbsoluteFile());
         clip.open(audioInputStream);

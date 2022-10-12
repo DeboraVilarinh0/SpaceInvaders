@@ -115,7 +115,7 @@ public class Arena {
     public List<Bullet> CreateBullets(Position position, boolean fireMultipleBullets) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         if (!fireMultipleBullets) {
             bullets.add(new Bullet(position.getX(), position.getY() - 1));
-          //  audioPlayer.restartBulletAudio();
+            audioPlayer.restartBulletAudio();
         } else {
             bullets.add(new Bullet(position.getX(), position.getY() - 1));
             bullets.add(new Bullet(position.getX() - 1, position.getY() - 1));
