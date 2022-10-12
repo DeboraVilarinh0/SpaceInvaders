@@ -59,29 +59,32 @@ class ArenaTest {
 
     @Test
 //Should move the enemy bullets down
+    void testMoveBullets() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+        List<Bullet> result = arena.CreateBullets(new Position(0,0),true);
+        List<EnemyBullet> resultEnemy = arena.CreateEnemyBullets(new Position(0,0));
+        for (Bullet bullet: result){
+            for(EnemyBullet enemyBullet: resultEnemy){arena.moveBullets();}
+        }
+    }
+
     void moveBulletsShouldMoveTheEnemyBulletsDown() {
         arena.moveBullets();
         verify(enemyBullets, times(1)).get(anyInt());
     }
 
     @Test
-        //Should move the bullets up
-    void moveBulletsShouldMoveTheBulletsUp() {
-        arena.moveBullets();
-        verify(bullets, times(1)).get(anyInt());
-        verify(enemyBullets, times(1)).get(anyInt());
-    }
-
-    @Test
-    void testMoveBullets() {
-        arena.moveBullets();
-    }
-
-    @Test
     void testCreateBullets() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-        List<Bullet> result = arena.CreateBullets(new Position(0, 0), true);
-        Assertions.assertEquals(List.of(new Bullet(0, 0)).get(0).getPosition().getY(), result.get(0).getPosition().getY());
+        List<Bullet> result = arena.CreateBullets(new Position(0, 0), false);
+        Assertions.assertEquals(List.of(new Bullet(0, -1)).get(0).getPosition().getY(), result.get(0).getPosition().getY());
+
+        List<Bullet> resultMultipleShots = arena.CreateBullets(new Position(0,0),true);
+        Assertions.assertEquals(List.of(new Bullet(0,-1)).get(0).getPosition().getY(), resultMultipleShots.get(0).getPosition().getY());
+        Assertions.assertEquals(List.of(new Bullet(1,-1)).get(0).getPosition().getY(), resultMultipleShots.get(0).getPosition().getY());
+        Assertions.assertEquals(List.of(new Bullet(-1,-1)).get(0).getPosition().getY(), resultMultipleShots.get(0).getPosition().getY());
+
     }
+
+
 
     @Test
     public void CreateEnemyBulletsTest() {
@@ -140,18 +143,18 @@ class ArenaTest {
     }
 
     @Test
-    void testGetIsInvencible() {
-        boolean result = arena.getIsInvencible();
+    void testGetIsInvincible() {
+        boolean result = arena.getIsInvincible();
         boolean expected =  false;
             Assertions.assertEquals(expected, result);
     }
 
 
     @Test
-    void testSetIsInvencible() {
-        arena.setIsInvencible(true);
+    void testSetIsInvincible() {
+        arena.setIsInvincible(true);
         boolean expected = true;
-        assertEquals(expected, arena.getIsInvencible());
+        assertEquals(expected, arena.getIsInvincible());
 
     }
 

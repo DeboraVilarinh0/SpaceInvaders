@@ -16,12 +16,12 @@ public class SpaceShipTest {
 
     @Test
     public void setIsInvincibleTest() {
-        arena.setIsInvencible(actual=true);
+        arena.setIsInvincible(actual=true);
         Assertions.assertTrue(actual);
     }
     @Test
      public void getIsInvincible() {
-        boolean result = arena.getIsInvencible();
+        boolean result = arena.getIsInvincible();
         boolean expected = false;
         Assertions.assertEquals(expected, result);
     }
