@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class SimpleAudioPlayer {
-
+/*
     // to store current position
     Long currentFrame;
     Clip clip, clip2, clip3, clip4;
@@ -20,9 +20,9 @@ public class SimpleAudioPlayer {
     AudioInputStream audioInputStream3;
     AudioInputStream audioInputStream4;
     static String filePathSpaceShipBullet = "src/main/resources/audio/mixkit-short-laser-gun-shot-1670.wav";
-    static String filePathGameBackgroundMusic = "src/main/resources/audio/John-Williams-Battle-of-the-Hero (online-audio-converter.com).wav";
+   // static String filePathGameBackgroundMusic = "src/main/resources/audio/John-Williams-Battle-of-the-Hero (online-audio-converter.com).wav";
     static String filePathDeath = "src/main/resources/audio/mixkit-epic-impact-afar-explosion-2782.wav";
-    static String filePathDeath2 = "src/main/resources/audio/LEGO Yoda Death Sound (online-audio-converter.com).wav";
+    //static String filePathDeath2 = "src/main/resources/audio/LEGO Yoda Death Sound (online-audio-converter.com).wav";
 
     // constructor to initialize streams and clip
     public SimpleAudioPlayer() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
@@ -35,7 +35,7 @@ public class SimpleAudioPlayer {
 
         // create clip reference
         clip = AudioSystem.getClip();
-        clip2 = AudioSystem.getClip();
+        /clip2 = AudioSystem.getClip();
         clip3 = AudioSystem.getClip();
         clip4 = AudioSystem.getClip();
 
@@ -85,7 +85,7 @@ public class SimpleAudioPlayer {
 
     public void playBackgroundAudio() {
         //start the clip
-        clip2.start();
+       clip2.start();
         status = "play background audio";
         clip2.loop(Clip.LOOP_CONTINUOUSLY);
     }
@@ -95,4 +95,6 @@ public class SimpleAudioPlayer {
         clip4.start();
         status = "play death audio";
     }
+
+ */
 }

@@ -59,31 +59,27 @@ class ArenaTest {
 
     @Test
 //Should move the enemy bullets down
-    void moveBulletsShouldMoveTheEnemyBulletsDown() {
-        arena.CreateEnemyBullets(new Position(10,10));
-        arena.moveBullets();
-        Assertions.assertEquals(new Position(10,11), arena.getEnemyBullets().get(0).getPosition());
-    }
-
-    @Test
-        //Should move the bullets up
-    void moveBulletsShouldMoveTheBulletsUp() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-
-        arena.CreateBullets(new Position(10,10), true);
-        arena.moveBullets();
-        Assertions.assertEquals(new Position(10,8), arena.getBullets().get(0).getPosition());
-    }
-
-    @Test
-    void testMoveBullets() {
-        arena.moveBullets();
+    void testMoveBullets() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+        List<Bullet> result = arena.CreateBullets(new Position(0,0),true);
+        List<EnemyBullet> resultEnemy = arena.CreateEnemyBullets(new Position(0,0));
+        for (Bullet bullet: result){
+            for(EnemyBullet enemyBullet: resultEnemy){arena.moveBullets();}
+        }
     }
 
     @Test
     void testCreateBullets() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-        List<Bullet> result = arena.CreateBullets(new Position(0, 0), true);
-        Assertions.assertEquals(List.of(new Bullet(0, 0)).get(0).getPosition().getY(), result.get(0).getPosition().getY());
+        List<Bullet> result = arena.CreateBullets(new Position(0, 0), false);
+        Assertions.assertEquals(List.of(new Bullet(0, -1)).get(0).getPosition().getY(), result.get(0).getPosition().getY());
+
+        List<Bullet> resultMultipleShots = arena.CreateBullets(new Position(0,0),true);
+        Assertions.assertEquals(List.of(new Bullet(0,-1)).get(0).getPosition().getY(), resultMultipleShots.get(0).getPosition().getY());
+        Assertions.assertEquals(List.of(new Bullet(1,-1)).get(0).getPosition().getY(), resultMultipleShots.get(0).getPosition().getY());
+        Assertions.assertEquals(List.of(new Bullet(-1,-1)).get(0).getPosition().getY(), resultMultipleShots.get(0).getPosition().getY());
+
     }
+
+
 
     @Test
     public void CreateEnemyBulletsTest() {

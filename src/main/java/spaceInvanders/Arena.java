@@ -29,13 +29,9 @@ public class Arena {
     public int level = 1;
     private List<Monsters> monsters = new ArrayList<>();
     int powerUpType;
-    boolean fireMultipleBullets;
-    boolean quickFireStartTimer;
-    boolean invincibleStartTimer;
-    boolean multipleBulletsStartTimer;
-    private boolean isInvencible = false;
+    boolean fireMultipleBullets=false;
+    private boolean isInvincible = false;
     private int shootFaster = 6;
-
 
 
     Arena(int width, int height) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
@@ -119,7 +115,7 @@ public class Arena {
     public List<Bullet> CreateBullets(Position position, boolean fireMultipleBullets) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         if (!fireMultipleBullets) {
             bullets.add(new Bullet(position.getX(), position.getY() - 1));
-            audioPlayer.restartBulletAudio();
+          //  audioPlayer.restartBulletAudio();
         } else {
             bullets.add(new Bullet(position.getX(), position.getY() - 1));
             bullets.add(new Bullet(position.getX() - 1, position.getY() - 1));
@@ -180,7 +176,7 @@ public class Arena {
 
         for (Monsters monsters : monsters) {
             if (spaceShip.getPosition().equals(monsters.getPosition())) {
-                audioPlayer.playDeathAudio();
+             //   audioPlayer.playDeathAudio();
                 System.out.println("You died!!!");
                 Thread.sleep (2000);
                 System.exit(0);
@@ -189,7 +185,7 @@ public class Arena {
 
         for (EnemyBullet enemyBullet : enemyBullets) {
             if (spaceShip.getPosition().equals(enemyBullet.getPosition())) {
-                audioPlayer.playDeathAudio();
+             //   audioPlayer.playDeathAudio();
                 System.out.println("You died!!!");
                 Thread.sleep (2000);
                 System.exit(0);
@@ -287,7 +283,7 @@ public class Arena {
         Random rand = new Random();
         Random rand1 = new Random();
         int randPos = rand.nextInt(width - 2);
-        randPos +=1;
+        randPos += 1;
         int randPowerUp = rand1.nextInt(3);
         System.out.println(randPowerUp);
         powerUps.add(new PowerUps(randPos, height - 1, randPowerUp));
@@ -306,17 +302,14 @@ public class Arena {
                 switch (powerUpType) {
                     case 0:
                         setShootFaster(0);
-                        setQuickFireStartTimer(true);
                         break;
 
                     case 1:
                         setIsInvincible(true);
-                        setInvincibleStartTimer(true);
                         break;
 
                     case 2:
                         setFireMultipleBullets(true);
-                        setMultipleBulletsStartTimer(true);
                         break;
 
                 }
@@ -324,46 +317,29 @@ public class Arena {
         }
     }
 
-    public void setIsInvincible(boolean isInvencible) {
-        this.isInvencible=isInvencible;
-    }
+    public void setIsInvincible(boolean isInvincible) {
+        this.isInvincible = isInvincible;}
+
     public boolean getIsInvincible() {
-        return isInvencible;
+        return isInvincible;
     }
 
-    public void setShootFaster (int shootFaster){
-        this.shootFaster=shootFaster;
+    public void setShootFaster(int shootFaster) {
+        this.shootFaster = shootFaster;
     }
-    public int getShootFaster () {
+
+    public int getShootFaster() {
         return shootFaster;
     }
+
     public void setFireMultipleBullets(boolean fireMultipleBullets) {
         this.fireMultipleBullets = fireMultipleBullets;
     }
 
-    public void setQuickFireStartTimer(boolean quickFireStartTimer) {
-        this.quickFireStartTimer = quickFireStartTimer;
+    public boolean getFireMultipleBullets() {
+        return fireMultipleBullets;
     }
 
-    public boolean getQuickFireStartTimer() {
-        return quickFireStartTimer;
-    }
-
-    public void setInvincibleStartTimer(boolean invincibleStartTimer) {
-        this.invincibleStartTimer = invincibleStartTimer;
-    }
-
-    public boolean getInvincibleStartTimer() {
-        return invincibleStartTimer;
-    }
-
-    public void setMultipleBulletsStartTimer(boolean multipleBulletsStartTimer) {
-        this.multipleBulletsStartTimer = multipleBulletsStartTimer;
-    }
-
-    public boolean getMultipleBulletsStartTimer() {
-        return multipleBulletsStartTimer;
-    }
     public List<Bullet> getBullets() {
         return bullets;
     }

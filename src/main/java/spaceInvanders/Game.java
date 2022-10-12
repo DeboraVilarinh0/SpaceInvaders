@@ -57,8 +57,6 @@ public class Game {
         long lastMonsterMovement2 = 0;
         long powerUpActivated = 0;
 
-        long powerUp2Activated = 0;
-        long powerUp3Activated = 0;
         int quickFireCount = 0;
         int invincibleCount = 0;
         int multipleFireCount = 0;
@@ -68,8 +66,7 @@ public class Game {
             long startTime = System.currentTimeMillis();
             long startTime2 = System.currentTimeMillis();
             long startTime3 = System.currentTimeMillis();
-            audioPlayer.playBackgroundAudio();
-            //draw();
+         //   audioPlayer.playBackgroundAudio();
             KeyStroke key = screen.pollInput();
             if (key != null) {
 
@@ -109,70 +106,69 @@ public class Game {
                 powerUpActivated = startTime3;
             }
 
-            if (arena.getQuickFireStartTimer()) {
+            if (arena.getShootFaster() == 0) {
                 quickFireCount++;
                 System.out.println(100 - quickFireCount);
                 if (quickFireCount == 100) {
                     quickFireCount = 0;
                     arena.setShootFaster(6);
-                    arena.setQuickFireStartTimer(false);
                     System.out.println("FAST SHOOTING OFF");
                 }
+            }
 
-                if (arena.getInvincibleStartTimer()) {
-                    invincibleCount++;
-                    System.out.println(100 - invincibleCount);
-                    if (invincibleCount == 100) {
-                        invincibleCount = 0;
-                        arena.setInvincibleStartTimer(false);
-                        arena.setIsInvincible(false);
-                    }
+            if (arena.getIsInvincible()) {
+                invincibleCount++;
+                System.out.println(100 - invincibleCount);
+                if (invincibleCount == 100) {
+                    invincibleCount = 0;
+                    arena.setIsInvincible(false);
+                    System.out.println("Invincible OFF");
                 }
+            }
 
-                if (arena.getMultipleBulletsStartTimer()) {
-                    multipleFireCount++;
-                    System.out.println(100 - multipleFireCount);
-                    if (multipleFireCount == 100) {
-                        multipleFireCount = 0;
-                        arena.setFireMultipleBullets(false);
-                        arena.setMultipleBulletsStartTimer(false);
-
-                    }
+            if (arena.getFireMultipleBullets()) {
+                multipleFireCount++;
+                System.out.println(100 - multipleFireCount);
+                if (multipleFireCount == 100) {
+                    multipleFireCount = 0;
+                    arena.setFireMultipleBullets(false);
+                    System.out.println("Multiple Fire off");
                 }
+            }
 
-                switch (arena.isMonsterEmpty()) {
-                    case 2 -> {
-                        shotTimer = 300;
-                        shotNumb = 3;
-                        moveTimer = 60;
-                        arena.CreateMonsters(25, 5);
-                        System.out.println("ENTREI NO 2");
-                        playedLevelTwo = true;
-                    }
-                    case 3 -> {
-                        System.out.println("entrei no 3");
-                        shotTimer = 10;
-                        shotNumb = 5;
-                        moveTimer = 30;
-                        arena.CreateMonsters(30, 6);
-                    }
-                    case 4 -> {
-                        System.out.println("GG");
-                        System.exit(0);
-
-                        arena.CreateMonsters(30, 6);
-                    }
+            switch (arena.isMonsterEmpty()) {
+                case 2 -> {
+                    shotTimer = 300;
+                    shotNumb = 3;
+                    moveTimer = 60;
+                    arena.CreateMonsters(25, 5);
+                    System.out.println("ENTREI NO 2");
+                    playedLevelTwo = true;
                 }
-
-                long elapsedTime = System.currentTimeMillis() - startTime;
-                long sleepTime = frameTime - elapsedTime;
-                if (sleepTime > 0) try {
-                    Thread.sleep(sleepTime);
-                } catch (InterruptedException ignored) {
+                case 3 -> {
+                    System.out.println("entrei no 3");
+                    shotTimer = 10;
+                    shotNumb = 5;
+                    moveTimer = 30;
+                    arena.CreateMonsters(30, 6);
                 }
+                case 4 -> {
+                    System.out.println("GG");
+                    System.exit(0);
+
+                    arena.CreateMonsters(30, 6);
+                }
+            }
+
+            long elapsedTime = System.currentTimeMillis() - startTime;
+            long sleepTime = frameTime - elapsedTime;
+            if (sleepTime > 0) try {
+                Thread.sleep(sleepTime);
+            } catch (InterruptedException ignored) {
             }
         }
     }
+
 
     public Font changeFont() {
         File fontFile = new File("src/main/resources/fonts/Square-Regular.ttf");

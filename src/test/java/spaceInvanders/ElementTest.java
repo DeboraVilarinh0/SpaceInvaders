@@ -30,9 +30,9 @@ public class ElementTest {
     }
 
     @Test
-    void setPosition (Position newPos){
+    void setPosition (){
         SpaceShip obtained = new SpaceShip(0,0);
-        newPos =  new Position(10,10);
+        Position newPos =  new Position(10,10);
         Position expected =  new Position(10,10);
         obtained.setPosition(newPos);
         Assertions.assertEquals(expected,obtained.getPosition());
