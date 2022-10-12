@@ -6,6 +6,8 @@ plugins {
 
 pitest {
     junit5PluginVersion = '0.12'
+    pitestVersion = '1.7.4'
+    excludedClasses = ['spaceInvaders.Application', 'spaceInvaders.Game']
 }
 
 group 'spaceInvaders'
@@ -26,7 +28,7 @@ dependencies {
 }
 
 application {
-    mainClass.set("Application")
+    mainClass = 'spaceInvaders.Application'
 }
 
 test {

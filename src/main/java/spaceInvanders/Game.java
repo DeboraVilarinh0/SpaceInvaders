@@ -21,10 +21,12 @@ public class Game {
     private final Arena arena;
     boolean running = true;
     long shotTimer = 1000;
+    long oneSecond = 1000;
     long moveTimer = 100;
     long shotNumb = 1;
     long powerUpTimer = 5000;
     boolean playedLevelTwo = false;
+    int timeToWin = 0;
     SimpleAudioPlayer audioPlayer = new SimpleAudioPlayer();
 
     Game(int Width, int Height) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
@@ -56,6 +58,7 @@ public class Game {
         long lastMonsterMovement = 0;
         long lastMonsterMovement2 = 0;
         long powerUpActivated = 0;
+        long timePassed=0;
 
         int quickFireCount = 0;
         int invincibleCount = 0;
@@ -66,6 +69,7 @@ public class Game {
             long startTime = System.currentTimeMillis();
             long startTime2 = System.currentTimeMillis();
             long startTime3 = System.currentTimeMillis();
+            long startTime4 = System.currentTimeMillis();
             audioPlayer.playBackgroundAudio();
             KeyStroke key = screen.pollInput();
             if (key != null) {
@@ -96,14 +100,20 @@ public class Game {
                 lastMonsterMovement = startTime;
             }
 
-            if (startTime2 - lastMonsterMovement2 > shotTimer) {
+            if (startTime - lastMonsterMovement2 > shotTimer) {
                 arena.shootBullet(shotNumb);
-                lastMonsterMovement2 = startTime2;
+                lastMonsterMovement2 = startTime;
             }
 
-            if (startTime3 - powerUpActivated > powerUpTimer) {
+            if (startTime - powerUpActivated > powerUpTimer) {
                 arena.CreatePowerUps();
-                powerUpActivated = startTime3;
+                powerUpActivated = startTime;
+            }
+
+            if (startTime - timePassed > oneSecond) {
+                timeToWin += 1;
+                System.out.println(timeToWin);
+                timePassed = startTime;
             }
 
             if (arena.getShootFaster() == 0) {

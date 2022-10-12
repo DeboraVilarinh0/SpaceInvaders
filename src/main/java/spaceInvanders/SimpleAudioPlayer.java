@@ -19,10 +19,12 @@ public class SimpleAudioPlayer {
     AudioInputStream audioInputStream2;
     AudioInputStream audioInputStream3;
     AudioInputStream audioInputStream4;
+    AudioInputStream audioInputStream5;
     static String filePathSpaceShipBullet = "src/main/resources/audio/mixkit-short-laser-gun-shot-1670.wav";
     static String filePathGameBackgroundMusic = "src/main/resources/audio/John-Williams-Battle-of-the-Hero (online-audio-converter.com).wav";
     static String filePathDeath = "src/main/resources/audio/mixkit-epic-impact-afar-explosion-2782.wav";
     static String filePathDeath2 = "src/main/resources/audio/LEGO Yoda Death Sound (online-audio-converter.com).wav";
+ //   static String filePathDeath3 =
 
     // constructor to initialize streams and clip
     public SimpleAudioPlayer() throws UnsupportedAudioFileException, IOException, LineUnavailableException {

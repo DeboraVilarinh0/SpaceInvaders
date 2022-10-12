@@ -20,6 +20,7 @@ public class Arena {
     public int width;
     public int height;
     private final SpaceShip spaceShip;
+    private List<SpaceShipHP> spaceShipHP = new ArrayList<>();
     private final List<Bullet> bullets = new ArrayList<>();
     final List<EnemyBullet> enemyBullets = new ArrayList<>();
     private final List<PowerUps> powerUps = new ArrayList<>();
@@ -29,7 +30,7 @@ public class Arena {
     public int level = 1;
     private List<Monsters> monsters = new ArrayList<>();
     int powerUpType;
-    boolean fireMultipleBullets=false;
+    boolean fireMultipleBullets = false;
     private boolean isInvincible = false;
     private int shootFaster = 6;
 
@@ -39,12 +40,18 @@ public class Arena {
         this.height = height;
         spaceShip = new SpaceShip(width / 2, height - 1);
         CreateMonsters(20, 5);
+        createHP();
 
     }
 
     public void draw(TextGraphics graphics) {
         graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
+
+        if (spaceShipHP.get(1).getHP() == 1) {
+            spaceShipHP.get(0).draw(graphics, "#ff0000", "H");
+            spaceShipHP.get(1).draw(graphics, "#ff0000", "H");
+        }else spaceShipHP.get(0).draw(graphics, "#ff0000", "H");
 
         spaceShip.draw(graphics, "#FFAE42", "&");
         if (bullets.size() != 0) for (int indexBulletsList = 0; indexBulletsList < bullets.size(); indexBulletsList++) {
@@ -60,6 +67,7 @@ public class Arena {
                 if (powerUps.get(i).getPowerUpType() == 2) powerUps.get(i).draw(graphics, "#FDCAFF", "o");
             }
         }
+
         for (Monsters monster : monsters) {
             if (monster.getClass() == FatGuy.class) {
                 if (monster.getHitPoints() == 1) {
@@ -176,19 +184,25 @@ public class Arena {
 
         for (Monsters monsters : monsters) {
             if (spaceShip.getPosition().equals(monsters.getPosition())) {
-                audioPlayer.playDeathAudio();
+                if (spaceShipHP.get(1).getHP() == 1) {
+                    spaceShipHP.get(1).setHP(0);
+                } else{
+                    audioPlayer.playDeathAudio();
                 System.out.println("You died!!!");
-                Thread.sleep (2000);
-                System.exit(0);
+                Thread.sleep(2000);
+                System.exit(0);}
             }
         }
 
         for (EnemyBullet enemyBullet : enemyBullets) {
             if (spaceShip.getPosition().equals(enemyBullet.getPosition())) {
-                audioPlayer.playDeathAudio();
+                if (spaceShipHP.get(1).getHP() == 1) {
+                    spaceShipHP.get(1).setHP(0);
+                } else{
+                    audioPlayer.playDeathAudio();
                 System.out.println("You died!!!");
-                Thread.sleep (2000);
-                System.exit(0);
+                Thread.sleep(2000);
+                System.exit(0);}
             }
         }
     }
@@ -199,14 +213,19 @@ public class Arena {
         for (int linha = 0; linha < Height; linha++) {
             for (int coluna = 0; coluna < Width; coluna += 3) {
                 if (drawFatGuy) {
-                    monsters.add(new FatGuy(coluna + (width - Width) / 2, linha));
+                    monsters.add(new FatGuy(coluna + (width - Width) / 2, linha + 1));
                     drawFatGuy = false;
                 } else {
-                    monsters.add(new BadGuys(coluna + (width - Width) / 2, linha));
+                    monsters.add(new BadGuys(coluna + (width - Width) / 2, linha + 1));
                     drawFatGuy = true;
                 }
             }
         }
+    }
+
+    public void createHP() {
+        spaceShipHP.add(0,new SpaceShipHP(width-1, 0));
+        spaceShipHP.add(1,new SpaceShipHP(width - 2, 0));
     }
 
     public void setMonsters(List<Monsters> monsters) {
@@ -318,7 +337,8 @@ public class Arena {
     }
 
     public void setIsInvincible(boolean isInvincible) {
-        this.isInvincible = isInvincible;}
+        this.isInvincible = isInvincible;
+    }
 
     public boolean getIsInvincible() {
         return isInvincible;
