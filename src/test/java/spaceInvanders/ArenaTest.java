@@ -14,8 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 class ArenaTest {
     @Mock
@@ -53,7 +52,8 @@ class ArenaTest {
     void createEnemyBulletsShouldCreateANewEnemyBulletInThePositionPassedAsParameter() {
         Position position = new Position(10, 10);
         arena.CreateEnemyBullets(position);
-        assertEquals(1, arena.enemyBullets.size());
+        int expected = 1;
+        assertEquals(expected, arena.enemyBullets.size());
         assertEquals(position, arena.enemyBullets.get(0).getPosition());
     }
 
@@ -65,11 +65,6 @@ class ArenaTest {
         for (Bullet bullet: result){
             for(EnemyBullet enemyBullet: resultEnemy){arena.moveBullets();}
         }
-    }
-
-    void moveBulletsShouldMoveTheEnemyBulletsDown() {
-        arena.moveBullets();
-        verify(enemyBullets, times(1)).get(anyInt());
     }
 
     @Test
@@ -155,12 +150,14 @@ class ArenaTest {
         arena.setIsInvincible(true);
         boolean expected = true;
         assertEquals(expected, arena.getIsInvincible());
-
     }
 
     @Test
     void testSetShootFaster() {
-
+        int shootFaster = 5;
+        arena.setShootFaster(shootFaster);
+        int expected = 5;
+        Assertions.assertEquals(expected, arena.getShootFaster());
 
     }
 

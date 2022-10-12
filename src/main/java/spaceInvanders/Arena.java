@@ -115,8 +115,8 @@ public class Arena {
     public List<Bullet> CreateBullets(Position position, boolean fireMultipleBullets) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         if (!fireMultipleBullets) {
             bullets.add(new Bullet(position.getX(), position.getY() - 1));
-            audioPlayer.restart();
-        } else if (fireMultipleBullets) {
+          //  audioPlayer.restartBulletAudio();
+        } else {
             bullets.add(new Bullet(position.getX(), position.getY() - 1));
             bullets.add(new Bullet(position.getX() - 1, position.getY() - 1));
             bullets.add(new Bullet(position.getX() + 1, position.getY() - 1));
@@ -172,18 +172,22 @@ public class Arena {
         }
     }
 
-    public void verifySpaceShipCollision() {
+    public void verifySpaceShipCollision() throws InterruptedException {
 
         for (Monsters monsters : monsters) {
             if (spaceShip.getPosition().equals(monsters.getPosition())) {
+             //   audioPlayer.playDeathAudio();
                 System.out.println("You died!!!");
+                Thread.sleep (2000);
                 System.exit(0);
             }
         }
 
         for (EnemyBullet enemyBullet : enemyBullets) {
             if (spaceShip.getPosition().equals(enemyBullet.getPosition())) {
+             //   audioPlayer.playDeathAudio();
                 System.out.println("You died!!!");
+                Thread.sleep (2000);
                 System.exit(0);
             }
         }
@@ -218,7 +222,6 @@ public class Arena {
         }
         return 0;
     }
-
 
     public void verifyMonsterCollision() {
         for (int indexBullets = 0; indexBullets < bullets.size(); indexBullets++) {
@@ -315,8 +318,7 @@ public class Arena {
     }
 
     public void setIsInvincible(boolean isInvincible) {
-        this.isInvincible = isInvincible;
-    }
+        this.isInvincible = isInvincible;}
 
     public boolean getIsInvincible() {
         return isInvincible;

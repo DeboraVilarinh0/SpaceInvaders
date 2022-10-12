@@ -49,7 +49,7 @@ public class Game {
         screen.refresh();
     }
 
-    public void run() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+    public void run() throws IOException, UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
 
         int FPS = 30;
         int frameTime = 1100 / FPS;
@@ -66,7 +66,7 @@ public class Game {
             long startTime = System.currentTimeMillis();
             long startTime2 = System.currentTimeMillis();
             long startTime3 = System.currentTimeMillis();
-            audioPlayer.play2();
+         //   audioPlayer.playBackgroundAudio();
             KeyStroke key = screen.pollInput();
             if (key != null) {
 
@@ -106,7 +106,7 @@ public class Game {
                 powerUpActivated = startTime3;
             }
 
-            if (arena.getShootFaster()==0) {
+            if (arena.getShootFaster() == 0) {
                 quickFireCount++;
                 System.out.println(100 - quickFireCount);
                 if (quickFireCount == 100) {
@@ -123,7 +123,6 @@ public class Game {
                     invincibleCount = 0;
                     arena.setIsInvincible(false);
                     System.out.println("Invincible OFF");
-
                 }
             }
 
@@ -136,7 +135,6 @@ public class Game {
                     System.out.println("Multiple Fire off");
                 }
             }
-
 
             switch (arena.isMonsterEmpty()) {
                 case 2 -> {
@@ -170,7 +168,6 @@ public class Game {
             }
         }
     }
-
 
 
     public Font changeFont() {
