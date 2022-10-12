@@ -58,7 +58,7 @@ public class Game {
         long lastMonsterMovement = 0;
         long lastMonsterMovement2 = 0;
         long powerUpActivated = 0;
-        long timePassed=0;
+        long timePassed = 0;
 
         int quickFireCount = 0;
         int invincibleCount = 0;
@@ -67,9 +67,6 @@ public class Game {
 
         while (true) {
             long startTime = System.currentTimeMillis();
-            long startTime2 = System.currentTimeMillis();
-            long startTime3 = System.currentTimeMillis();
-            long startTime4 = System.currentTimeMillis();
             audioPlayer.playBackgroundAudio();
             KeyStroke key = screen.pollInput();
             if (key != null) {
@@ -112,7 +109,6 @@ public class Game {
 
             if (startTime - timePassed > oneSecond) {
                 timeToWin += 1;
-                System.out.println(timeToWin);
                 timePassed = startTime;
             }
 
@@ -146,17 +142,22 @@ public class Game {
                 }
             }
 
-            switch (arena.isMonsterEmpty()) {
+            if (arena.monsterIsEmpty() && arena.getRunTimer() < 80) {
+                audioPlayer.stopBackgroundAudio();
+                audioPlayer.playLastLevelAudio();
+                arena.setRunTimer(arena.getRunTimer() + 1);
+                System.out.println(arena.getRunTimer());
+            }
+
+            switch (arena.level()) {
                 case 2 -> {
-                    audioPlayer.stopBackgroundAudio();
-                    audioPlayer.playLastLevelAudio();
-                    Thread.sleep(3000);
-                    shotTimer = 300;
-                    shotNumb = 3;
-                    moveTimer = 60;
-                    arena.CreateMonsters(25, 5);
-                    System.out.println("ENTREI NO 2");
-                    playedLevelTwo = true;
+                        arena.setRunTimer(0);
+                        shotTimer = 300;
+                        shotNumb = 3;
+                        moveTimer = 60;
+                        arena.CreateMonsters(25, 5);
+                        System.out.println("ENTREI NO 2");
+                        playedLevelTwo = true;
                 }
                 case 3 -> {
                     System.out.println("entrei no 3");

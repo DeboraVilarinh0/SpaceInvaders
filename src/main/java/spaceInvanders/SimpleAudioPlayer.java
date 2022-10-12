@@ -104,5 +104,10 @@ public class SimpleAudioPlayer {
         status = "play death audio";
         clip2.loop(Clip.LOOP_CONTINUOUSLY);
     }
-
+    public void stopLastLevelAudio() throws UnsupportedAudioFileException, IOException {
+        currentFrame = 0L;
+        clip5.stop();
+        clip5.close();
+        status = "stop background audio";
+    }
 }

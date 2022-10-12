@@ -33,6 +33,8 @@ public class Arena {
     boolean fireMultipleBullets = false;
     private boolean isInvincible = false;
     private int shootFaster = 6;
+    long runTimer=0;
+
 
 
     Arena(int width, int height) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
@@ -49,9 +51,9 @@ public class Arena {
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
 
         if (spaceShipHP.get(1).getHP() == 1) {
-            spaceShipHP.get(0).draw(graphics, "#ff0000", "H");
-            spaceShipHP.get(1).draw(graphics, "#ff0000", "H");
-        }else spaceShipHP.get(0).draw(graphics, "#ff0000", "H");
+            spaceShipHP.get(0).draw(graphics, "#ff0000", "v");
+            spaceShipHP.get(1).draw(graphics, "#ff0000", "v");
+        }else spaceShipHP.get(0).draw(graphics, "#ff0000", "v");
 
         spaceShip.draw(graphics, "#FFAE42", "&");
         if (bullets.size() != 0) for (int indexBulletsList = 0; indexBulletsList < bullets.size(); indexBulletsList++) {
@@ -180,13 +182,15 @@ public class Arena {
         }
     }
 
-    public void verifySpaceShipCollision() throws InterruptedException {
+    public void verifySpaceShipCollision() throws InterruptedException, UnsupportedAudioFileException, IOException {
 
         for (Monsters monsters : monsters) {
             if (spaceShip.getPosition().equals(monsters.getPosition())) {
                 if (spaceShipHP.get(1).getHP() == 1) {
                     spaceShipHP.get(1).setHP(0);
                 } else{
+                    audioPlayer.stopBackgroundAudio();
+                    audioPlayer.stopLastLevelAudio();
                     audioPlayer.playDeathAudio();
                 System.out.println("You died!!!");
                 Thread.sleep(2000);
@@ -199,6 +203,8 @@ public class Arena {
                 if (spaceShipHP.get(1).getHP() == 1) {
                     spaceShipHP.get(1).setHP(0);
                 } else{
+                    audioPlayer.stopBackgroundAudio();
+                    audioPlayer.stopLastLevelAudio();
                     audioPlayer.playDeathAudio();
                 System.out.println("You died!!!");
                 Thread.sleep(2000);
@@ -232,8 +238,8 @@ public class Arena {
         this.monsters = monsters;
     }
 
-    public int isMonsterEmpty() {
-        if (monsters.isEmpty()) {
+    public int level() {
+        if (monsters.isEmpty() && runTimer==80){
             level += 1;
             System.out.print("o nivel é   ");
             System.out.println(level);
@@ -358,6 +364,13 @@ public class Arena {
     public boolean getFireMultipleBullets() {
         return fireMultipleBullets;
     }
+    public long getRunTimer() {
+        return runTimer;
+    }
+
+    public void setRunTimer(long runTimer) {
+        this.runTimer = runTimer;
+    }
 
     public List<Bullet> getBullets() {
         return bullets;
@@ -365,5 +378,10 @@ public class Arena {
 
     public List<EnemyBullet> getEnemyBullets() {
         return enemyBullets;
+    }
+
+    public boolean monsterIsEmpty(){
+        if(monsters.isEmpty())return true;
+        else return false;
     }
 }
