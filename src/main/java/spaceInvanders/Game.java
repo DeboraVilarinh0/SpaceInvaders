@@ -66,7 +66,7 @@ public class Game {
             long startTime = System.currentTimeMillis();
             long startTime2 = System.currentTimeMillis();
             long startTime3 = System.currentTimeMillis();
-         //   audioPlayer.playBackgroundAudio();
+            audioPlayer.playBackgroundAudio();
             KeyStroke key = screen.pollInput();
             if (key != null) {
 

@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class SimpleAudioPlayer {
-/*
+
     // to store current position
     Long currentFrame;
     Clip clip, clip2, clip3, clip4;
@@ -20,9 +20,9 @@ public class SimpleAudioPlayer {
     AudioInputStream audioInputStream3;
     AudioInputStream audioInputStream4;
     static String filePathSpaceShipBullet = "src/main/resources/audio/mixkit-short-laser-gun-shot-1670.wav";
-   // static String filePathGameBackgroundMusic = "src/main/resources/audio/John-Williams-Battle-of-the-Hero (online-audio-converter.com).wav";
+    static String filePathGameBackgroundMusic = "src/main/resources/audio/John-Williams-Battle-of-the-Hero (online-audio-converter.com).wav";
     static String filePathDeath = "src/main/resources/audio/mixkit-epic-impact-afar-explosion-2782.wav";
-    //static String filePathDeath2 = "src/main/resources/audio/LEGO Yoda Death Sound (online-audio-converter.com).wav";
+    static String filePathDeath2 = "src/main/resources/audio/LEGO Yoda Death Sound (online-audio-converter.com).wav";
 
     // constructor to initialize streams and clip
     public SimpleAudioPlayer() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
@@ -35,7 +35,7 @@ public class SimpleAudioPlayer {
 
         // create clip reference
         clip = AudioSystem.getClip();
-        /clip2 = AudioSystem.getClip();
+        clip2 = AudioSystem.getClip();
         clip3 = AudioSystem.getClip();
         clip4 = AudioSystem.getClip();
 
@@ -55,8 +55,7 @@ public class SimpleAudioPlayer {
     }
 
     // Method to stop the audio
-    public void stop() throws UnsupportedAudioFileException,
-            IOException, LineUnavailableException {
+    public void stop() throws UnsupportedAudioFileException, IOException {
         currentFrame = 0L;
         clip.stop();
         clip.close();
@@ -65,8 +64,7 @@ public class SimpleAudioPlayer {
 
 
     // Method to reset audio stream
-    public void reset() throws UnsupportedAudioFileException, IOException,
-            LineUnavailableException {
+    public void reset() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         audioInputStream = AudioSystem.getAudioInputStream(
                 new File(filePathSpaceShipBullet).getAbsoluteFile());
         clip.open(audioInputStream);
@@ -96,5 +94,4 @@ public class SimpleAudioPlayer {
         status = "play death audio";
     }
 
- */
 }

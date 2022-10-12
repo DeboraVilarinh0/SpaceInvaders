@@ -115,7 +115,7 @@ public class Arena {
     public List<Bullet> CreateBullets(Position position, boolean fireMultipleBullets) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         if (!fireMultipleBullets) {
             bullets.add(new Bullet(position.getX(), position.getY() - 1));
-          //  audioPlayer.restartBulletAudio();
+            audioPlayer.restartBulletAudio();
         } else {
             bullets.add(new Bullet(position.getX(), position.getY() - 1));
             bullets.add(new Bullet(position.getX() - 1, position.getY() - 1));
@@ -176,7 +176,7 @@ public class Arena {
 
         for (Monsters monsters : monsters) {
             if (spaceShip.getPosition().equals(monsters.getPosition())) {
-             //   audioPlayer.playDeathAudio();
+                audioPlayer.playDeathAudio();
                 System.out.println("You died!!!");
                 Thread.sleep (2000);
                 System.exit(0);
@@ -185,7 +185,7 @@ public class Arena {
 
         for (EnemyBullet enemyBullet : enemyBullets) {
             if (spaceShip.getPosition().equals(enemyBullet.getPosition())) {
-             //   audioPlayer.playDeathAudio();
+                audioPlayer.playDeathAudio();
                 System.out.println("You died!!!");
                 Thread.sleep (2000);
                 System.exit(0);
