@@ -60,7 +60,7 @@ public class Arena {
             bullets.get(indexBulletsList).draw(graphics, "#FFFFFF", "_");
         }
         if (enemyBullets.size() != 0)
-            for (EnemyBullet enemyBullet : enemyBullets) enemyBullet.draw(graphics, "#FFFFFF", "w");
+            for (EnemyBullet enemyBullet : enemyBullets) enemyBullet.draw(graphics, "#FFFFFF", "u");
 
         if (!powerUps.isEmpty()) {
             for (int i = 0; i < powerUps.size(); i++) {
