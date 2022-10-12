@@ -148,6 +148,9 @@ public class Game {
 
             switch (arena.isMonsterEmpty()) {
                 case 2 -> {
+                    audioPlayer.stopBackgroundAudio();
+                    audioPlayer.playLastLevelAudio();
+                    Thread.sleep(3000);
                     shotTimer = 300;
                     shotNumb = 3;
                     moveTimer = 60;

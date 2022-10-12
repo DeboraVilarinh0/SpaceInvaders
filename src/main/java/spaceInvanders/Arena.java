@@ -58,13 +58,13 @@ public class Arena {
             bullets.get(indexBulletsList).draw(graphics, "#FFFFFF", "_");
         }
         if (enemyBullets.size() != 0)
-            for (EnemyBullet enemyBullet : enemyBullets) enemyBullet.draw(graphics, "#FFFFFF", "'");
+            for (EnemyBullet enemyBullet : enemyBullets) enemyBullet.draw(graphics, "#FFFFFF", "w");
 
         if (!powerUps.isEmpty()) {
             for (int i = 0; i < powerUps.size(); i++) {
-                if (powerUps.get(i).getPowerUpType() == 0) powerUps.get(i).draw(graphics, "#bff8ff", "o");
-                if (powerUps.get(i).getPowerUpType() == 1) powerUps.get(i).draw(graphics, "#f5dc00", "o");
-                if (powerUps.get(i).getPowerUpType() == 2) powerUps.get(i).draw(graphics, "#FDCAFF", "o");
+                if (powerUps.get(i).getPowerUpType() == 0) powerUps.get(i).draw(graphics, "#bff8ff", "~");
+                if (powerUps.get(i).getPowerUpType() == 1) powerUps.get(i).draw(graphics, "#f5dc00", "~");
+                if (powerUps.get(i).getPowerUpType() == 2) powerUps.get(i).draw(graphics, "#FDCAFF", "~");
             }
         }
 
@@ -252,7 +252,6 @@ public class Arena {
 
                         monsters.get(indexMonsters).setHitPoints(monsters.get(indexMonsters).getHitPoints() - 1);
                         bullets.remove(indexBullets);
-
                     } else {
                         bullets.remove(indexBullets);
                         monsters.remove(indexMonsters);
