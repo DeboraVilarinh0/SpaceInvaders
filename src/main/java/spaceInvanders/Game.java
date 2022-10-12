@@ -49,7 +49,7 @@ public class Game {
         screen.refresh();
     }
 
-    public void run() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+    public void run() throws IOException, UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
 
         int FPS = 30;
         int frameTime = 1100 / FPS;
@@ -68,8 +68,8 @@ public class Game {
             long startTime = System.currentTimeMillis();
             long startTime2 = System.currentTimeMillis();
             long startTime3 = System.currentTimeMillis();
-            audioPlayer.play2();
-            draw();
+            audioPlayer.playBackgroundAudio();
+            //draw();
             KeyStroke key = screen.pollInput();
             if (key != null) {
 
@@ -86,7 +86,7 @@ public class Game {
 
             if (startTime - lastMonsterMovement > moveTimer) {
                 arena.moveMonsters();
-                if (!arena.getIsInvencible()) {
+                if (!arena.getIsInvincible()) {
                     arena.verifySpaceShipCollision();
                 }
                 arena.moveBullets();
@@ -125,7 +125,7 @@ public class Game {
                     if (invincibleCount == 100) {
                         invincibleCount = 0;
                         arena.setInvincibleStartTimer(false);
-                        arena.setIsInvencible(false);
+                        arena.setIsInvincible(false);
                     }
                 }
 
@@ -139,7 +139,6 @@ public class Game {
 
                     }
                 }
-
 
                 switch (arena.isMonsterEmpty()) {
                     case 2 -> {

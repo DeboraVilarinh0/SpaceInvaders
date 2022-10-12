@@ -14,8 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 class ArenaTest {
     @Mock
@@ -155,12 +154,14 @@ class ArenaTest {
         arena.setIsInvincible(true);
         boolean expected = true;
         assertEquals(expected, arena.getIsInvincible());
-
     }
 
     @Test
     void testSetShootFaster() {
-
+        int shootFaster = 5;
+        arena.setShootFaster(shootFaster);
+        int expected = 5;
+        Assertions.assertEquals(expected, arena.getShootFaster());
 
     }
 
